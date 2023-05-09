@@ -16,21 +16,20 @@ import java.sql.SQLException;
 public class koneksi {
            private Connection koneksi;
            public Connection connect() {
-               try {
+           try {
                     Class.forName("com.mysql.jdbc.Driver");
                     System.out.println("Berhasil Terkoneksi");
-                    }
-                    catch (ClassNotFoundException ex) {
-                        System.out.println("Gagal Terkoneksi" + ex);    
-                    }           
-                    String url = "jdbc:mysql://localhost:3309/db_aplikasiku?autoReconnect=true&useSSL=false";
-                    try {
-                        koneksi = DriverManager.getConnection (url,"root","");
-                        System.out.println("berhasil koneksi database");
-                    } catch (SQLException e) {
-                        System.out.println("gagal konksi database");
-                    }
-                    return koneksi;
                 }
-           }
+                    catch (ClassNotFoundException e) {
+                    System.out.println("Gagal Terkoneksi" + e.getMessage());    
+                }           
+                    String url = "jdbc:mysql://devlab.santeknovatif.xyz/:3309/eo_management?autoReconnect=true&useSSL=true";
+                    try {
+                            koneksi = DriverManager.getConnection (url,"kelompok2","kelompok2kuy");
+                            System.out.println("berhasil koneksi ke database");
+                        } catch (SQLException e) {
+                            System.out.println("gagal terkoneksi ke database" + e.getMessage());
+                        }
+                  return koneksi;
+            }
 }
