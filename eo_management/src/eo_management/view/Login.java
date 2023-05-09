@@ -78,10 +78,10 @@ public class Login extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtPassword = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
         cbxShow = new javax.swing.JCheckBox();
         jSeparator1 = new javax.swing.JSeparator();
+        txtPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -161,13 +161,6 @@ public class Login extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         jLabel4.setText("Password");
 
-        txtPassword.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
-        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtPasswordKeyPressed(evt);
-            }
-        });
-
         btnLogin.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         btnLogin.setText("LOGIN");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -199,15 +192,14 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(128, 128, 128)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cbxShow)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel4)
-                                .addComponent(txtUsername)
-                                .addComponent(txtPassword)
-                                .addComponent(jSeparator1)
-                                .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)))))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4)
+                            .addComponent(txtUsername)
+                            .addComponent(jSeparator1)
+                            .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
+                            .addComponent(txtPassword))))
                 .addContainerGap(131, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -239,12 +231,6 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
-            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                btnLoginActionPerformed(new ActionEvent(evt.getSource(), evt.getID(), "Key Press Login"));
-            }
-    }//GEN-LAST:event_txtPasswordKeyPressed
-
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
                 String login = txtUsername.getText();
                 String password = txtPassword.getText();
@@ -252,7 +238,7 @@ public class Login extends javax.swing.JFrame {
                 if (login.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Harap Masukkan Username dan Password Terlebih Dahulu !");
                 } else {
-                    String sql = "SELECT * FROM user WHERE username? AND password =? ";
+                    String sql = "SELECT * FROM user WHERE username= ? AND password =? ";
                     try {
                            PreparedStatement ps = conn.prepareStatement(sql);
                            ps.setString(1, login);
@@ -327,7 +313,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField txtPassword;
+    private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
