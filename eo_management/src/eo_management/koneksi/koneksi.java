@@ -23,7 +23,7 @@ public class koneksi {
                     catch (ClassNotFoundException e) {
                     System.out.println("Gagal Terkoneksi" + e.getMessage());    
                 }           
-                    String url = "jdbc:mysql://devlab.santeknovatif.xyz:3309/eo_management?autoReconnect=true&useSSL=false";
+                    String url = "jdbc:mysql://devlab.santeknovatif.xyz:3309/eo_management?autoReconnect=true&useSSL=true";
                     try {
                             koneksi = DriverManager.getConnection (url,"kelompok2","kelompok2kuy");
                             System.out.println("berhasil koneksi ke database");
