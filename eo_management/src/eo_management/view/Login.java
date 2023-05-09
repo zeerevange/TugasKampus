@@ -5,7 +5,8 @@
  */
 package eo_management.view;
 
-import eo_management.KaryawanSession;
+import com.formdev.flatlaf.FlatLightLaf;
+import eo_management.UserSession;
 import eo_management.koneksi.koneksi;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -19,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -28,7 +30,7 @@ public class Login extends javax.swing.JFrame {
         private Connection conn = new koneksi().connect();
         private int mouseX;
         private int mouseY;
-        KaryawanSession karyawanSession = new KaryawanSession();
+        UserSession karyawanSession = new UserSession();
         
     /**
      * Creates new form Login
@@ -177,6 +179,12 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -238,32 +246,40 @@ public class Login extends javax.swing.JFrame {
                 if (login.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Harap Masukkan Username dan Password Terlebih Dahulu !");
                 } else {
-                    String sql = "SELECT * FROM user WHERE username= ? AND password =? ";
-                    try {
-                           PreparedStatement ps = conn.prepareStatement(sql);
-                           ps.setString(1, login);
-                           ps.setString(2, password);
-                           ResultSet rs = ps.executeQuery();
-                           if (rs.next()) {
-                                   JOptionPane.showMessageDialog(null, "Selamat Datang Kembali " + login);
-                                   dispose();
-                                   new Menu().setVisible(true);
-                           } else {
-                               JOptionPane.showMessageDialog(null, "Username atau Password Salah");
-                           }
-                           } catch (SQLException e) {
-                                    JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat melakukan koneksi ke database: " + e.getMessage());
-                            }
+                           String sql = "SELECT * FROM user WHERE username= ? AND password =? ";
+                           try {
+                                   PreparedStatement ps = conn.prepareStatement(sql);
+                                   ps.setString(1, login);
+                                   ps.setString(2, password);
+                                   ResultSet rs = ps.executeQuery();
+                                   if (rs.next()) {
+                                       UserSession.setU_id(rs.getInt("id_user"));
+                                       UserSession.setU_username(rs.getString("username"));
+                                           JOptionPane.showMessageDialog(null, "Selamat Datang Kembali " + login);
+                                           dispose();
+                                           new Menu().setVisible(true);
+                                           } else {
+                                                JOptionPane.showMessageDialog(null, "Username atau Password Salah");
+                                            }
+                            } catch (SQLException e) {
+                                            JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat melakukan koneksi ke database: " + e.getMessage());
+                          }
                     }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void cbxShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxShowActionPerformed
-//                  if (cbxShow.isSelected() == false ) {
-//                        txtPassword.setEchoChar ('*');
-//                        } else {
-//                        txtPassword.setEchoChar ((char)0);
-//                    }
+                  if (cbxShow.isSelected() == false ) {
+                        txtPassword.setEchoChar ('*');
+                        } else {
+                        txtPassword.setEchoChar ((char)0);
+                    }
     }//GEN-LAST:event_cbxShowActionPerformed
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                btnLoginActionPerformed(new ActionEvent(evt.getSource(), evt.getID(),"Key Press Login"));
+        }
+    }//GEN-LAST:event_txtPasswordKeyPressed
 
     /**
      * @param args the command line arguments
@@ -275,21 +291,26 @@ public class Login extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (Exception e) {
+            System.err.println("Failed to initialize FlatLaf");
         }
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
         //</editor-fold>
 
         /* Create and display the form */

@@ -5,18 +5,61 @@
  */
 package eo_management.view;
 
+import eo_management.UserSession;
+import eo_management.Main;
+import eo_management.koneksi.koneksi;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+
 /**
  *
  * @author it
  */
 public class Menu extends javax.swing.JFrame {
-
+            private Connection conn = new koneksi().connect();
+            UserSession karyawanSession = new UserSession();
+            
+            //waktu sekarang
+            private void setJam() {
+            ActionListener listener = new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+            jam.setText(new WaktuSekarang().getWkt());
+            }
+            
+            };
+            new Timer(1000, listener).start();
+            }
     /**
      * Creates new form Menu
      */
     public Menu() {
         initComponents();
-    }
+        // inisialisasi objek userSession
+        karyawanSession = new UserSession();
+        setJam();
+        // Menambahkan aksi ketika tombol close di klik pada menubar
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                int result = JOptionPane.showConfirmDialog(Menu.this, "Apakah Anda yakin ingin menutup program?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
+        
+        //menampilkan nama dari fungsi UserSession
+        labelUsername.setText(UserSession.getU_username());
+        
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -33,16 +76,37 @@ public class Menu extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        labelUsername = new javax.swing.JLabel();
+        panelJam = new javax.swing.JPanel();
+        time = new javax.swing.JLabel();
+        jam = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        tgl = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        menuFile = new javax.swing.JMenu();
+        menuSignOut = new javax.swing.JMenuItem();
+        menuExit = new javax.swing.JMenuItem();
+        menuMaster = new javax.swing.JMenu();
+        menuSignOut4 = new javax.swing.JMenuItem();
+        menuSignOut1 = new javax.swing.JMenuItem();
+        menuSignOut2 = new javax.swing.JMenuItem();
+        menuSignOut3 = new javax.swing.JMenuItem();
+        menuSignOut5 = new javax.swing.JMenuItem();
+        menuSignOut6 = new javax.swing.JMenuItem();
+        menuSignOut7 = new javax.swing.JMenuItem();
+        menuSignOut8 = new javax.swing.JMenuItem();
+        menuMaster1 = new javax.swing.JMenu();
+        menuMaster2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(0, 142, 255));
 
         jToolBar1.setBackground(new java.awt.Color(0, 142, 255));
+        jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
         jButton1.setText("Master");
@@ -56,9 +120,9 @@ public class Menu extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(173, 173, 173)
+                .addGap(193, 193, 193)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 1000, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(193, Short.MAX_VALUE))
+                .addContainerGap(173, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -67,7 +131,7 @@ public class Menu extends javax.swing.JFrame {
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
-        jPanel3.setBackground(new java.awt.Color(0, 142, 255));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -82,7 +146,7 @@ public class Menu extends javax.swing.JFrame {
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.LINE_START);
 
-        jPanel4.setBackground(new java.awt.Color(0, 142, 255));
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -100,15 +164,112 @@ public class Menu extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(0, 142, 255));
         jPanel5.setPreferredSize(new java.awt.Dimension(1366, 50));
 
+        jPanel7.setBackground(new java.awt.Color(0, 142, 255));
+
+        jLabel3.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Login As :");
+
+        labelUsername.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        labelUsername.setForeground(new java.awt.Color(255, 255, 255));
+        labelUsername.setText("username");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(labelUsername))
+                .addContainerGap())
+        );
+
+        panelJam.setBackground(new java.awt.Color(0, 142, 255));
+        panelJam.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        time.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        time.setForeground(new java.awt.Color(255, 255, 255));
+        time.setText("Time :");
+
+        jam.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jam.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Date :");
+
+        tgl.setBackground(new java.awt.Color(0, 142, 255));
+        tgl.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tgl.setForeground(new java.awt.Color(255, 255, 255));
+        tgl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tgl.setOpaque(true);
+
+        javax.swing.GroupLayout panelJamLayout = new javax.swing.GroupLayout(panelJam);
+        panelJam.setLayout(panelJamLayout);
+        panelJamLayout.setHorizontalGroup(
+            panelJamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelJamLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelJamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(time, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelJamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelJamLayout.createSequentialGroup()
+                        .addComponent(tgl, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelJamLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jam, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+        panelJamLayout.setVerticalGroup(
+            panelJamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelJamLayout.createSequentialGroup()
+                .addGroup(panelJamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelJamLayout.createSequentialGroup()
+                        .addComponent(jam, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tgl, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelJamLayout.createSequentialGroup()
+                        .addComponent(time)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)))
+                .addGap(0, 9, Short.MAX_VALUE))
+        );
+
+        tgl.setText(new WaktuSekarang().getTgl());
+        tgl.setPreferredSize(new java.awt.Dimension(120,22));
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1366, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 978, Short.MAX_VALUE)
+                .addComponent(panelJam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(panelJam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel5, java.awt.BorderLayout.PAGE_END);
@@ -128,16 +289,73 @@ public class Menu extends javax.swing.JFrame {
 
         getContentPane().add(jPanel6, java.awt.BorderLayout.CENTER);
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        menuFile.setText("File");
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        menuSignOut.setText("Sign Out");
+        menuFile.add(menuSignOut);
+
+        menuExit.setText("Exit");
+        menuExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuExitActionPerformed(evt);
+            }
+        });
+        menuFile.add(menuExit);
+
+        jMenuBar1.add(menuFile);
+
+        menuMaster.setText("Master");
+
+        menuSignOut4.setText("Jabatan Karyawan");
+        menuSignOut4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSignOut4ActionPerformed(evt);
+            }
+        });
+        menuMaster.add(menuSignOut4);
+
+        menuSignOut1.setText("Karyawan");
+        menuMaster.add(menuSignOut1);
+
+        menuSignOut2.setText("Manage User");
+        menuMaster.add(menuSignOut2);
+
+        menuSignOut3.setText("Pelanggan");
+        menuMaster.add(menuSignOut3);
+
+        menuSignOut5.setText("Properti");
+        menuMaster.add(menuSignOut5);
+
+        menuSignOut6.setText("Supplier");
+        menuMaster.add(menuSignOut6);
+
+        menuSignOut7.setText("Permainan");
+        menuMaster.add(menuSignOut7);
+
+        menuSignOut8.setText("Role");
+        menuMaster.add(menuSignOut8);
+
+        jMenuBar1.add(menuMaster);
+
+        menuMaster1.setText("Transaction");
+        jMenuBar1.add(menuMaster1);
+
+        menuMaster2.setText("Report");
+        jMenuBar1.add(menuMaster2);
 
         setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
+            System.exit(0);
+    }//GEN-LAST:event_menuExitActionPerformed
+
+    private void menuSignOut4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSignOut4ActionPerformed
+        JabatanKaryawan jabatanKaryawan = new JabatanKaryawan();
+        jabatanKaryawan.setVisible(true);
+    }//GEN-LAST:event_menuSignOut4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -176,14 +394,34 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JLabel jam;
+    private javax.swing.JLabel labelUsername;
+    private javax.swing.JMenuItem menuExit;
+    private javax.swing.JMenu menuFile;
+    private javax.swing.JMenu menuMaster;
+    private javax.swing.JMenu menuMaster1;
+    private javax.swing.JMenu menuMaster2;
+    private javax.swing.JMenuItem menuSignOut;
+    private javax.swing.JMenuItem menuSignOut1;
+    private javax.swing.JMenuItem menuSignOut2;
+    private javax.swing.JMenuItem menuSignOut3;
+    private javax.swing.JMenuItem menuSignOut4;
+    private javax.swing.JMenuItem menuSignOut5;
+    private javax.swing.JMenuItem menuSignOut6;
+    private javax.swing.JMenuItem menuSignOut7;
+    private javax.swing.JMenuItem menuSignOut8;
+    private javax.swing.JPanel panelJam;
+    private javax.swing.JLabel tgl;
+    private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
 }

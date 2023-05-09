@@ -9,7 +9,7 @@ package eo_management;
  *
  * @author it
  */
-public class KaryawanSession {
+public class UserSession {
     private static int u_id;
     private static String u_username;
      
@@ -18,7 +18,7 @@ public class KaryawanSession {
     }
  
     public static void setU_id(int u_id) {
-        KaryawanSession.u_id = u_id;
+        UserSession.u_id = u_id;
     }
  
     public static String getU_username() {
@@ -26,6 +26,6 @@ public class KaryawanSession {
     }
     
     public static void setU_username(String u_username) {
-        KaryawanSession.u_username = u_username;
+        UserSession.u_username = u_username;
     }
 }
