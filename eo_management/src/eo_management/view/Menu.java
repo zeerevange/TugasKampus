@@ -390,6 +390,11 @@ public class Menu extends javax.swing.JFrame {
         menuMaster.add(menuSignOut7);
 
         menuSignOut8.setText("Role");
+        menuSignOut8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSignOut8ActionPerformed(evt);
+            }
+        });
         menuMaster.add(menuSignOut8);
 
         jMenuBar1.add(menuMaster);
@@ -428,6 +433,10 @@ public class Menu extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_menuSignOutActionPerformed
+
+    private void menuSignOut8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSignOut8ActionPerformed
+        new Role(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_menuSignOut8ActionPerformed
 
     /**
      * @param args the command line arguments

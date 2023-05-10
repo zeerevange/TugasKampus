@@ -7,6 +7,7 @@ package eo_management.view;
 
 import eo_management.koneksi.koneksi;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -16,10 +17,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -122,10 +128,11 @@ public class JabatanKaryawan extends javax.swing.JDialog {
                     hasil.getString(4),
                 });
             } tabelJabatan.setModel(tabmode);
-        } catch (SQLException e) {
+            } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage());
         }
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
