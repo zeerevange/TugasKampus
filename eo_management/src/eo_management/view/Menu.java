@@ -8,8 +8,12 @@ package eo_management.view;
 import eo_management.UserSession;
 import eo_management.Main;
 import eo_management.koneksi.koneksi;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
@@ -45,6 +49,8 @@ public class Menu extends javax.swing.JFrame {
         // inisialisasi objek userSession
         karyawanSession = new UserSession();
         setJam();
+         //set ketengah
+        initUI();
         // Menambahkan aksi ketika tombol close di klik pada menubar
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -59,8 +65,37 @@ public class Menu extends javax.swing.JFrame {
         //menampilkan nama dari fungsi UserSession
         labelUsername.setText(UserSession.getU_username());
         
+        //membuat layar menu menjadi full screen
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
 }
+        
+        public void windowActivated(WindowEvent e) {
+            System.out.println("Window Activated Event");
+        }
 
+        public void windowDeactivated(WindowEvent e) {
+            System.out.println("Window Deactivated Event");
+        }
+
+        private void initUI(){
+            Dimension windowSize = getSize();
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            Point centerPoint = ge.getCenterPoint();
+
+            int dx = centerPoint.x - windowSize.width / 2;
+            int dy = centerPoint.y - windowSize.height / 2;    
+            setLocation(dx, dy);
+
+        }
+
+        public void focusGained(FocusEvent fe){
+            System.out.println("Focus gained in JPanel");
+        }
+
+        public void focusLost(FocusEvent fe){
+            System.out.println("Focus lost in JPanel");
+        }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -90,8 +125,8 @@ public class Menu extends javax.swing.JFrame {
         menuSignOut = new javax.swing.JMenuItem();
         menuExit = new javax.swing.JMenuItem();
         menuMaster = new javax.swing.JMenu();
-        menuSignOut4 = new javax.swing.JMenuItem();
-        menuSignOut1 = new javax.swing.JMenuItem();
+        menuJabatan = new javax.swing.JMenuItem();
+        menuKaryawan = new javax.swing.JMenuItem();
         menuSignOut2 = new javax.swing.JMenuItem();
         menuSignOut3 = new javax.swing.JMenuItem();
         menuSignOut5 = new javax.swing.JMenuItem();
@@ -268,8 +303,9 @@ public class Menu extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 998, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 986, Short.MAX_VALUE)
                 .addComponent(panelJam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -303,6 +339,11 @@ public class Menu extends javax.swing.JFrame {
         menuFile.setText("File");
 
         menuSignOut.setText("Sign Out");
+        menuSignOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSignOutActionPerformed(evt);
+            }
+        });
         menuFile.add(menuSignOut);
 
         menuExit.setText("Exit");
@@ -317,16 +358,21 @@ public class Menu extends javax.swing.JFrame {
 
         menuMaster.setText("Master");
 
-        menuSignOut4.setText("Jabatan Karyawan");
-        menuSignOut4.addActionListener(new java.awt.event.ActionListener() {
+        menuJabatan.setText("Jabatan Karyawan");
+        menuJabatan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuSignOut4ActionPerformed(evt);
+                menuJabatanActionPerformed(evt);
             }
         });
-        menuMaster.add(menuSignOut4);
+        menuMaster.add(menuJabatan);
 
-        menuSignOut1.setText("Karyawan");
-        menuMaster.add(menuSignOut1);
+        menuKaryawan.setText("Karyawan");
+        menuKaryawan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuKaryawanActionPerformed(evt);
+            }
+        });
+        menuMaster.add(menuKaryawan);
 
         menuSignOut2.setText("Manage User");
         menuMaster.add(menuSignOut2);
@@ -363,10 +409,25 @@ public class Menu extends javax.swing.JFrame {
             System.exit(0);
     }//GEN-LAST:event_menuExitActionPerformed
 
-    private void menuSignOut4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSignOut4ActionPerformed
-        JabatanKaryawan jabatanKaryawan = new JabatanKaryawan();
-        jabatanKaryawan.setVisible(true);
-    }//GEN-LAST:event_menuSignOut4ActionPerformed
+    private void menuJabatanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuJabatanActionPerformed
+       new JabatanKaryawan(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_menuJabatanActionPerformed
+
+    private void menuKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuKaryawanActionPerformed
+        new Karyawan(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_menuKaryawanActionPerformed
+
+    private void menuSignOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSignOutActionPerformed
+        String ObjButton[] = {"YES","NO"};
+        int pilihan = JOptionPane.showOptionDialog(null,"Sign Out ?","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                null,ObjButton,ObjButton[1]);
+        if(pilihan == 0){
+            //System.exit(0);
+            Login login = new Login();
+            login.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_menuSignOutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -419,14 +480,14 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel labelUsername;
     private javax.swing.JMenuItem menuExit;
     private javax.swing.JMenu menuFile;
+    private javax.swing.JMenuItem menuJabatan;
+    private javax.swing.JMenuItem menuKaryawan;
     private javax.swing.JMenu menuMaster;
     private javax.swing.JMenu menuMaster1;
     private javax.swing.JMenu menuMaster2;
     private javax.swing.JMenuItem menuSignOut;
-    private javax.swing.JMenuItem menuSignOut1;
     private javax.swing.JMenuItem menuSignOut2;
     private javax.swing.JMenuItem menuSignOut3;
-    private javax.swing.JMenuItem menuSignOut4;
     private javax.swing.JMenuItem menuSignOut5;
     private javax.swing.JMenuItem menuSignOut6;
     private javax.swing.JMenuItem menuSignOut7;
