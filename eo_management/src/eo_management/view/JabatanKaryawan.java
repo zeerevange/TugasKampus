@@ -463,7 +463,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
         try {
-            String sql = "UPDATE jabatan_karyawan SET nama=? , gaji=? , dekripsi_pekerjan=? WHERE id = '"
+            String sql = "UPDATE jabatan_karyawan SET nama=? , gaji=? , deskripsi_pekerjaan=? WHERE id = '"
                     + txtId.getText()+"'";
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, txtNamaJabatan.getText());

@@ -368,38 +368,36 @@ class HeaderRenderer implements TableCellRenderer {
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-//        try {
-//            String sql = "UPDATE jabatan_karyawan SET nama=? , gaji=? , dekripsi_pekerjan=? WHERE id = '"
-//            + txtId.getText()+"'";
-//            PreparedStatement stat = conn.prepareStatement(sql);
-//            stat.setString(1, txtNamaJabatan.getText());
-//            stat.setString(2, txtGaji.getText());
-//            stat.setString(3, txtDeskripsi.getText());
-//            stat.executeUpdate();
-//            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
-//        } catch (SQLException e) {
-//            JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage());
-//        }
-//        dataTable();
-//        disableButton();
-//        clear();
+        try {
+            String sql = "UPDATE role SET nama=? WHERE id_role = '"
+            + txtId.getText()+"'";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setString(1, txtNama.getText());
+            stat.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage());
+        }
+        dataTable();
+        disableButton();
+        clear();
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-//        int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
-//        if (ok == 0) {
-//            String sql = "Delete FROM jabatan_karyawan WHERE id = '" + txtId.getText()+"'";
-//            try {
-//                PreparedStatement stat = conn.prepareStatement(sql);
-//                stat.executeUpdate();
-//                JOptionPane.showMessageDialog(null, "data berhasil terhapus");
-//                clear();
-//                disableButton();
-//            } catch (SQLException e) {
-//                JOptionPane.showMessageDialog(null, "data gagal terhapus" +e.getMessage());
-//            }
-//            dataTable();
-//        }
+        int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
+        if (ok == 0) {
+            String sql = "Delete FROM role WHERE id = '" + txtId.getText()+"'";
+            try {
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.executeUpdate();
+                JOptionPane.showMessageDialog(null, "data berhasil terhapus");
+                clear();
+                disableButton();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "data gagal terhapus" +e.getMessage());
+            }
+            dataTable();
+        }
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
