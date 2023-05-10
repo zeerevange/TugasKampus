@@ -123,7 +123,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
                 });
             } tabelJabatan.setModel(tabmode);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e);
+            JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage());
         }
     }
     /**
@@ -300,6 +300,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         btnTambah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/add.png"))); // NOI18N
         btnTambah.setText("Tambah");
         btnTambah.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        btnTambah.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnTambah.setFocusable(false);
         btnTambah.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnTambah.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -313,6 +314,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         btnSimpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/save-file.png"))); // NOI18N
         btnSimpan.setText("Simpan");
         btnSimpan.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        btnSimpan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSimpan.setFocusable(false);
         btnSimpan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSimpan.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -326,6 +328,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         btnUbah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/edit.png"))); // NOI18N
         btnUbah.setText("Ubah");
         btnUbah.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        btnUbah.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnUbah.setFocusable(false);
         btnUbah.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnUbah.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -339,6 +342,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         btnHapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/delete.png"))); // NOI18N
         btnHapus.setText("Hapus");
         btnHapus.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        btnHapus.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnHapus.setFocusable(false);
         btnHapus.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnHapus.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -352,6 +356,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         btnBatal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/return.png"))); // NOI18N
         btnBatal.setText("Batal");
         btnBatal.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        btnBatal.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnBatal.setFocusable(false);
         btnBatal.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnBatal.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -443,7 +448,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
             clear();
             txtNamaJabatan.requestFocus();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,"Gagal tersimpan");
+            JOptionPane.showMessageDialog(null,"Gagal tersimpan" +e.getMessage());
         }
         }
         dataTable();
@@ -478,7 +483,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
                     clear();
                     disableButton();
                 } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, "data gagal terhapus" +e);
+                    JOptionPane.showMessageDialog(null, "data gagal terhapus" +e.getMessage());
                 }
                 dataTable();
             }

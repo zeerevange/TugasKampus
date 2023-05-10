@@ -360,6 +360,9 @@
                     <EmptyBorder bottom="5" left="15" right="15" top="5"/>
                   </Border>
                 </Property>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Hand Cursor"/>
+                </Property>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -378,6 +381,9 @@
                   <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                     <EmptyBorder bottom="5" left="15" right="15" top="5"/>
                   </Border>
+                </Property>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Hand Cursor"/>
                 </Property>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -398,6 +404,9 @@
                     <EmptyBorder bottom="5" left="15" right="15" top="5"/>
                   </Border>
                 </Property>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Hand Cursor"/>
+                </Property>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -417,6 +426,9 @@
                     <EmptyBorder bottom="5" left="15" right="15" top="5"/>
                   </Border>
                 </Property>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Hand Cursor"/>
+                </Property>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -435,6 +447,9 @@
                   <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                     <EmptyBorder bottom="5" left="15" right="15" top="5"/>
                   </Border>
+                </Property>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Hand Cursor"/>
                 </Property>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
