@@ -60,19 +60,16 @@ public class Karyawan extends javax.swing.JDialog {
     private void dataToComboBox() {
         try {
             String sql = "SELECT * FROM jabatan_karyawan";
-            PreparedStatement stat = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            PreparedStatement stat = conn.prepareStatement(sql);
             ResultSet rs = stat.executeQuery();
-            
+
             while (rs.next()) {
                 cbxJabatan.addItem(rs.getString("id"));
             }
-            rs.last();
-            int jumlahdata = rs.getRow();
-            rs.first();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Departemen pada combobox gagal di tampilkan. Pesan error : " + e.getMessage());
         }
-    }
+}
     
     private void enableButton() {
         txtNama.setEnabled(true);
@@ -119,7 +116,7 @@ public class Karyawan extends javax.swing.JDialog {
     }
     
     public void dataTable() {
-        Object[] header = {"ID", "Nama Karyawan", "Jenis Kelamin", "No Telpon" ," Email"};
+        Object[] header = {"ID", "Nama Karyawan", "Jenis Kelamin", "No Telpon" ," Email", "Jabatan"};
         tabmode = new DefaultTableModel (null, header);
         String cariitem = txtCari.getText();
         
@@ -138,6 +135,7 @@ public class Karyawan extends javax.swing.JDialog {
                     hasil.getString(3),
                     hasil.getString(4),
                     hasil.getString(5),
+                    hasil.getString(6),
                 });
             } tabelKaryawan.setModel(tabmode);
         } catch (SQLException e) {
@@ -516,13 +514,29 @@ public class Karyawan extends javax.swing.JDialog {
             } else {
                 String sql = "INSERT INTO karyawan (nama, jenis_kelamin, no_telp, email, id_jabatan_karyawan) VALUES (?,?,?,?,?)";
                             try {
-                                PreparedStatement stat = conn.prepareStatement(sql);
-                                stat.setString(1, txtNama.getText());
-                                stat.setString(2, pilihKelamin);
-                                stat.setString(3, txtNoTelpon.getText());
-                                stat.setString(4, txtEmail.getText());
-                                stat.setString(5, pilihJabatan);
+                                    PreparedStatement stat = conn.prepareStatement(sql);
+                                    stat.setString(1, txtNama.getText());
+                                    stat.setString(2, pilihKelamin);
+                                    stat.setString(3, txtNoTelpon.getText());
+                                    stat.setString(4, txtEmail.getText());
+                                    // Mengambil ID jabatan_karyawan dari tabel berdasarkan nama jabatan yang dipilih
+                                    String sqlIdJabatan = "SELECT id_jabatan_karyawan FROM jabatan_karyawan WHERE nama_jabatan = ?";
+                                    PreparedStatement statIdJabatan = conn.prepareStatement(sqlIdJabatan);
+                                    statIdJabatan.setString(1, pilihJabatan);
+                                    ResultSet rsIdJabatan = statIdJabatan.executeQuery();
+                                    if (rsIdJabatan.next()) {
+                                        int idJabatan = rsIdJabatan.getInt("id_jabatan_karyawan");
+                                        stat.setInt(5, idJabatan);
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Jabatan tidak ditemukan");
+                                    }
                                 stat.executeUpdate();
+
+                                ResultSet rs = stat.getGeneratedKeys();
+                                if (rs.next()) {
+                                    int id = rs.getInt(1);
+                                    System.out.println("ID karyawan baru: " + id);
+                                }
                                 JOptionPane.showMessageDialog(null,"Data Tersimpan");
                                 clear();
                         } catch (SQLException e) {
