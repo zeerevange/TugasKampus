@@ -28,8 +28,6 @@ public class Karyawan extends javax.swing.JDialog {
         private Connection conn = new koneksi().connect();
         private DefaultTableModel tabmode;
         
-//        ArrayList <Jabatan> arrJabatan = new ArrayList<>();
-        String sql;
     /**
      * Creates new form Karyawan
      */
@@ -39,7 +37,6 @@ public class Karyawan extends javax.swing.JDialog {
         //set ketengah layar
         initUI();
         dataToComboBox();
-//        loadJabatan();
         dataTable();
         enableButton();
         editButton();
@@ -76,30 +73,6 @@ public class Karyawan extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Departemen pada combobox gagal di tampilkan. Pesan error : " + e.getMessage());
         }
     }
-    
-//    private void loadJabatan(){
-//        cbxJabatan.removeAllItems();
-//        
-//        try {
-//            ResultSet rs = DB.read("SELECT * FROM jabatan_karyawan");
-//            
-//            //masukkan kedalam class devisi ( tampung )
-//            while (rs.next()){
-//                arrJabatan.add(new JabatanInteger.parseInt (rs.getString("id)),
-//                                    Integer.parseInt(rs.getString("gaji")),
-//                                    rs.getString("nama")));
-//            }
-//            
-//            //ambil dari class devisi dan munculkan pada combo box cbxDevisi
-//            
-//            for (int i = 0; i < arrJabatan.size(); i++ ){
-//                cbxJabatan.addItem(arrJabatan.get(i).getJabatan());
-//            }
-//                
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null, ex.toString());
-//        }
-//     }
     
     private void enableButton() {
         txtNama.setEnabled(true);
