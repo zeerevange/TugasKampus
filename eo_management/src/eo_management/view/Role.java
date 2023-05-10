@@ -350,13 +350,13 @@ class HeaderRenderer implements TableCellRenderer {
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         if (txtNama.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Isi nama jabatan terlebih dahulu");
+            JOptionPane.showMessageDialog(null, "Isi nama terlebih dahulu");
             txtNama.requestFocus();
         } else {
             try {
-                String sql = "INSERT INTO role (nama) VALUES ('"
-                +txtNama.getText()+"')";
+                String sql = "INSERT INTO role (nama) VALUES (?)";
                 PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setString(1, txtNama.getText());
                 stat.executeUpdate();
                 JOptionPane.showMessageDialog(null,"Data Tersimpan");
                 clear();
