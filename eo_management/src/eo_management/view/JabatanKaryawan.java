@@ -246,14 +246,22 @@ public class JabatanKaryawan extends javax.swing.JDialog {
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
+        txtDeskripsi.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        txtId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel3.setText("Gaji");
+        jLabel3.setText("Gaji                      Rp.");
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel5.setText("Deskripsi Pekerjaan");
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel2.setText("ID Jabatan");
+
+        txtGaji.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        txtNamaJabatan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel4.setText("Nama Jabatan");
@@ -269,7 +277,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtDeskripsi, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                     .addComponent(txtNamaJabatan)
@@ -406,12 +414,12 @@ public class JabatanKaryawan extends javax.swing.JDialog {
                     .addComponent(txtCari)
                     .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(midLayout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -434,11 +442,14 @@ public class JabatanKaryawan extends javax.swing.JDialog {
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        if (txtNamaJabatan.getText().isEmpty()) {
+        String jabatan = txtNamaJabatan.getText().trim();
+        String gaji = txtGaji.getText().trim();
+        
+        if (!jabatan.matches("^[a-zA-Z\\s]+$")) {
         JOptionPane.showMessageDialog(null, "Isi nama jabatan terlebih dahulu");
         txtNamaJabatan.requestFocus();
-        } else if (txtGaji.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Isi gaji terlebih dahulu");
+        } else if (gaji.isEmpty() || !gaji.matches("\\d+")) {
+        JOptionPane.showMessageDialog(null, "Isi dengan format nominal");
         txtGaji.requestFocus();
         } else if (txtDeskripsi.getText().isEmpty()) {
         JOptionPane.showMessageDialog(null, "Isi deskripsi terlebih dahulu");
@@ -453,7 +464,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null,"Data Tersimpan");
             clear();
-            txtNamaJabatan.requestFocus();
+            disableButton();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null,"Gagal tersimpan " +e.getMessage());
         }
@@ -462,6 +473,19 @@ public class JabatanKaryawan extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
+        String jabatan = txtNamaJabatan.getText().trim();
+        String gaji = txtGaji.getText().trim();
+        
+        if (!jabatan.matches("^[a-zA-Z\\s]+$")) {
+        JOptionPane.showMessageDialog(null, "Isi nama jabatan terlebih dahulu");
+        txtNamaJabatan.requestFocus();
+        } else if (gaji.isEmpty() || !gaji.matches("\\d+")) {
+        JOptionPane.showMessageDialog(null, "Isi dengan format nominal");
+        txtGaji.requestFocus();
+        } else if (txtDeskripsi.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Isi deskripsi terlebih dahulu");
+        txtDeskripsi.requestFocus();
+        } else {
         try {
             String sql = "UPDATE jabatan_karyawan SET nama=? , gaji=? , deskripsi_pekerjaan=? WHERE id = '"
                     + txtId.getText()+"'";
@@ -471,8 +495,9 @@ public class JabatanKaryawan extends javax.swing.JDialog {
             stat.setString(3, txtDeskripsi.getText());
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data berhasil diubah");
-        } catch (SQLException e) {
+            } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage());
+            }
         }
         dataTable();
         disableButton();
