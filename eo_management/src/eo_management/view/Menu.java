@@ -110,6 +110,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
@@ -130,14 +131,16 @@ public class Menu extends javax.swing.JFrame {
         menuKaryawan = new javax.swing.JMenuItem();
         menuUser = new javax.swing.JMenuItem();
         menuPelanggan = new javax.swing.JMenuItem();
-        menuProperti = new javax.swing.JMenuItem();
-        menuSupplier = new javax.swing.JMenuItem();
+        menuPaketLayanan = new javax.swing.JMenuItem();
         menuPermainan = new javax.swing.JMenuItem();
+        menuProperti = new javax.swing.JMenuItem();
         menuRole = new javax.swing.JMenuItem();
+        menuSupplier = new javax.swing.JMenuItem();
         menuMaster1 = new javax.swing.JMenu();
         menuMaster2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu Utama Coy");
 
         jPanel2.setBackground(new java.awt.Color(11, 36, 71));
         jPanel2.setPreferredSize(new java.awt.Dimension(1386, 100));
@@ -169,7 +172,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1026, Short.MAX_VALUE))
+                .addContainerGap(1028, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,23 +183,32 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/image/scaler-create-impact.gif"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/image/yB.gif"))); // NOI18N
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/image/5SvC.gif"))); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(jLabel5)))
+                .addContainerGap(492, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(47, 47, 47)
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addGap(13, 13, 13)
                 .addComponent(jLabel2)
-                .addContainerGap(214, Short.MAX_VALUE))
+                .addContainerGap(181, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.LINE_START);
@@ -314,7 +326,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 986, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 988, Short.MAX_VALUE)
                 .addComponent(panelJam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -336,7 +348,7 @@ public class Menu extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 764, Short.MAX_VALUE)
+            .addGap(0, 267, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -394,14 +406,19 @@ public class Menu extends javax.swing.JFrame {
         });
         menuMaster.add(menuPelanggan);
 
-        menuProperti.setText("Properti");
-        menuMaster.add(menuProperti);
-
-        menuSupplier.setText("Supplier");
-        menuMaster.add(menuSupplier);
+        menuPaketLayanan.setText("Paket Layanan");
+        menuPaketLayanan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuPaketLayananActionPerformed(evt);
+            }
+        });
+        menuMaster.add(menuPaketLayanan);
 
         menuPermainan.setText("Permainan");
         menuMaster.add(menuPermainan);
+
+        menuProperti.setText("Properti");
+        menuMaster.add(menuProperti);
 
         menuRole.setText("Role");
         menuRole.addActionListener(new java.awt.event.ActionListener() {
@@ -410,6 +427,9 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         menuMaster.add(menuRole);
+
+        menuSupplier.setText("Supplier");
+        menuMaster.add(menuSupplier);
 
         jMenuBar1.add(menuMaster);
 
@@ -456,6 +476,10 @@ public class Menu extends javax.swing.JFrame {
         new Pelanggan(this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_menuPelangganActionPerformed
 
+    private void menuPaketLayananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPaketLayananActionPerformed
+        new PaketLayanan(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_menuPaketLayananActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -496,6 +520,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -513,6 +538,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenu menuMaster;
     private javax.swing.JMenu menuMaster1;
     private javax.swing.JMenu menuMaster2;
+    private javax.swing.JMenuItem menuPaketLayanan;
     private javax.swing.JMenuItem menuPelanggan;
     private javax.swing.JMenuItem menuPermainan;
     private javax.swing.JMenuItem menuProperti;
