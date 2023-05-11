@@ -41,6 +41,7 @@ public class Pelanggan extends javax.swing.JDialog {
         disableButton();
         kode_id_otomatis();
         
+        //fungsi pencarian
         txtCari.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -608,7 +609,7 @@ public class Pelanggan extends javax.swing.JDialog {
                     stat.setString(5, txtPerusahaan.getText());
                     stat.setString(6, txtJenis.getText());
                     stat.setString(7, txtAlamat.getText());
-                    stat.executeUpdate();
+                    stat.execute();
                     JOptionPane.showMessageDialog(null,"Data Tersimpan");
                     clear();
                     kode_id_otomatis();
@@ -620,24 +621,51 @@ public class Pelanggan extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-        try {
-            String sql = "UPDATE pelanggan SET nama=? , no_telp=? , email=? , perusahaan=? , jenis_perusahaan=? , alamat=? WHERE id = '"
-                    + txtId.getText()+"'";
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, txtNama.getText());
-            stat.setString(2, txtNoTelpon.getText());
-            stat.setString(3, txtEmail.getText());
-            stat.setString(4, txtPerusahaan.getText());
-            stat.setString(5, txtJenis.getText());
-            stat.setString(6, txtAlamat.getText());
-            stat.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error :  " + e.getMessage());
-        }
-        dataTable();
-        disableButton();
-        clear();
+        String nama = txtNama.getText().trim();
+        String email = txtEmail.getText().trim();
+        String noTelpon = txtNoTelpon.getText().trim();
+        
+        if (!nama.matches("^[a-zA-Z\\s]+$")) {
+        JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
+        txtNama.requestFocus();
+        } else if (noTelpon.isEmpty() || !noTelpon.matches("\\d+")) {
+         JOptionPane.showMessageDialog(null, "Isi no telpon dengan format angka saja");
+         txtNoTelpon.requestFocus();
+        } else if (txtEmail.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
+        txtEmail.requestFocus();
+        } else if (!isValidEmailAddress(email)) {
+        JOptionPane.showMessageDialog(null, "Alamat email tidak valid");
+        txtEmail.requestFocus();
+        } else if (txtPerusahaan.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Isi Perusahaan terlebih dahulu");
+        txtPerusahaan.requestFocus();
+        } else if (txtJenis.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Isi jenis perusahaan terlebih dahulu");
+        txtJenis.requestFocus();
+        } else if (txtAlamat.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Isi alamat terlebih dahulu");
+        txtAlamat.requestFocus();
+        } else {
+                    try {
+                        String sql = "UPDATE pelanggan SET nama=? , no_telp=? , email=? , perusahaan=? , jenis_perusahaan=? , alamat=? WHERE id = '"
+                                + txtId.getText()+"'";
+                        PreparedStatement stat = conn.prepareStatement(sql);
+                        stat.setString(1, txtNama.getText());
+                        stat.setString(2, txtNoTelpon.getText());
+                        stat.setString(3, txtEmail.getText());
+                        stat.setString(4, txtPerusahaan.getText());
+                        stat.setString(5, txtJenis.getText());
+                        stat.setString(6, txtAlamat.getText());
+                        stat.executeUpdate();
+                        dataTable();
+                        disableButton();
+                        clear();
+                        JOptionPane.showMessageDialog(null, "Data berhasil diubah");
+                    } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error :  " + e.getMessage());
+                    }
+                 }
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
