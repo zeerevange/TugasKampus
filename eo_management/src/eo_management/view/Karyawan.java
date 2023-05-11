@@ -10,13 +10,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
@@ -42,7 +46,25 @@ public class Karyawan extends javax.swing.JDialog {
         editButton();
         disableButton();
         clear();
+        kode_id_otomatis();
         
+        //fungsi cari
+        txtCari.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+        dataTable();
+        }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                dataTable();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            dataTable();
+        }
+        });
     }
     
     private void initUI(){ 
@@ -113,6 +135,50 @@ public class Karyawan extends javax.swing.JDialog {
         btnSimpan.setEnabled(false);
         btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
+    }
+    
+    //pengecekan format txtEmail diisi dengan benar
+    private boolean isValidEmailAddress(String email) {
+    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." 
+                        + "[a-zA-Z0-9_+&*-]+)*@"
+                        + "(?:[a-zA-Z0-9-]+\\.)+[a-z"
+                        + "A-Z]{2,7}$";
+                          
+    Pattern pat = Pattern.compile(emailRegex);
+    if (email == null)
+        return false;
+    return pat.matcher(email).matches();
+}
+    
+    //memberikan kode id otomatis kepada id pelanggan
+    private void kode_id_otomatis(){
+        try {
+            String sql = "SELECT * FROM karyawan ORDER BY id DESC";
+            Statement stat = conn.createStatement();
+            ResultSet rs = stat.executeQuery(sql);
+            if (rs.next()){
+                String kode = rs.getString("id").substring(2);
+                String AN = "" + (Integer.parseInt(kode) + 1);
+                String Nol = "";
+                
+                if (AN.length() == 1)
+                {Nol = "0000";}
+                else if (AN.length() == 2)
+                {Nol = "000";}
+                else if (AN.length() == 3)
+                {Nol = "00";}
+                else if (AN.length() == 4)
+                {Nol = "0";}
+                else if (AN.length() == 5)
+                {Nol = "";}
+                
+                txtId.setText("ID" + Nol + AN);
+            } else {
+                txtId.setText("ID00001");
+            }
+        }catch (SQLException e){ 
+            JOptionPane.showMessageDialog(null, "Id otomatis tidak berjalan. Pesan error : " + e.getMessage());
+        }
     }
     
     public void dataTable() {
@@ -235,6 +301,11 @@ public class Karyawan extends javax.swing.JDialog {
         ));
         tabelKaryawan.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         tabelKaryawan.setOpaque(false);
+        tabelKaryawan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelKaryawanMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelKaryawan);
 
         txtCari.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -312,18 +383,18 @@ public class Karyawan extends javax.swing.JDialog {
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-                    .addComponent(txtNama)
-                    .addComponent(txtNoTelpon)
-                    .addComponent(txtId, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cbxJabatan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txtNama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                        .addComponent(txtId, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(cbxJabatan, javax.swing.GroupLayout.Alignment.LEADING, 0, 250, Short.MAX_VALUE)
+                        .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtNoTelpon, javax.swing.GroupLayout.Alignment.LEADING))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
                         .addComponent(radioLaki, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(radioPerempuan, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(radioPerempuan, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -431,26 +502,25 @@ public class Karyawan extends javax.swing.JDialog {
                     .addGroup(midLayout.createSequentialGroup()
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(midLayout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(midLayout.createSequentialGroup()
                                 .addGap(17, 17, 17)
-                                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, midLayout.createSequentialGroup()
+                                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(midLayout.createSequentialGroup()
+                                        .addComponent(btnTambah)
+                                        .addGap(0, 0, 0)
+                                        .addComponent(btnSimpan)
+                                        .addGap(0, 0, 0)
+                                        .addComponent(btnUbah)
+                                        .addGap(0, 0, 0)
+                                        .addComponent(btnHapus)
+                                        .addGap(0, 0, 0)
+                                        .addComponent(btnBatal))
+                                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(midLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(btnTambah)
-                                .addGap(0, 0, 0)
-                                .addComponent(btnSimpan)
-                                .addGap(0, 0, 0)
-                                .addComponent(btnUbah)
-                                .addGap(0, 0, 0)
-                                .addComponent(btnHapus)
-                                .addGap(0, 0, 0)
-                                .addComponent(btnBatal)
-                                .addGap(17, 17, 17)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, midLayout.createSequentialGroup()
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(midLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -459,26 +529,26 @@ public class Karyawan extends javax.swing.JDialog {
         );
         midLayout.setVerticalGroup(
             midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, midLayout.createSequentialGroup()
+            .addGroup(midLayout.createSequentialGroup()
                 .addContainerGap(36, Short.MAX_VALUE)
                 .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtCari)
                     .addComponent(btnCari, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(midLayout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(0, 0, 0)
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnSimpan)
                             .addComponent(btnUbah)
                             .addComponent(btnHapus)
                             .addComponent(btnBatal)
-                            .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                            .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(19, 19, 19))
         );
 
         getContentPane().add(mid, java.awt.BorderLayout.CENTER);
@@ -491,6 +561,9 @@ public class Karyawan extends javax.swing.JDialog {
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+            String nama = txtNama.getText().trim();
+            String email = txtEmail.getText().trim();
+            String noTelpon = txtNoTelpon.getText().trim();
             String pilihKelamin = "";
             String pilihJabatan = cbxJabatan.getSelectedItem().toString();
 
@@ -500,70 +573,105 @@ public class Karyawan extends javax.swing.JDialog {
                 pilihKelamin = "Perempuan";
             } 
             
-            if (txtNama.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Isi nama terlebih dahulu");
+            if (!nama.matches("^[a-zA-Z\\s]+$")) {
+            JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
             txtNama.requestFocus();
             } else if (pilihKelamin.equals("")) {
             JOptionPane.showMessageDialog(null, "Pilih kelamin terlebih dahulu");
             radioLaki.requestFocus();
-            } else if (txtNoTelpon.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Isi No Telpon terlebih dahulu");
+            } else if (noTelpon.isEmpty() || !noTelpon.matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "Isi no telpon dengan format angka saja");
             txtNoTelpon.requestFocus();
             } else if (txtEmail.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
+            txtEmail.requestFocus();
+            } else if (!isValidEmailAddress(email)) {
+            JOptionPane.showMessageDialog(null, "Alamat email tidak valid");
             txtEmail.requestFocus();
             } else if (pilihJabatan.equals("Pilihan")) {
             JOptionPane.showMessageDialog(null, "Pilih jabatan terlebih dahulu");
             cbxJabatan.requestFocus();
             } else {
-                String sql = "INSERT INTO karyawan (nama, jenis_kelamin, no_telp, email, id_jabatan_karyawan) VALUES (?,?,?,?,?)";
-                            try {
-                                    PreparedStatement stat = conn.prepareStatement(sql);
-                                    stat.setString(1, txtNama.getText());
-                                    stat.setString(2, pilihKelamin);
-                                    stat.setString(3, txtNoTelpon.getText());
-                                    stat.setString(4, txtEmail.getText());
-                                    // Mengambil ID jabatan_karyawan dari tabel berdasarkan nama jabatan yang dipilih
-                                    String sqlIdJabatan = "SELECT id_jabatan_karyawan FROM jabatan_karyawan WHERE nama_jabatan = ?";
-                                    PreparedStatement statIdJabatan = conn.prepareStatement(sqlIdJabatan);
-                                    statIdJabatan.setString(1, pilihJabatan);
-                                    ResultSet rsIdJabatan = statIdJabatan.executeQuery();
-                                    if (rsIdJabatan.next()) {
-                                        int idJabatan = rsIdJabatan.getInt("id_jabatan_karyawan");
-                                        stat.setInt(5, idJabatan);
-                                    } else {
-                                        JOptionPane.showMessageDialog(null, "Jabatan tidak ditemukan");
-                                    }
-                                stat.executeUpdate();
+                String sql = "INSERT INTO karyawan VALUES (?,?,?,?,?,?)";
+                    try {
+                            PreparedStatement stat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                            stat.setString(1, txtId.getText());
+                            stat.setString(2, txtNama.getText());
+                            stat.setString(3, pilihKelamin);
+                            stat.setString(4, txtNoTelpon.getText());
+                            stat.setString(5, txtEmail.getText());
+                            stat.setString(6, cbxJabatan.getSelectedItem().toString());
+                            stat.executeUpdate();
 
-                                ResultSet rs = stat.getGeneratedKeys();
-                                if (rs.next()) {
-                                    int id = rs.getInt(1);
-                                    System.out.println("ID karyawan baru: " + id);
-                                }
-                                JOptionPane.showMessageDialog(null,"Data Tersimpan");
-                                clear();
+                            // Ambil nilai id yang di-generate oleh basis data
+                            ResultSet generatedKeys = stat.getGeneratedKeys();
+                            if (generatedKeys.next()) {
+                                int idBaru = generatedKeys.getInt(1);
+                                JOptionPane.showMessageDialog(null,"Data Tersimpan dengan ID " + idBaru);
+                            }
+                            JOptionPane.showMessageDialog(null,"Data Tersimpan");
+                        clear();
+                        kode_id_otomatis();
                         } catch (SQLException e) {
-                         JOptionPane.showMessageDialog(null,"Gagal tersimpan" +e.getMessage());
+                        JOptionPane.showMessageDialog(null,"Gagal tersimpan. Pesan error : " +e.getMessage());
                   }
             }
             dataTable();
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-        // TODO add your handling code here:
+        String pilihKelamin = null;
+        
+        if (radioLaki.isSelected()) {
+            pilihKelamin = "Laki-Laki";
+        }else if (radioPerempuan.isSelected()) {
+            pilihKelamin = "Perempuan";
+        }
+        
+        try {
+            String sql = "UPDATE karyawan SET nama=? , jenis_kelamin=? , no_telp=? , email=? , id_jabatan_karyawan=? WHERE id = '"
+                    + txtId.getText()+"'";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setString(1, txtNama.getText());
+            stat.setString(2, pilihKelamin);
+            stat.setString(3, txtNoTelpon.getText());
+            stat.setString(4, txtEmail.getText());
+            stat.setString(5, cbxJabatan.getSelectedItem().toString());
+            stat.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
+            dataTable();
+            disableButton();
+            clear();
+             kode_id_otomatis();
+            } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage());
+            }
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-        // TODO add your handling code here:
+        int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
+            if (ok == 0) {
+                String sql = "Delete FROM karyawan WHERE id = '" + txtId.getText()+"'";
+                try {
+                    PreparedStatement stat = conn.prepareStatement(sql);
+                    stat.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "data berhasil terhapus");
+                    clear();
+                    disableButton();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage());
+                }
+                dataTable();
+            }
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
-        // TODO add your handling code here:
+        disableButton();
+        clear();
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
-        // TODO add your handling code here:
+         dataTable();
     }//GEN-LAST:event_btnCariActionPerformed
 
     private void txtCariKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyTyped
@@ -571,7 +679,9 @@ public class Karyawan extends javax.swing.JDialog {
     }//GEN-LAST:event_txtCariKeyTyped
 
     private void txtCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyPressed
-        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            dataTable();
+        }
     }//GEN-LAST:event_txtCariKeyPressed
 
     private void cbxJabatanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxJabatanActionPerformed
@@ -582,6 +692,22 @@ public class Karyawan extends javax.swing.JDialog {
 //            gaji = arrJabatan.get(idx).getGaji();
 //        }
     }//GEN-LAST:event_cbxJabatanActionPerformed
+
+    private void tabelKaryawanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelKaryawanMouseClicked
+        int bar = tabelKaryawan.getSelectedRow();
+        txtId.setText(tabelKaryawan.getValueAt(bar,0).toString());
+        txtNama.setText(tabelKaryawan.getValueAt(bar,1).toString());
+        String kelamin = tabmode.getValueAt(bar, 2).toString();
+        if ("Laki-Laki".equals(kelamin)) {
+            radioLaki.setSelected(true);
+        } else {
+            radioPerempuan.setSelected(true);
+        }
+        txtNoTelpon.setText(tabelKaryawan.getValueAt(bar,3).toString());
+        txtEmail.setText(tabelKaryawan.getValueAt(bar,4).toString());
+        cbxJabatan.setSelectedItem(tabelKaryawan.getValueAt(bar,5).toString());
+        editButton();
+    }//GEN-LAST:event_tabelKaryawanMouseClicked
 
     /**
      * @param args the command line arguments
