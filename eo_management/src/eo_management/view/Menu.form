@@ -48,37 +48,40 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuKaryawanActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuSignOut2">
+            <MenuItem class="javax.swing.JMenuItem" name="menuUser">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Manage User"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuSignOut3">
+            <MenuItem class="javax.swing.JMenuItem" name="menuPelanggan">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Pelanggan"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuPelangganActionPerformed"/>
+              </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuSignOut5">
+            <MenuItem class="javax.swing.JMenuItem" name="menuProperti">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Properti"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuSignOut6">
+            <MenuItem class="javax.swing.JMenuItem" name="menuSupplier">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Supplier"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuSignOut7">
+            <MenuItem class="javax.swing.JMenuItem" name="menuPermainan">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Permainan"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuSignOut8">
+            <MenuItem class="javax.swing.JMenuItem" name="menuRole">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Role"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuSignOut8ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuRoleActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

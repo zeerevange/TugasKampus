@@ -127,12 +127,12 @@ public class Menu extends javax.swing.JFrame {
         menuMaster = new javax.swing.JMenu();
         menuJabatan = new javax.swing.JMenuItem();
         menuKaryawan = new javax.swing.JMenuItem();
-        menuSignOut2 = new javax.swing.JMenuItem();
-        menuSignOut3 = new javax.swing.JMenuItem();
-        menuSignOut5 = new javax.swing.JMenuItem();
-        menuSignOut6 = new javax.swing.JMenuItem();
-        menuSignOut7 = new javax.swing.JMenuItem();
-        menuSignOut8 = new javax.swing.JMenuItem();
+        menuUser = new javax.swing.JMenuItem();
+        menuPelanggan = new javax.swing.JMenuItem();
+        menuProperti = new javax.swing.JMenuItem();
+        menuSupplier = new javax.swing.JMenuItem();
+        menuPermainan = new javax.swing.JMenuItem();
+        menuRole = new javax.swing.JMenuItem();
         menuMaster1 = new javax.swing.JMenu();
         menuMaster2 = new javax.swing.JMenu();
 
@@ -374,28 +374,33 @@ public class Menu extends javax.swing.JFrame {
         });
         menuMaster.add(menuKaryawan);
 
-        menuSignOut2.setText("Manage User");
-        menuMaster.add(menuSignOut2);
+        menuUser.setText("Manage User");
+        menuMaster.add(menuUser);
 
-        menuSignOut3.setText("Pelanggan");
-        menuMaster.add(menuSignOut3);
-
-        menuSignOut5.setText("Properti");
-        menuMaster.add(menuSignOut5);
-
-        menuSignOut6.setText("Supplier");
-        menuMaster.add(menuSignOut6);
-
-        menuSignOut7.setText("Permainan");
-        menuMaster.add(menuSignOut7);
-
-        menuSignOut8.setText("Role");
-        menuSignOut8.addActionListener(new java.awt.event.ActionListener() {
+        menuPelanggan.setText("Pelanggan");
+        menuPelanggan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuSignOut8ActionPerformed(evt);
+                menuPelangganActionPerformed(evt);
             }
         });
-        menuMaster.add(menuSignOut8);
+        menuMaster.add(menuPelanggan);
+
+        menuProperti.setText("Properti");
+        menuMaster.add(menuProperti);
+
+        menuSupplier.setText("Supplier");
+        menuMaster.add(menuSupplier);
+
+        menuPermainan.setText("Permainan");
+        menuMaster.add(menuPermainan);
+
+        menuRole.setText("Role");
+        menuRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRoleActionPerformed(evt);
+            }
+        });
+        menuMaster.add(menuRole);
 
         jMenuBar1.add(menuMaster);
 
@@ -434,9 +439,13 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_menuSignOutActionPerformed
 
-    private void menuSignOut8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSignOut8ActionPerformed
+    private void menuRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRoleActionPerformed
         new Role(this, rootPaneCheckingEnabled).setVisible(true);
-    }//GEN-LAST:event_menuSignOut8ActionPerformed
+    }//GEN-LAST:event_menuRoleActionPerformed
+
+    private void menuPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPelangganActionPerformed
+        new Pelanggan(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_menuPelangganActionPerformed
 
     /**
      * @param args the command line arguments
@@ -494,13 +503,13 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenu menuMaster;
     private javax.swing.JMenu menuMaster1;
     private javax.swing.JMenu menuMaster2;
+    private javax.swing.JMenuItem menuPelanggan;
+    private javax.swing.JMenuItem menuPermainan;
+    private javax.swing.JMenuItem menuProperti;
+    private javax.swing.JMenuItem menuRole;
     private javax.swing.JMenuItem menuSignOut;
-    private javax.swing.JMenuItem menuSignOut2;
-    private javax.swing.JMenuItem menuSignOut3;
-    private javax.swing.JMenuItem menuSignOut5;
-    private javax.swing.JMenuItem menuSignOut6;
-    private javax.swing.JMenuItem menuSignOut7;
-    private javax.swing.JMenuItem menuSignOut8;
+    private javax.swing.JMenuItem menuSupplier;
+    private javax.swing.JMenuItem menuUser;
     private javax.swing.JPanel panelJam;
     private javax.swing.JLabel tgl;
     private javax.swing.JLabel time;
