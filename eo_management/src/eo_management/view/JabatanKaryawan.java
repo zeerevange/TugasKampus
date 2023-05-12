@@ -129,7 +129,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
                 });
             } tabelJabatan.setModel(tabmode);
             } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage());
+            JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -463,12 +463,12 @@ public class JabatanKaryawan extends javax.swing.JDialog {
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null,"Data Tersimpan");
-            clear();
-            disableButton();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,"Gagal tersimpan " +e.getMessage());
+            JOptionPane.showMessageDialog(null,"Gagal tersimpan " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         }
+        clear();
+        disableButton();
         dataTable();
     }//GEN-LAST:event_btnSimpanActionPerformed
 
@@ -496,7 +496,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data berhasil diubah");
             } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         dataTable();
@@ -507,18 +507,19 @@ public class JabatanKaryawan extends javax.swing.JDialog {
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
             if (ok == 0) {
-                String sql = "Delete FROM jabatan_karyawan WHERE id = '" + txtId.getText()+"'";
+                String sql = "DELETE FROM jabatan_karyawan WHERE id = '" + txtId.getText()+"'";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.executeUpdate();
                     JOptionPane.showMessageDialog(null, "data berhasil terhapus");
-                    clear();
-                    disableButton();
+
                 } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage());
+                    JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                dataTable();
             }
+        clear();
+        disableButton();
+        dataTable();
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
@@ -527,7 +528,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void txtCariKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyTyped
-        // TODO add your handling code here:
+        // TODO add your handling code here:z
     }//GEN-LAST:event_txtCariKeyTyped
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed

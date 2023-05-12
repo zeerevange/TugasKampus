@@ -617,12 +617,12 @@ public class Pelanggan extends javax.swing.JDialog {
                     stat.setString(7, txtAlamat.getText());
                     stat.execute();
                     JOptionPane.showMessageDialog(null,"Data Tersimpan");
-                    clear();
-                    kode_id_otomatis();
                     } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null,"Gagal tersimpan " +e.getMessage());
+                    JOptionPane.showMessageDialog(null,"Gagal tersimpan " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
+        clear();
+        kode_id_otomatis();       
         dataTable();
     }//GEN-LAST:event_btnSimpanActionPerformed
 
@@ -664,14 +664,14 @@ public class Pelanggan extends javax.swing.JDialog {
                         stat.setString(5, txtJenis.getText());
                         stat.setString(6, txtAlamat.getText());
                         stat.executeUpdate();
-                        dataTable();
-                        disableButton();
-                        clear();
                         JOptionPane.showMessageDialog(null, "Data berhasil diubah");
                     } catch (SQLException e) {
                         JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error :  " + e.getMessage());
                     }
                  }
+        dataTable();
+        disableButton();
+        clear();
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
@@ -682,13 +682,14 @@ public class Pelanggan extends javax.swing.JDialog {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.executeUpdate();
                     JOptionPane.showMessageDialog(null, "data berhasil terhapus");
-                    clear();
-                    disableButton();
+
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage());
                 }
-                dataTable();
             }
+            clear();
+            disableButton();
+            dataTable();
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed

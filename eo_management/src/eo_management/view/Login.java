@@ -264,7 +264,7 @@ public class Login extends javax.swing.JFrame {
                                                 JOptionPane.showMessageDialog(null, "Username atau Password Salah");
                                             }
                             } catch (SQLException e) {
-                                            JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat melakukan koneksi ke database: " + e.getMessage());
+                                            JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat melakukan koneksi ke database: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                           }
                     }
     }//GEN-LAST:event_btnLoginActionPerformed

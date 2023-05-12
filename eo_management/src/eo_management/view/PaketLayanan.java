@@ -5,20 +5,171 @@
  */
 package eo_management.view;
 
+import eo_management.koneksi.koneksi;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author it
  */
 public class PaketLayanan extends javax.swing.JDialog {
-
+        private Connection conn = new koneksi().connect();
+        private DefaultTableModel tabmode;
+        
     /**
      * Creates new form PaketLayanan
      */
     public PaketLayanan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-    }
+        //set ketengah layar
+        initUI();
+        dataTable();
+        disableButton();
+        kode_id_otomatis();
+        
+         //fungsi pencarian
+        txtCari.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+        dataTable();
+        }
 
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                dataTable();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            dataTable();
+        }
+        });
+    }
+    
+    private void initUI(){ 
+        getContentPane().setBackground(new Color(245, 245, 245));
+        
+        Dimension windowSize = getSize();
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Point centerPoint = ge.getCenterPoint();
+        int dx = centerPoint.x - windowSize.width / 2;
+        int dy = centerPoint.y - windowSize.height / 2;    
+        setLocation(dx, dy);
+    }
+    
+    private void enableButton() {
+        txtNama.setEnabled(true);
+        txtHarga.setEnabled(true);
+        txtMinimal.setEnabled(true);
+        txtInclude.setEnabled(true);
+        txtDeskripsi.setEnabled(true);
+        btnSimpan.setEnabled(true);
+    }
+    
+    private void editButton(){
+        txtNama.setEnabled(true);
+        txtHarga.setEnabled(true);
+        txtMinimal.setEnabled(true);
+        txtInclude.setEnabled(true);
+        txtDeskripsi.setEnabled(true);
+        btnUbah.setEnabled(true);
+        btnHapus.setEnabled(true);
+    }
+    
+    private void clear() {
+        txtId.setText("");
+        txtNama.setText("");
+        txtHarga.setText("");
+        txtMinimal.setText("");
+        txtInclude.setText("");
+        txtDeskripsi.setText("");
+    }
+    
+    private void disableButton(){
+        txtId.setEnabled(false);
+        txtNama.setEnabled(false);
+        txtHarga.setEnabled(false);
+        txtMinimal.setEnabled(false);
+        txtInclude.setEnabled(false);
+        txtDeskripsi.setEnabled(false);
+        btnTambah.setEnabled(true);
+        btnSimpan.setEnabled(false);
+        btnUbah.setEnabled(false);
+        btnHapus.setEnabled(false);
+    }
+    
+    //memberikan kode id otomatis kepada id pelanggan
+    private void kode_id_otomatis(){
+        try {
+            String sql = "SELECT * FROM paket_layanan ORDER BY id DESC";
+            Statement stat = conn.createStatement();
+            ResultSet rs = stat.executeQuery(sql);
+            if (rs.next()){
+                String kode = rs.getString("id").substring(2);
+                String AN = "" + (Integer.parseInt(kode) + 1);
+                String Nol = "";
+                
+                if (AN.length() == 1)
+                {Nol = "0000";}
+                else if (AN.length() == 2)
+                {Nol = "000";}
+                else if (AN.length() == 3)
+                {Nol = "00";}
+                else if (AN.length() == 4)
+                {Nol = "0";}
+                else if (AN.length() == 5)
+                {Nol = "";}
+                
+                txtId.setText("PK" + Nol + AN);
+            } else {
+                txtId.setText("PK00001");
+            }
+        }catch (SQLException e){ 
+            JOptionPane.showMessageDialog(null, "Id otomatis tidak berjalan. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void dataTable() {
+        Object[] header = {"ID", "Nama Paket", "Harga Paket", "Minimal Order", "Include" , "Deskripsi"};
+        tabmode = new DefaultTableModel (null, header);
+        String cariitem = txtCari.getText();
+        
+        try {
+            String sql = "SELECT * FROM paket_layanan WHERE id LIKE '%"
+                    + cariitem+ "%' or nama LIKE '%" 
+                    + cariitem+ "%' or harga LIKE '%"
+                    + cariitem+ "%' ORDER BY id asc";
+            Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while (hasil.next()) {
+                tabmode.addRow(new Object[] {
+                    hasil.getString(1),
+                    hasil.getString(2),
+                    hasil.getString(3),
+                    hasil.getString(4),
+                    hasil.getString(5),
+                    hasil.getString(6),
+                });
+            } tabelPaketLayanan.setModel(tabmode);
+            } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "data gagal dipanggil " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,7 +191,7 @@ public class PaketLayanan extends javax.swing.JDialog {
         txtHarga = new javax.swing.JTextField();
         txtNama = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtNama1 = new javax.swing.JTextField();
+        txtId = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtInclude = new javax.swing.JTextArea();
@@ -122,7 +273,7 @@ public class PaketLayanan extends javax.swing.JDialog {
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel4.setText("Nama Paket Event   :");
 
-        txtNama1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel6.setText("Include                     :");
@@ -153,7 +304,7 @@ public class PaketLayanan extends javax.swing.JDialog {
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNama1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel3)
@@ -186,7 +337,7 @@ public class PaketLayanan extends javax.swing.JDialog {
                         .addGap(23, 23, 23)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNama1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtMinimal, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -216,6 +367,8 @@ public class PaketLayanan extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelPaketLayanan.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tabelPaketLayanan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tabelPaketLayanan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelPaketLayananMouseClicked(evt);
@@ -354,123 +507,119 @@ public class PaketLayanan extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
-//        disableButton();
-//        clear();
+        disableButton();
+        clear();
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-//        int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
-//        if (ok == 0) {
-//            String sql = "Delete FROM karyawan WHERE id = '" + txtId.getText()+"'";
-//            try {
-//                PreparedStatement stat = conn.prepareStatement(sql);
-//                stat.executeUpdate();
-//                JOptionPane.showMessageDialog(null, "data berhasil terhapus");
-//                clear();
-//                disableButton();
-//            } catch (SQLException e) {
-//                JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage());
-//            }
-//            dataTable();
-//        }
+        int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
+        if (ok == 0) {
+            String sql = "Delete FROM paket_layanan WHERE id = '" + txtId.getText()+"'";
+            try {
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.executeUpdate();
+                JOptionPane.showMessageDialog(null, "data berhasil terhapus");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "data gagal terhapus : " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        clear();
+        disableButton();
+        dataTable();
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-//        String pilihKelamin = null;
-//
-//        if (radioLaki.isSelected()) {
-//            pilihKelamin = "Laki-Laki";
-//        }else if (radioPerempuan.isSelected()) {
-//            pilihKelamin = "Perempuan";
-//        }
-//
-//        try {
-//            String sql = "UPDATE karyawan SET nama=? , jenis_kelamin=? , no_telp=? , email=? , id_jabatan_karyawan=? WHERE id = '"
-//            + txtId.getText()+"'";
-//            PreparedStatement stat = conn.prepareStatement(sql);
-//            stat.setString(1, txtNama.getText());
-//            stat.setString(2, pilihKelamin);
-//            stat.setString(3, txtNoTelpon.getText());
-//            stat.setString(4, txtEmail.getText());
-//            stat.setString(5, cbxJabatan.getSelectedItem().toString());
-//            stat.executeUpdate();
-//            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
-//            dataTable();
-//            disableButton();
-//            clear();
-//            kode_id_otomatis();
-//        } catch (SQLException e) {
-//            JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage());
-//        }
+        String harga = txtHarga.getText().trim();
+        String minimal = txtMinimal.getText().trim();
+
+        if (txtNama.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
+            txtNama.requestFocus();
+        } else if (txtHarga.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
+            txtHarga.requestFocus();
+        } else if (harga.isEmpty() || !harga.matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "Isi harga paket dengan format angka saja");
+            txtHarga.requestFocus();
+        } else if (txtHarga.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
+            txtHarga.requestFocus();            
+        } else if (minimal.isEmpty() || !minimal.matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "Isi minimal order dengan format angka saja");
+            txtMinimal.requestFocus();
+        } else {
+            String sql = "UPDATE paket_layanan SET nama=? , harga=? , minimal_order=? , include=? , deskripsi=? WHERE id = '"
+            + txtId.getText()+"'";
+            try {
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setString(1, txtId.getText());
+                stat.setString(2, txtNama.getText());
+                stat.setString(3, txtHarga.getText());
+                stat.setString(4, txtMinimal.getText());
+                stat.setString(5, txtInclude.getText());
+                stat.setString(6, txtDeskripsi.getText());
+                stat.executeUpdate();
+                JOptionPane.showMessageDialog(null,"Data Tersimpan");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null,"Gagal tersimpan. Pesan error : " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        clear();
+        kode_id_otomatis();
+        dataTable();
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-//        String nama = txtNama.getText().trim();
-//        String email = txtEmail.getText().trim();
-//        String noTelpon = txtNoTelpon.getText().trim();
-//        String pilihKelamin = "";
-//        String pilihJabatan = cbxJabatan.getSelectedItem().toString();
-//
-//        if (radioLaki.isSelected()) {
-//            pilihKelamin = "Laki-Laki";
-//        } else if (radioPerempuan.isSelected()) {
-//            pilihKelamin = "Perempuan";
-//        }
-//
-//        if (!nama.matches("^[a-zA-Z\\s]+$")) {
-//            JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
-//            txtNama.requestFocus();
-//        } else if (pilihKelamin.equals("")) {
-//            JOptionPane.showMessageDialog(null, "Pilih kelamin terlebih dahulu");
-//            radioLaki.requestFocus();
-//        } else if (noTelpon.isEmpty() || !noTelpon.matches("\\d+")) {
-//            JOptionPane.showMessageDialog(null, "Isi no telpon dengan format angka saja");
-//            txtNoTelpon.requestFocus();
-//        } else if (txtEmail.getText().isEmpty()) {
-//            JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
-//            txtEmail.requestFocus();
-//        } else if (!isValidEmailAddress(email)) {
-//            JOptionPane.showMessageDialog(null, "Alamat email tidak valid");
-//            txtEmail.requestFocus();
-//        } else if (pilihJabatan.equals("Pilihan")) {
-//            JOptionPane.showMessageDialog(null, "Pilih jabatan terlebih dahulu");
-//            cbxJabatan.requestFocus();
-//        } else {
-//            String sql = "INSERT INTO karyawan VALUES (?,?,?,?,?,?)";
-//            try {
-//                PreparedStatement stat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//                stat.setString(1, txtId.getText());
-//                stat.setString(2, txtNama.getText());
-//                stat.setString(3, pilihKelamin);
-//                stat.setString(4, txtNoTelpon.getText());
-//                stat.setString(5, txtEmail.getText());
-//                stat.setString(6, cbxJabatan.getSelectedItem().toString());
-//                stat.executeUpdate();
-//
-//                // Ambil nilai id yang di-generate oleh basis data
-//                ResultSet generatedKeys = stat.getGeneratedKeys();
-//                if (generatedKeys.next()) {
-//                    int idBaru = generatedKeys.getInt(1);
-//                    JOptionPane.showMessageDialog(null,"Data Tersimpan dengan ID " + idBaru);
-//                }
-//                JOptionPane.showMessageDialog(null,"Data Tersimpan");
-//                clear();
-//                kode_id_otomatis();
-//            } catch (SQLException e) {
-//                JOptionPane.showMessageDialog(null,"Gagal tersimpan. Pesan error : " +e.getMessage());
-//            }
-//        }
-//        dataTable();
+        String harga = txtHarga.getText().trim();
+        String minimal = txtMinimal.getText().trim();
+
+        if (txtNama.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
+            txtNama.requestFocus();
+        } else if (txtHarga.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
+            txtHarga.requestFocus();
+        } else if (harga.isEmpty() || !harga.matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "Isi harga paket dengan format angka saja");
+            txtHarga.requestFocus();
+        } else if (txtHarga.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
+            txtHarga.requestFocus();
+        } else if (txtMinimal.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Isi minimal ordernya dulu bosqu");
+            txtMinimal.requestFocus();                 
+        } else if (minimal.isEmpty() || !minimal.matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "Isi minimal order dengan format angka saja");
+            txtMinimal.requestFocus();
+        } else {
+            String sql = "INSERT INTO paket_layanan VALUES (?,?,?,?,?,?)";
+            try {
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setString(1, txtId.getText());
+                stat.setString(2, txtNama.getText());
+                stat.setString(3, txtHarga.getText());
+                stat.setString(4, txtMinimal.getText());
+                stat.setString(5, txtInclude.getText());
+                stat.setString(6, txtDeskripsi.getText());
+                stat.executeUpdate();
+                JOptionPane.showMessageDialog(null,"Data Tersimpan");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null,"Gagal tersimpan. Pesan error : " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        clear();
+        kode_id_otomatis();
+        dataTable();
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
-//        enableButton();
+        enableButton();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void txtCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyPressed
-//        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-//            dataTable();
-//        }
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            dataTable();
+        }
     }//GEN-LAST:event_txtCariKeyPressed
 
     private void txtCariKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyTyped
@@ -478,11 +627,18 @@ public class PaketLayanan extends javax.swing.JDialog {
     }//GEN-LAST:event_txtCariKeyTyped
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
-//        dataTable();
+        dataTable();
     }//GEN-LAST:event_btnCariActionPerformed
 
     private void tabelPaketLayananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPaketLayananMouseClicked
-        // TODO add your handling code here:
+        int bar = tabelPaketLayanan.getSelectedRow();
+        txtId.setText(tabelPaketLayanan.getValueAt(bar,0).toString());
+        txtNama.setText(tabelPaketLayanan.getValueAt(bar,1).toString());
+        txtHarga.setText(tabelPaketLayanan.getValueAt(bar,2).toString());
+        txtMinimal.setText(tabelPaketLayanan.getValueAt(bar,3).toString());
+        txtInclude.setText(tabelPaketLayanan.getValueAt(bar,4).toString());
+        txtDeskripsi.setText(tabelPaketLayanan.getValueAt(bar,5).toString());
+        editButton();
     }//GEN-LAST:event_tabelPaketLayananMouseClicked
 
     /**
@@ -552,9 +708,9 @@ public class PaketLayanan extends javax.swing.JDialog {
     private javax.swing.JTextField txtCari;
     private javax.swing.JTextArea txtDeskripsi;
     private javax.swing.JTextField txtHarga;
+    private javax.swing.JTextField txtId;
     private javax.swing.JTextArea txtInclude;
     private javax.swing.JTextField txtMinimal;
     private javax.swing.JTextField txtNama;
-    private javax.swing.JTextField txtNama1;
     // End of variables declaration//GEN-END:variables
 }

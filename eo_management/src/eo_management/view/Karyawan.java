@@ -177,7 +177,7 @@ public class Karyawan extends javax.swing.JDialog {
                 txtId.setText("ID00001");
             }
         }catch (SQLException e){ 
-            JOptionPane.showMessageDialog(null, "Id otomatis tidak berjalan. Pesan error : " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Id otomatis tidak berjalan. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -205,7 +205,7 @@ public class Karyawan extends javax.swing.JDialog {
                 });
             } tabelKaryawan.setModel(tabmode);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage());
+            JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     /**
@@ -606,7 +606,7 @@ public class Karyawan extends javax.swing.JDialog {
                         clear();
                         kode_id_otomatis();
                         } catch (SQLException e) {
-                        JOptionPane.showMessageDialog(null,"Gagal tersimpan. Pesan error : " +e.getMessage());
+                        JOptionPane.showMessageDialog(null,"Gagal tersimpan. Pesan error : " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                   }
             }
             dataTable();
@@ -637,7 +637,7 @@ public class Karyawan extends javax.swing.JDialog {
             clear();
              kode_id_otomatis();
             } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
     }//GEN-LAST:event_btnUbahActionPerformed
 
@@ -652,7 +652,7 @@ public class Karyawan extends javax.swing.JDialog {
                     clear();
                     disableButton();
                 } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage());
+                    JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 dataTable();
             }

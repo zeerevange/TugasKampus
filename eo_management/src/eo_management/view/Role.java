@@ -106,7 +106,7 @@ public class Role extends javax.swing.JDialog {
         }
         
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
 
@@ -372,54 +372,73 @@ class HeaderRenderer implements TableCellRenderer {
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         if (txtNama.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Isi nama terlebih dahulu");
-            txtNama.requestFocus();
-        } else {
-            try {
-                String sql = "INSERT INTO role (nama) VALUES (?)";
-                PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setString(1, txtNama.getText());
-                stat.executeUpdate();
-                JOptionPane.showMessageDialog(null,"Data Tersimpan");
-                clear();
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null,"Gagal tersimpan" +e.getMessage());
+                JOptionPane.showMessageDialog(null, "Isi nama terlebih dahulu");
+                txtNama.requestFocus();
+            } else {
+                try {
+                    String sql = "INSERT INTO role (nama) VALUES (?)";
+                    PreparedStatement stat = conn.prepareStatement(sql);
+                    stat.setString(1, txtNama.getText());
+                    int rowsAffected = stat.executeUpdate();
+                    if (rowsAffected > 0) {
+                        JOptionPane.showMessageDialog(null, "Data berhasil disimpan", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Data gagal disimpan", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat menyimpan data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        }
-        dataTable();
+            clear();
+            dataTable();
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-        try {
-            String sql = "UPDATE role SET nama=? WHERE id_role = '"
-            + txtId.getText()+"'";
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, txtNama.getText());
-            stat.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage());
-        }
-        dataTable();
-        disableButton();
-        clear();
+        if (txtNama.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Isi nama terlebih dahulu");
+                txtNama.requestFocus();
+                } else {
+                    try {
+                        String sql = "UPDATE role SET nama=? WHERE id=?";
+                        PreparedStatement stat = conn.prepareStatement(sql);
+                        stat.setString(1, txtNama.getText());
+                        stat.setString(2, txtId.getText());
+                        int rowsAffected = stat.executeUpdate();
+                        if (rowsAffected > 0) {
+                            JOptionPane.showMessageDialog(null, "Data berhasil diubah", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Data gagal diubah", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat mengubah data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+            }
+            clear();
+            disableButton();
+            dataTable();
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-        int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
-        if (ok == 0) {
-            String sql = "Delete FROM role WHERE id = '" + txtId.getText()+"'";
+        int ok = JOptionPane.showConfirmDialog(null, "Hapus data ini?", "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION);
+        if (ok == JOptionPane.YES_OPTION) {
             try {
+                String sql = "DELETE FROM role WHERE id_role=?";
                 PreparedStatement stat = conn.prepareStatement(sql);
-                stat.executeUpdate();
-                JOptionPane.showMessageDialog(null, "data berhasil terhapus");
-                clear();
-                disableButton();
+                stat.setString(1, txtId.getText());
+                int rowsAffected = stat.executeUpdate();
+                if (rowsAffected > 0) {
+                    JOptionPane.showMessageDialog(null, "Data berhasil terhapus", "Hapus Data", JOptionPane.INFORMATION_MESSAGE);
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Data gagal terhapus", "Hapus Data", JOptionPane.ERROR_MESSAGE);
+                }
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "data gagal terhapus" +e.getMessage());
+                JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat menghapus data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            dataTable();
         }
+        clear();
+        disableButton();
+        dataTable();
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
