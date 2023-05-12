@@ -40,7 +40,7 @@ public class Karyawan extends javax.swing.JDialog {
         initComponents();
         //set ketengah layar
         initUI();
-        dataToComboBox();
+//        dataToComboBox();
         dataTable();
         enableButton();
         editButton();
@@ -79,19 +79,19 @@ public class Karyawan extends javax.swing.JDialog {
     }
     
     //memunculkan list departement ke combo box dari database
-    private void dataToComboBox() {
-        try {
-            String sql = "SELECT * FROM jabatan_karyawan";
-            PreparedStatement stat = conn.prepareStatement(sql);
-            ResultSet rs = stat.executeQuery();
-
-            while (rs.next()) {
-                cbxJabatan.addItem(rs.getString("id"));
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Departemen pada combobox gagal di tampilkan. Pesan error : " + e.getMessage());
-        }
-}
+//    private void dataToComboBox() {
+//        try {
+//            String sql = "SELECT * FROM jabatan_karyawan";
+//            PreparedStatement stat = conn.prepareStatement(sql);
+//            ResultSet rs = stat.executeQuery();
+//
+//            while (rs.next()) {
+//                cbxJabatan.addItem(rs.getString("id"));
+//            }
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(null, "Departemen pada combobox gagal di tampilkan. Pesan error : " + e.getMessage());
+//        }
+//}
     
     private void enableButton() {
         txtNama.setEnabled(true);
@@ -597,47 +597,72 @@ public class Karyawan extends javax.swing.JDialog {
                             stat.executeUpdate();
 
                             // Ambil nilai id yang di-generate oleh basis data
-                            ResultSet generatedKeys = stat.getGeneratedKeys();
-                            if (generatedKeys.next()) {
-                                int idBaru = generatedKeys.getInt(1);
-                                JOptionPane.showMessageDialog(null,"Data Tersimpan dengan ID " + idBaru);
-                            }
+//                            ResultSet generatedKeys = stat.getGeneratedKeys();
+//                            if (generatedKeys.next()) {
+//                                int idBaru = generatedKeys.getInt(1);
+//                                JOptionPane.showMessageDialog(null,"Data Tersimpan dengan ID " + idBaru);
+//                            }
                             JOptionPane.showMessageDialog(null,"Data Tersimpan");
-                        clear();
-                        kode_id_otomatis();
+
                         } catch (SQLException e) {
                         JOptionPane.showMessageDialog(null,"Gagal tersimpan. Pesan error : " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                   }
             }
+            clear();
+            kode_id_otomatis();
             dataTable();
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-        String pilihKelamin = null;
-        
-        if (radioLaki.isSelected()) {
-            pilihKelamin = "Laki-Laki";
-        }else if (radioPerempuan.isSelected()) {
-            pilihKelamin = "Perempuan";
-        }
-        
-        try {
-            String sql = "UPDATE karyawan SET nama=? , jenis_kelamin=? , no_telp=? , email=? , id_jabatan_karyawan=? WHERE id = '"
-                    + txtId.getText()+"'";
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, txtNama.getText());
-            stat.setString(2, pilihKelamin);
-            stat.setString(3, txtNoTelpon.getText());
-            stat.setString(4, txtEmail.getText());
-            stat.setString(5, cbxJabatan.getSelectedItem().toString());
-            stat.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
-            dataTable();
-            disableButton();
-            clear();
-             kode_id_otomatis();
-            } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        String nama = txtNama.getText().trim();
+            String email = txtEmail.getText().trim();
+            String noTelpon = txtNoTelpon.getText().trim();
+            String pilihKelamin = "";
+            String pilihJabatan = cbxJabatan.getSelectedItem().toString();
+
+            if (radioLaki.isSelected()) {
+                pilihKelamin = "Laki-Laki";
+            } else if (radioPerempuan.isSelected()) {
+                pilihKelamin = "Perempuan";
+            } 
+            
+            if (!nama.matches("^[a-zA-Z\\s]+$")) {
+            JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
+            txtNama.requestFocus();
+            } else if (pilihKelamin.equals("")) {
+            JOptionPane.showMessageDialog(null, "Pilih kelamin terlebih dahulu");
+            radioLaki.requestFocus();
+            } else if (noTelpon.isEmpty() || !noTelpon.matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "Isi no telpon dengan format angka saja");
+            txtNoTelpon.requestFocus();
+            } else if (txtEmail.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
+            txtEmail.requestFocus();
+            } else if (!isValidEmailAddress(email)) {
+            JOptionPane.showMessageDialog(null, "Alamat email tidak valid");
+            txtEmail.requestFocus();
+            } else if (pilihJabatan.equals("Pilihan")) {
+            JOptionPane.showMessageDialog(null, "Pilih jabatan terlebih dahulu");
+            cbxJabatan.requestFocus();
+            } else {
+                    try {
+                        String sql = "UPDATE karyawan SET nama=? , jenis_kelamin=? , no_telp=? , email=? , id_jabatan_karyawan=? WHERE id = '"
+                                + txtId.getText()+"'";
+                        PreparedStatement stat = conn.prepareStatement(sql);
+                        stat.setString(1, txtNama.getText());
+                        stat.setString(2, pilihKelamin);
+                        stat.setString(3, txtNoTelpon.getText());
+                        stat.setString(4, txtEmail.getText());
+                        stat.setString(5, cbxJabatan.getSelectedItem().toString());
+                        stat.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "Data berhasil diubah");
+                        dataTable();
+                        disableButton();
+                        clear();
+                         kode_id_otomatis();
+                        } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        }
             }
     }//GEN-LAST:event_btnUbahActionPerformed
 
