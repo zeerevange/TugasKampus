@@ -258,7 +258,7 @@ public class PaketLayanan extends javax.swing.JDialog {
         txtMinimal.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel3.setText("Harga Paket             :");
+        jLabel3.setText("Harga Paket          Rp");
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel5.setText("Minimal Order          :");
@@ -356,6 +356,7 @@ public class PaketLayanan extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        tabelPaketLayanan.setAutoCreateRowSorter(true);
         tabelPaketLayanan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},

@@ -56,6 +56,7 @@ public class Users extends javax.swing.JDialog {
         footer = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Data Users Buat Login");
         setResizable(false);
 
         header.setBackground(new java.awt.Color(11, 36, 71));
@@ -137,9 +138,8 @@ public class Users extends javax.swing.JDialog {
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtNama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                        .addComponent(txtId, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(txtNama, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(txtId)
                     .addComponent(cbxRole, 0, 250, Short.MAX_VALUE)
                     .addComponent(cbxJabatan1, 0, 250, Short.MAX_VALUE)
                     .addComponent(jPasswordField1))

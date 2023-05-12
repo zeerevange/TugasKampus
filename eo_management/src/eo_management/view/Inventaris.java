@@ -136,7 +136,7 @@ public class Inventaris extends javax.swing.JDialog {
     }
     
     public void dataTable() {
-        Object[] header = {"ID", "Nama Pelanggan", "Jumlah", "Deskripsi"};
+        Object[] header = {"ID", "Nama Inventaris", "Jumlah", "Deskripsi"};
         tabmode = new DefaultTableModel (null, header);
         String cariitem = txtCari.getText();
         
@@ -196,7 +196,7 @@ public class Inventaris extends javax.swing.JDialog {
         btnBatal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Data Pelanggan");
+        setTitle("Data Inventaris");
 
         header.setBackground(new java.awt.Color(11, 36, 71));
 
@@ -239,7 +239,7 @@ public class Inventaris extends javax.swing.JDialog {
         mid.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Pelanggan", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Inventaris", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel3.setText("Jumlah                    :");
@@ -481,7 +481,7 @@ public class Inventaris extends javax.swing.JDialog {
         txtId.setText(tabelInventaris.getValueAt(bar,0).toString());
         txtNama.setText(tabelInventaris.getValueAt(bar,1).toString());
         txtJumlah.setText(tabelInventaris.getValueAt(bar,2).toString());
-        txtDeskripsi.setText(tabelInventaris.getValueAt(bar,6).toString());
+        txtDeskripsi.setText(tabelInventaris.getValueAt(bar,3).toString());
         editButton();
     }//GEN-LAST:event_tabelInventarisMouseClicked
 
@@ -519,7 +519,7 @@ public class Inventaris extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(null, "Deskripsinya gak di isi dulu nih ?");
         txtDeskripsi.requestFocus();
         } else {
-            String sql = "INSERT INTO pelanggan VALUES (?,?,?,?)";
+            String sql = "INSERT INTO inventaris VALUES (?,?,?,?)";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.setString(1, txtId.getText());
@@ -554,7 +554,7 @@ public class Inventaris extends javax.swing.JDialog {
         txtDeskripsi.requestFocus();
         } else {
                     try {
-                        String sql = "UPDATE pelanggan SET nama=? , jumlah=? , deskripsi=? WHERE id = '"
+                        String sql = "UPDATE inventaris SET nama=? , jumlah=? , deskripsi=? WHERE id = '"
                                 + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
