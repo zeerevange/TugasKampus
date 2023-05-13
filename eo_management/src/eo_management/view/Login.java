@@ -78,7 +78,7 @@ public class Login extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtUsername = new javax.swing.JTextField();
+        txtUserId = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
         cbxShow = new javax.swing.JCheckBox();
@@ -154,12 +154,12 @@ public class Login extends javax.swing.JFrame {
         );
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
-        jLabel2.setText("Username");
+        jLabel2.setText("User ID");
 
         jLabel3.setFont(new java.awt.Font("Arial", 0, 48)); // NOI18N
         jLabel3.setText("Login");
 
-        txtUsername.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        txtUserId.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         jLabel4.setText("Password");
@@ -209,7 +209,7 @@ public class Login extends javax.swing.JFrame {
                                 .addComponent(cbxShow)
                                 .addComponent(jLabel2)
                                 .addComponent(jLabel4)
-                                .addComponent(txtUsername)
+                                .addComponent(txtUserId)
                                 .addComponent(jSeparator1)
                                 .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -227,7 +227,7 @@ public class Login extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtUserId, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -246,13 +246,13 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-                String login = txtUsername.getText();
+                String login = txtUserId.getText();
                 String password = txtPassword.getText();
                 
                 if (login.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Harap Masukkan Username dan Password Terlebih Dahulu !");
                 } else {
-                           String sql = "SELECT * FROM user WHERE username= ? AND password =? ";
+                           String sql = "SELECT * FROM user WHERE id_user= ? AND password =? ";
                            try {
                                    PreparedStatement ps = conn.prepareStatement(sql);
                                    ps.setString(1, login);
@@ -260,7 +260,7 @@ public class Login extends javax.swing.JFrame {
                                    ResultSet rs = ps.executeQuery();
                                    if (rs.next()) {
                                        UserSession.setU_id(rs.getInt("id_user"));
-                                       UserSession.setU_username(rs.getString("username"));
+//                                       UserSession.setU_username(rs.getString("username"));
                                            JOptionPane.showMessageDialog(null, "Selamat Datang Kembali " + login);
                                            dispose();
                                            new Menu().setVisible(true);
@@ -341,6 +341,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JTextField txtUsername;
+    private javax.swing.JTextField txtUserId;
     // End of variables declaration//GEN-END:variables
 }
