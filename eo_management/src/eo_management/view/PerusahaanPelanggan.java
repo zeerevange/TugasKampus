@@ -216,7 +216,7 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         btnBatal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Data Pelanggan");
+        setTitle("Data Perusahaan Pelanggan");
 
         header.setBackground(new java.awt.Color(11, 36, 71));
 
