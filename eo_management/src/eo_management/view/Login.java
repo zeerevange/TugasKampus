@@ -88,7 +88,7 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login Dulu Mas Bro");
 
-        jPanel2.setBackground(new java.awt.Color(0, 142, 255));
+        jPanel2.setBackground(new java.awt.Color(11, 36, 71));
         jPanel2.setPreferredSize(new java.awt.Dimension(650, 20));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -104,7 +104,7 @@ public class Login extends javax.swing.JFrame {
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
-        jPanel3.setBackground(new java.awt.Color(0, 142, 255));
+        jPanel3.setBackground(new java.awt.Color(11, 36, 71));
         jPanel3.setPreferredSize(new java.awt.Dimension(20, 600));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -120,7 +120,7 @@ public class Login extends javax.swing.JFrame {
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.LINE_START);
 
-        jPanel4.setBackground(new java.awt.Color(0, 142, 255));
+        jPanel4.setBackground(new java.awt.Color(11, 36, 71));
         jPanel4.setPreferredSize(new java.awt.Dimension(20, 600));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -140,7 +140,7 @@ public class Login extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/image/logo.png"))); // NOI18N
 
-        jPanel5.setBackground(new java.awt.Color(0, 142, 255));
+        jPanel5.setBackground(new java.awt.Color(11, 36, 71));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -259,7 +259,7 @@ public class Login extends javax.swing.JFrame {
                                    ps.setString(2, password);
                                    ResultSet rs = ps.executeQuery();
                                    if (rs.next()) {
-                                       UserSession.setU_id(rs.getInt("id_user"));
+                                       UserSession.setU_id(rs.getString("id_user"));
 //                                       UserSession.setU_username(rs.getString("username"));
                                            JOptionPane.showMessageDialog(null, "Selamat Datang Kembali " + login);
                                            dispose();

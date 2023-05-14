@@ -75,9 +75,6 @@ public class Pelanggan extends javax.swing.JDialog {
         txtNama.setEnabled(true);
         txtNoTelpon.setEnabled(true);
         txtEmail.setEnabled(true);
-        txtPerusahaan.setEnabled(true);
-        txtJenis.setEnabled(true);
-        txtAlamat.setEnabled(true);
         btnSimpan.setEnabled(true);
     }
     
@@ -85,9 +82,7 @@ public class Pelanggan extends javax.swing.JDialog {
         txtNama.setEnabled(true);
         txtNoTelpon.setEnabled(true);
         txtEmail.setEnabled(true);
-        txtPerusahaan.setEnabled(true);
-        txtJenis.setEnabled(true);
-        txtAlamat.setEnabled(true);
+        btnSimpan.setEnabled(false);
         btnUbah.setEnabled(true);
         btnHapus.setEnabled(true);
     }
@@ -97,9 +92,6 @@ public class Pelanggan extends javax.swing.JDialog {
         txtNama.setText("");
         txtNoTelpon.setText("");
         txtEmail.setText("");
-        txtPerusahaan.setText("");
-        txtJenis.setText("");
-        txtAlamat.setText("");
      }
     
     private void disableButton(){
@@ -107,9 +99,6 @@ public class Pelanggan extends javax.swing.JDialog {
         txtNama.setEnabled(false);
         txtNoTelpon.setEnabled(false);
         txtEmail.setEnabled(false);
-        txtPerusahaan.setEnabled(false);
-        txtJenis.setEnabled(false);
-        txtAlamat.setEnabled(false);
         btnTambah.setEnabled(true);
         btnSimpan.setEnabled(false);
         btnUbah.setEnabled(false);
@@ -161,16 +150,14 @@ public class Pelanggan extends javax.swing.JDialog {
     }
     
     public void dataTable() {
-        Object[] header = {"ID", "Nama Pelanggan", "No Telpon", "Email", "Perusahaan", "Jenis Perusahaan", "Alamat"};
+        Object[] header = {"ID", "Nama Pelanggan", "No Telpon", "Email"};
         tabmode = new DefaultTableModel (null, header);
         String cariitem = txtCari.getText();
         
         try {
             String sql = "SELECT * FROM pelanggan WHERE id LIKE '%"
                     + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or id LIKE '%"
-                    + cariitem+ "%' or perusahaan LIKE '%"
-                    + cariitem+ "%' or jenis_perusahaan LIKE '%"
+                    + cariitem+ "%' or no_telp LIKE '%"
                     + cariitem+ "%' ORDER BY id asc";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
@@ -180,10 +167,7 @@ public class Pelanggan extends javax.swing.JDialog {
                     hasil.getString(2),
                     hasil.getString(3),
                     hasil.getString(4),
-                    hasil.getString(5),
-                    hasil.getString(6),
-                    hasil.getString(7),
-                });
+                  });
             } tabelPelanggan.setModel(tabmode);
             } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage());
@@ -206,19 +190,12 @@ public class Pelanggan extends javax.swing.JDialog {
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtNoTelpon = new javax.swing.JTextField();
-        txtPerusahaan = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         txtNama = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
-        txtJenis = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtAlamat = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelPelanggan = new javax.swing.JTable();
         txtCari = new javax.swing.JTextField();
@@ -281,20 +258,12 @@ public class Pelanggan extends javax.swing.JDialog {
 
         txtNoTelpon.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        txtPerusahaan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel5.setText("Perusahaan           :");
-
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel2.setText("ID Pelanggan         :");
 
         txtId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         txtNama.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jLabel6.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel6.setText("Jenis Perusahaan  :");
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel7.setText("Nama Pelanggan   :");
@@ -304,16 +273,6 @@ public class Pelanggan extends javax.swing.JDialog {
 
         txtEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        txtJenis.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jLabel8.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel8.setText("Alamat                    :");
-
-        txtAlamat.setColumns(20);
-        txtAlamat.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtAlamat.setRows(5);
-        jScrollPane2.setViewportView(txtAlamat);
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -321,31 +280,18 @@ public class Pelanggan extends javax.swing.JDialog {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtNama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(txtNoTelpon, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtId))
-                        .addGap(300, 300, 300))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtPerusahaan, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtJenis, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtNama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(txtNoTelpon, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtId))
+                .addGap(300, 300, 300))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -366,18 +312,6 @@ public class Pelanggan extends javax.swing.JDialog {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPerusahaan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtJenis, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -493,21 +427,22 @@ public class Pelanggan extends javax.swing.JDialog {
             .addGroup(midLayout.createSequentialGroup()
                 .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(midLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(btnTambah)
-                        .addGap(0, 0, 0)
-                        .addComponent(btnSimpan)
-                        .addGap(0, 0, 0)
-                        .addComponent(btnUbah)
-                        .addGap(0, 0, 0)
-                        .addComponent(btnHapus)
-                        .addGap(0, 0, 0)
-                        .addComponent(btnBatal)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(midLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(midLayout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(midLayout.createSequentialGroup()
+                                .addComponent(btnTambah)
+                                .addGap(0, 0, 0)
+                                .addComponent(btnSimpan)
+                                .addGap(0, 0, 0)
+                                .addComponent(btnUbah)
+                                .addGap(0, 0, 0)
+                                .addComponent(btnHapus)
+                                .addGap(0, 0, 0)
+                                .addComponent(btnBatal))
+                            .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(midLayout.createSequentialGroup()
@@ -525,14 +460,15 @@ public class Pelanggan extends javax.swing.JDialog {
                     .addGroup(midLayout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnTambah)
                             .addComponent(btnSimpan)
                             .addComponent(btnUbah)
                             .addComponent(btnHapus)
-                            .addComponent(btnBatal)))
+                            .addComponent(btnBatal))
+                        .addGap(142, 142, 142)
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(midLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -540,7 +476,7 @@ public class Pelanggan extends javax.swing.JDialog {
                             .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         getContentPane().add(mid, java.awt.BorderLayout.CENTER);
@@ -554,9 +490,6 @@ public class Pelanggan extends javax.swing.JDialog {
         txtNama.setText(tabelPelanggan.getValueAt(bar,1).toString());
         txtNoTelpon.setText(tabelPelanggan.getValueAt(bar,2).toString());
         txtEmail.setText(tabelPelanggan.getValueAt(bar,3).toString());
-        txtPerusahaan.setText(tabelPelanggan.getValueAt(bar,4).toString());
-        txtJenis.setText(tabelPelanggan.getValueAt(bar,5).toString());
-        txtAlamat.setText(tabelPelanggan.getValueAt(bar,6).toString());
         editButton();
     }//GEN-LAST:event_tabelPelangganMouseClicked
 
@@ -575,6 +508,8 @@ public class Pelanggan extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCariActionPerformed
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        disableButton();
+        clear();
         enableButton();
     }//GEN-LAST:event_btnTambahActionPerformed
 
@@ -595,26 +530,14 @@ public class Pelanggan extends javax.swing.JDialog {
         } else if (!isValidEmailAddress(email)) {
         JOptionPane.showMessageDialog(null, "Alamat email tidak valid");
         txtEmail.requestFocus();
-        } else if (txtPerusahaan.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Isi Perusahaan terlebih dahulu");
-        txtPerusahaan.requestFocus();
-        } else if (txtJenis.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Isi jenis perusahaan terlebih dahulu");
-        txtJenis.requestFocus();
-        } else if (txtAlamat.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Isi alamat terlebih dahulu");
-        txtAlamat.requestFocus();
         } else {
-            String sql = "INSERT INTO pelanggan VALUES (?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO pelanggan VALUES (?,?,?,?)";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.setString(1, txtId.getText());
                     stat.setString(2, txtNama.getText());
                     stat.setString(3, txtNoTelpon.getText());
                     stat.setString(4, txtEmail.getText());
-                    stat.setString(5, txtPerusahaan.getText());
-                    stat.setString(6, txtJenis.getText());
-                    stat.setString(7, txtAlamat.getText());
                     stat.execute();
                     JOptionPane.showMessageDialog(null,"Data Tersimpan");
                     } catch (SQLException e) {
@@ -643,26 +566,14 @@ public class Pelanggan extends javax.swing.JDialog {
         } else if (!isValidEmailAddress(email)) {
         JOptionPane.showMessageDialog(null, "Alamat email tidak valid");
         txtEmail.requestFocus();
-        } else if (txtPerusahaan.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Isi Perusahaan terlebih dahulu");
-        txtPerusahaan.requestFocus();
-        } else if (txtJenis.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Isi jenis perusahaan terlebih dahulu");
-        txtJenis.requestFocus();
-        } else if (txtAlamat.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Isi alamat terlebih dahulu");
-        txtAlamat.requestFocus();
         } else {
                     try {
-                        String sql = "UPDATE pelanggan SET nama=? , no_telp=? , email=? , perusahaan=? , jenis_perusahaan=? , alamat=? WHERE id = '"
+                        String sql = "UPDATE pelanggan SET nama=? , no_telp=? , email=? WHERE id = '"
                                 + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
                         stat.setString(2, txtNoTelpon.getText());
                         stat.setString(3, txtEmail.getText());
-                        stat.setString(4, txtPerusahaan.getText());
-                        stat.setString(5, txtJenis.getText());
-                        stat.setString(6, txtAlamat.getText());
                         stat.executeUpdate();
                         JOptionPane.showMessageDialog(null, "Data berhasil diubah");
                     } catch (SQLException e) {
@@ -752,23 +663,16 @@ public class Pelanggan extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JPanel mid;
     private javax.swing.JTable tabelPelanggan;
-    private javax.swing.JTextArea txtAlamat;
     private javax.swing.JTextField txtCari;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtJenis;
     private javax.swing.JTextField txtNama;
     private javax.swing.JTextField txtNoTelpon;
-    private javax.swing.JTextField txtPerusahaan;
     // End of variables declaration//GEN-END:variables
 }

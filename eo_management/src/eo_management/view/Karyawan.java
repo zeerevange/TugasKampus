@@ -110,6 +110,7 @@ public class Karyawan extends javax.swing.JDialog {
         txtNoTelpon.setEnabled(true);
         txtEmail.setEnabled(true);
         cbxJabatan.setEnabled(true);
+        btnSimpan.setEnabled(false);
         btnUbah.setEnabled(true);
         btnHapus.setEnabled(true);
     }
@@ -551,6 +552,7 @@ public class Karyawan extends javax.swing.JDialog {
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         enableButton();
+        clear();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed

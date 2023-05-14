@@ -86,6 +86,7 @@ public class PaketLayanan extends javax.swing.JDialog {
         txtMinimal.setEnabled(true);
         txtInclude.setEnabled(true);
         txtDeskripsi.setEnabled(true);
+        btnSimpan.setEnabled(false);
         btnUbah.setEnabled(true);
         btnHapus.setEnabled(true);
     }
@@ -614,6 +615,8 @@ public class PaketLayanan extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        disableButton();
+        clear();
         enableButton();
     }//GEN-LAST:event_btnTambahActionPerformed
 

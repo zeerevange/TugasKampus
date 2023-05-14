@@ -61,6 +61,7 @@ public class SubKategoriAddon extends javax.swing.JDialog {
     
     private void editButton(){
         txtNama.setEnabled(true);
+        btnSimpan.setEnabled(false);
         btnUbah.setEnabled(true);
         btnHapus.setEnabled(true);
     }
@@ -406,6 +407,8 @@ class HeaderRenderer implements TableCellRenderer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        disableButton();
+        clear();
         enableButton();
     }//GEN-LAST:event_btnTambahActionPerformed
 

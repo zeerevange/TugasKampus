@@ -157,6 +157,8 @@ public class Menu extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         labelUsername = new javax.swing.JLabel();
+        labelUsername1 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         panelJam = new javax.swing.JPanel();
         time = new javax.swing.JLabel();
         jam = new javax.swing.JLabel();
@@ -183,20 +185,27 @@ public class Menu extends javax.swing.JFrame {
         menuSignOut = new javax.swing.JMenuItem();
         menuExit = new javax.swing.JMenuItem();
         menuMaster = new javax.swing.JMenu();
-        menuJabatan = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
         menuKaryawan = new javax.swing.JMenuItem();
+        menuJabatan = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        menuSupplier1 = new javax.swing.JMenuItem();
+        menuPermainan = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
         menuKategoriAddon = new javax.swing.JMenuItem();
         menuSubKategoriAddon = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
         menuPelanggan = new javax.swing.JMenuItem();
+        menuPerusahaanPelanggan = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
         menuPaketLayanan = new javax.swing.JMenuItem();
-        menuPermainan = new javax.swing.JMenuItem();
         menuInventaris = new javax.swing.JMenuItem();
-        menuRole = new javax.swing.JMenuItem();
         menuSupplier = new javax.swing.JMenuItem();
         menuMaster1 = new javax.swing.JMenu();
         menuMaster2 = new javax.swing.JMenu();
         menuMaster3 = new javax.swing.JMenu();
         menuUsers = new javax.swing.JMenuItem();
+        menuRole = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu Utama Coy");
@@ -299,6 +308,14 @@ public class Menu extends javax.swing.JFrame {
         labelUsername.setForeground(new java.awt.Color(255, 255, 255));
         labelUsername.setText("username");
 
+        labelUsername1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        labelUsername1.setForeground(new java.awt.Color(255, 255, 255));
+        labelUsername1.setText("userId");
+
+        jLabel5.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Login ID :");
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -308,15 +325,23 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelUsername1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(labelUsername))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(labelUsername1))
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(labelUsername)))
                 .addContainerGap())
         );
 
@@ -384,7 +409,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(footerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 986, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 806, Short.MAX_VALUE)
                 .addComponent(panelJam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         footerLayout.setVerticalGroup(
@@ -602,13 +627,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        menuJabatan.setText("Jabatan Karyawan");
-        menuJabatan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuJabatanActionPerformed(evt);
-            }
-        });
-        menuMaster.add(menuJabatan);
+        jMenu3.setText("Employee");
 
         menuKaryawan.setText("Karyawan");
         menuKaryawan.addActionListener(new java.awt.event.ActionListener() {
@@ -616,7 +635,34 @@ public class Menu extends javax.swing.JFrame {
                 menuKaryawanActionPerformed(evt);
             }
         });
-        menuMaster.add(menuKaryawan);
+        jMenu3.add(menuKaryawan);
+
+        menuJabatan.setText("Jabatan Karyawan");
+        menuJabatan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuJabatanActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuJabatan);
+
+        menuMaster.add(jMenu3);
+
+        jMenu2.setText("Games");
+
+        menuSupplier1.setText("Kategori Games");
+        menuSupplier1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSupplier1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuSupplier1);
+
+        menuPermainan.setText("Permainan");
+        jMenu2.add(menuPermainan);
+
+        menuMaster.add(jMenu2);
+
+        jMenu1.setText("Katagory");
 
         menuKategoriAddon.setText("Kategori Addon");
         menuKategoriAddon.addActionListener(new java.awt.event.ActionListener() {
@@ -624,7 +670,7 @@ public class Menu extends javax.swing.JFrame {
                 menuKategoriAddonActionPerformed(evt);
             }
         });
-        menuMaster.add(menuKategoriAddon);
+        jMenu1.add(menuKategoriAddon);
 
         menuSubKategoriAddon.setText("Sub Kategori Addon");
         menuSubKategoriAddon.addActionListener(new java.awt.event.ActionListener() {
@@ -632,7 +678,11 @@ public class Menu extends javax.swing.JFrame {
                 menuSubKategoriAddonActionPerformed(evt);
             }
         });
-        menuMaster.add(menuSubKategoriAddon);
+        jMenu1.add(menuSubKategoriAddon);
+
+        menuMaster.add(jMenu1);
+
+        jMenu4.setText("Customer");
 
         menuPelanggan.setText("Pelanggan");
         menuPelanggan.addActionListener(new java.awt.event.ActionListener() {
@@ -640,7 +690,19 @@ public class Menu extends javax.swing.JFrame {
                 menuPelangganActionPerformed(evt);
             }
         });
-        menuMaster.add(menuPelanggan);
+        jMenu4.add(menuPelanggan);
+
+        menuPerusahaanPelanggan.setText("Perusahaan Pelanggan");
+        menuPerusahaanPelanggan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuPerusahaanPelangganActionPerformed(evt);
+            }
+        });
+        jMenu4.add(menuPerusahaanPelanggan);
+
+        menuMaster.add(jMenu4);
+
+        jMenu5.setText("Services");
 
         menuPaketLayanan.setText("Paket Layanan");
         menuPaketLayanan.addActionListener(new java.awt.event.ActionListener() {
@@ -648,10 +710,9 @@ public class Menu extends javax.swing.JFrame {
                 menuPaketLayananActionPerformed(evt);
             }
         });
-        menuMaster.add(menuPaketLayanan);
+        jMenu5.add(menuPaketLayanan);
 
-        menuPermainan.setText("Permainan");
-        menuMaster.add(menuPermainan);
+        menuMaster.add(jMenu5);
 
         menuInventaris.setText("Inventaris");
         menuInventaris.addActionListener(new java.awt.event.ActionListener() {
@@ -660,14 +721,6 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         menuMaster.add(menuInventaris);
-
-        menuRole.setText("Role");
-        menuRole.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuRoleActionPerformed(evt);
-            }
-        });
-        menuMaster.add(menuRole);
 
         menuSupplier.setText("Supplier");
         menuMaster.add(menuSupplier);
@@ -689,6 +742,14 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         menuMaster3.add(menuUsers);
+
+        menuRole.setText("Role");
+        menuRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRoleActionPerformed(evt);
+            }
+        });
+        menuMaster3.add(menuRole);
 
         jMenuBar1.add(menuMaster3);
 
@@ -764,6 +825,14 @@ public class Menu extends javax.swing.JFrame {
         new About (this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_jLabel2MouseClicked
 
+    private void menuSupplier1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSupplier1ActionPerformed
+        new KategoriGames (this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_menuSupplier1ActionPerformed
+
+    private void menuPerusahaanPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPerusahaanPelangganActionPerformed
+        new PerusahaanPelanggan (this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_menuPerusahaanPelangganActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -808,9 +877,15 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
@@ -829,6 +904,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jmlPkt;
     private javax.swing.JLabel jmlPlgn;
     private javax.swing.JLabel labelUsername;
+    private javax.swing.JLabel labelUsername1;
     private javax.swing.JMenuItem menuExit;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenuItem menuInventaris;
@@ -842,10 +918,12 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuPaketLayanan;
     private javax.swing.JMenuItem menuPelanggan;
     private javax.swing.JMenuItem menuPermainan;
+    private javax.swing.JMenuItem menuPerusahaanPelanggan;
     private javax.swing.JMenuItem menuRole;
     private javax.swing.JMenuItem menuSignOut;
     private javax.swing.JMenuItem menuSubKategoriAddon;
     private javax.swing.JMenuItem menuSupplier;
+    private javax.swing.JMenuItem menuSupplier1;
     private javax.swing.JMenuItem menuUsers;
     private javax.swing.JPanel panelJam;
     private javax.swing.JLabel tgl;

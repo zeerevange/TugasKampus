@@ -26,13 +26,13 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author it
  */
-public class Inventaris extends javax.swing.JDialog {
+public class PerusahaanPelanggan extends javax.swing.JDialog {
          private Connection conn = new koneksi().connect();
          private DefaultTableModel tabmode;
     /**
      * Creates new form Pelanggan
      */
-    public Inventaris(java.awt.Frame parent, boolean modal) {
+    public PerusahaanPelanggan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         //set ketengah layar
@@ -73,15 +73,17 @@ public class Inventaris extends javax.swing.JDialog {
     
     private void enableButton() {
         txtNama.setEnabled(true);
-        txtJumlah.setEnabled(true);
-        txtDeskripsi.setEnabled(true);
+        txtJenis.setEnabled(true);
+        txtAlamat.setEnabled(true);
+        txtIdPelanggan.setEnabled(true);
         btnSimpan.setEnabled(true);
     }
     
     private void editButton(){
         txtNama.setEnabled(true);
-        txtJumlah.setEnabled(true);
-        txtDeskripsi.setEnabled(true);
+        txtJenis.setEnabled(true);
+        txtAlamat.setEnabled(true);
+        txtIdPelanggan.setEnabled(true);
         btnSimpan.setEnabled(false);
         btnUbah.setEnabled(true);
         btnHapus.setEnabled(true);
@@ -90,25 +92,40 @@ public class Inventaris extends javax.swing.JDialog {
     private void clear() {
         txtId.setText("");
         txtNama.setText("");
-        txtJumlah.setText("");
-        txtDeskripsi.setText("");
+        txtJenis.setText("");
+        txtAlamat.setText("");
+        txtIdPelanggan.setText(""); 
      }
     
     private void disableButton(){
         txtId.setEnabled(false);
         txtNama.setEnabled(false);
-        txtJumlah.setEnabled(false);
-        txtDeskripsi.setEnabled(false);
+        txtJenis.setEnabled(false);
+        txtAlamat.setEnabled(false);
+        txtIdPelanggan.setEnabled(false);
         btnTambah.setEnabled(true);
         btnSimpan.setEnabled(false);
         btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
     }
-      
+    
+    //pengecekan format txtEmail diisi dengan benar
+    private boolean isValidEmailAddress(String email) {
+    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." 
+                        + "[a-zA-Z0-9_+&*-]+)*@"
+                        + "(?:[a-zA-Z0-9-]+\\.)+[a-z"
+                        + "A-Z]{2,7}$";
+                          
+    Pattern pat = Pattern.compile(emailRegex);
+    if (email == null)
+        return false;
+    return pat.matcher(email).matches();
+}
+    
     //memberikan kode id otomatis kepada id pelanggan
     private void kode_id_otomatis(){
         try {
-            String sql = "SELECT * FROM inventaris ORDER BY id DESC";
+            String sql = "SELECT * FROM perusahaan_pelanggan ORDER BY id DESC";
             Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()){
@@ -127,9 +144,9 @@ public class Inventaris extends javax.swing.JDialog {
                 else if (AN.length() == 5)
                 {Nol = "";}
                 
-                txtId.setText("IN" + Nol + AN);
+                txtId.setText("PP" + Nol + AN);
             } else {
-                txtId.setText("IN00001");
+                txtId.setText("PP00001");
             }
         }catch (SQLException e){ 
             JOptionPane.showMessageDialog(null, "Id otomatis tidak berjalan. Pesan error : " + e.getMessage());
@@ -137,15 +154,14 @@ public class Inventaris extends javax.swing.JDialog {
     }
     
     public void dataTable() {
-        Object[] header = {"ID", "Nama Inventaris", "Jumlah", "Deskripsi"};
+        Object[] header = {"ID", "Nama Perusahaan", "Jenis Perusahan", "Alamat", " Nama Pelanggan"};
         tabmode = new DefaultTableModel (null, header);
         String cariitem = txtCari.getText();
         
         try {
-            String sql = "SELECT * FROM inventaris WHERE id LIKE '%"
+            String sql = "SELECT * FROM pelanggan WHERE id LIKE '%"
                     + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or id LIKE '%"
-                    + cariitem+ "%' or jumlah LIKE '%"
+                    + cariitem+ "%' or jenis_perusahaan LIKE '%"
                     + cariitem+ "%' ORDER BY id asc";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
@@ -155,8 +171,9 @@ public class Inventaris extends javax.swing.JDialog {
                     hasil.getString(2),
                     hasil.getString(3),
                     hasil.getString(4),
-                });
-            } tabelInventaris.setModel(tabmode);
+                    hasil.getString(5),
+                  });
+            } tabelPelanggan.setModel(tabmode);
             } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage());
         }
@@ -177,16 +194,18 @@ public class Inventaris extends javax.swing.JDialog {
         mid = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        txtJumlah = new javax.swing.JTextField();
+        txtJenis = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         txtNama = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtDeskripsi = new javax.swing.JTextArea();
+        txtAlamat = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtIdPelanggan = new javax.swing.JTextField();
+        btnCariPelanggan = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelInventaris = new javax.swing.JTable();
+        tabelPelanggan = new javax.swing.JTable();
         txtCari = new javax.swing.JTextField();
         btnCari = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
@@ -197,22 +216,22 @@ public class Inventaris extends javax.swing.JDialog {
         btnBatal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Data Inventaris");
+        setTitle("Data Pelanggan");
 
         header.setBackground(new java.awt.Color(11, 36, 71));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Inventaris");
+        jLabel1.setText("Data Perusahaan Pelanggan");
 
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
-                .addGap(591, 591, 591)
+                .addGap(358, 358, 358)
                 .addComponent(jLabel1)
-                .addContainerGap(548, Short.MAX_VALUE))
+                .addContainerGap(362, Short.MAX_VALUE))
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,50 +259,63 @@ public class Inventaris extends javax.swing.JDialog {
         mid.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Inventaris", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Perusahaan Pelanggan", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel3.setText("Jumlah                    :");
+        jLabel3.setText("Jenis Perusahaan  :");
 
-        txtJumlah.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtJenis.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel2.setText("ID Inventaris           :");
+        jLabel2.setText("ID Perusahaan       :");
 
         txtId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         txtNama.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel7.setText("Nama Inventaris     :");
+        jLabel7.setText("Nama Perusahaan :");
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel4.setText("Deskripsi                :");
+        jLabel4.setText("Alamat                    :");
 
-        txtDeskripsi.setColumns(20);
-        txtDeskripsi.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtDeskripsi.setRows(5);
-        jScrollPane2.setViewportView(txtDeskripsi);
+        jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel5.setText("Pelanggan             :");
+
+        txtIdPelanggan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        btnCariPelanggan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/Search.png"))); // NOI18N
+        btnCariPelanggan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariPelangganActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtNama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                        .addComponent(txtJumlah, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtId))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtNama, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(txtJenis)
+                    .addComponent(txtId, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtAlamat, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(txtIdPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCariPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addGap(300, 300, 300))
         );
         jPanel4Layout.setVerticalGroup(
@@ -300,16 +332,26 @@ public class Inventaris extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtJenis, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 11, Short.MAX_VALUE)
+                        .addComponent(txtAlamat, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnCariPelanggan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtIdPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
-        tabelInventaris.setAutoCreateRowSorter(true);
-        tabelInventaris.setModel(new javax.swing.table.DefaultTableModel(
+        tabelPelanggan.setAutoCreateRowSorter(true);
+        tabelPelanggan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -317,15 +359,15 @@ public class Inventaris extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tabelInventaris.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        tabelInventaris.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        tabelInventaris.setOpaque(false);
-        tabelInventaris.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabelPelanggan.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tabelPelanggan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tabelPelanggan.setOpaque(false);
+        tabelPelanggan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelInventarisMouseClicked(evt);
+                tabelPelangganMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tabelInventaris);
+        jScrollPane1.setViewportView(tabelPelanggan);
 
         txtCari.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -453,14 +495,14 @@ public class Inventaris extends javax.swing.JDialog {
                     .addGroup(midLayout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(29, 29, 29)
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnTambah)
                             .addComponent(btnSimpan)
                             .addComponent(btnUbah)
                             .addComponent(btnHapus)
                             .addComponent(btnBatal))
-                        .addGap(81, 81, 81)
+                        .addGap(18, 18, 18)
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(midLayout.createSequentialGroup()
                         .addContainerGap()
@@ -477,14 +519,15 @@ public class Inventaris extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tabelInventarisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelInventarisMouseClicked
-        int bar = tabelInventaris.getSelectedRow();
-        txtId.setText(tabelInventaris.getValueAt(bar,0).toString());
-        txtNama.setText(tabelInventaris.getValueAt(bar,1).toString());
-        txtJumlah.setText(tabelInventaris.getValueAt(bar,2).toString());
-        txtDeskripsi.setText(tabelInventaris.getValueAt(bar,3).toString());
+    private void tabelPelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPelangganMouseClicked
+        int bar = tabelPelanggan.getSelectedRow();
+        txtId.setText(tabelPelanggan.getValueAt(bar,0).toString());
+        txtNama.setText(tabelPelanggan.getValueAt(bar,1).toString());
+        txtJenis.setText(tabelPelanggan.getValueAt(bar,2).toString());
+        txtAlamat.setText(tabelPelanggan.getValueAt(bar,3).toString());
+        txtIdPelanggan.setText(tabelPelanggan.getValueAt(bar,4).toString());
         editButton();
-    }//GEN-LAST:event_tabelInventarisMouseClicked
+    }//GEN-LAST:event_tabelPelangganMouseClicked
 
     private void txtCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -507,28 +550,24 @@ public class Inventaris extends javax.swing.JDialog {
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        String jumlah = txtJumlah.getText().trim();
-        
         if (txtNama.getText().isEmpty()) {
         JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
         txtNama.requestFocus();
-         } else if (txtJumlah.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Jumlahnya gak di isi dulu nih ?");
-         txtJumlah.requestFocus();
-        } else if (jumlah.isEmpty() || !jumlah.matches("\\d+")) {
-         JOptionPane.showMessageDialog(null, "Isi jumlah dengan format angka saja");
-         txtJumlah.requestFocus();
-        } else if (txtDeskripsi.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Deskripsinya gak di isi dulu nih ?");
-        txtDeskripsi.requestFocus();
+        } else if (txtJenis.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
+        txtJenis.requestFocus();
+        } else if (txtAlamat.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
+        txtAlamat.requestFocus();
         } else {
-            String sql = "INSERT INTO inventaris VALUES (?,?,?,?)";
+            String sql = "INSERT INTO perusahaan_pelanggan VALUES (?,?,?,?,?)";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.setString(1, txtId.getText());
                     stat.setString(2, txtNama.getText());
-                    stat.setString(3, txtJumlah.getText());
-                    stat.setString(4, txtDeskripsi.getText());
+                    stat.setString(3, txtJenis.getText());
+                    stat.setString(4, txtAlamat.getText());
+                    stat.setString(5, txtIdPelanggan.getText());
                     stat.execute();
                     JOptionPane.showMessageDialog(null,"Data Tersimpan");
                     } catch (SQLException e) {
@@ -541,32 +580,28 @@ public class Inventaris extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-        String jumlah = txtJumlah.getText().trim();
-        
-        if (txtNama.getText().isEmpty()) {
+         if (txtNama.getText().isEmpty()) {
         JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
         txtNama.requestFocus();
-         } else if (txtJumlah.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Jumlahnya gak di isi dulu nih ?");
-         txtJumlah.requestFocus();
-        } else if (jumlah.isEmpty() || !jumlah.matches("\\d+")) {
-         JOptionPane.showMessageDialog(null, "Isi jumlah dengan format angka saja");
-         txtJumlah.requestFocus();
-        } else if (txtDeskripsi.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Deskripsinya gak di isi dulu nih ?");
-        txtDeskripsi.requestFocus();
+        } else if (txtJenis.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
+        txtJenis.requestFocus();
+        } else if (txtAlamat.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
+        txtAlamat.requestFocus();
         } else {
                     try {
-                        String sql = "UPDATE inventaris SET nama=? , jumlah=? , deskripsi=? WHERE id = '"
+                        String sql = "UPDATE perusahaan_pelanggan SET nama=? , jenis_perusahaan=? , alamat_perusahaan=? WHERE id = '"
                                 + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
-                        stat.setString(2, txtJumlah.getText());
-                        stat.setString(3, txtDeskripsi.getText());
+                        stat.setString(3, txtJenis.getText());
+                        stat.setString(4, txtAlamat.getText());
+                        stat.setString(5, txtIdPelanggan.getText());
                         stat.executeUpdate();
                         JOptionPane.showMessageDialog(null, "Data berhasil diubah");
                     } catch (SQLException e) {
-                        JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error :  " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error :  " + e.getMessage());
                     }
                  }
         dataTable();
@@ -577,14 +612,14 @@ public class Inventaris extends javax.swing.JDialog {
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
             if (ok == 0) {
-                String sql = "Delete FROM inventaris WHERE id = '" + txtId.getText()+"'";
+                String sql = "Delete FROM perusahaan_pelanggan WHERE id = '" + txtId.getText()+"'";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.executeUpdate();
                     JOptionPane.showMessageDialog(null, "data berhasil terhapus");
 
                 } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage());
                 }
             }
             clear();
@@ -596,6 +631,10 @@ public class Inventaris extends javax.swing.JDialog {
         disableButton();
         clear();
     }//GEN-LAST:event_btnBatalActionPerformed
+
+    private void btnCariPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPelangganActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCariPelangganActionPerformed
 
     /**
      * @param args the command line arguments
@@ -614,23 +653,21 @@ public class Inventaris extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Inventaris.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PerusahaanPelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Inventaris.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PerusahaanPelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Inventaris.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PerusahaanPelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Inventaris.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PerusahaanPelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Inventaris dialog = new Inventaris(new javax.swing.JFrame(), true);
+                PerusahaanPelanggan dialog = new PerusahaanPelanggan(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -645,6 +682,7 @@ public class Inventaris extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnCari;
+    private javax.swing.JButton btnCariPelanggan;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambah;
@@ -655,17 +693,18 @@ public class Inventaris extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JPanel mid;
-    private javax.swing.JTable tabelInventaris;
+    private javax.swing.JTable tabelPelanggan;
+    private javax.swing.JTextField txtAlamat;
     private javax.swing.JTextField txtCari;
-    private javax.swing.JTextArea txtDeskripsi;
     private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtJumlah;
+    private javax.swing.JTextField txtIdPelanggan;
+    private javax.swing.JTextField txtJenis;
     private javax.swing.JTextField txtNama;
     // End of variables declaration//GEN-END:variables
 }

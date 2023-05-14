@@ -86,6 +86,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         txtNamaJabatan.setEnabled(true);
         txtGaji.setEnabled(true);
         txtDeskripsi.setEnabled(true);
+        btnSimpan.setEnabled(false);
         btnUbah.setEnabled(true);
         btnHapus.setEnabled(true);
     }
@@ -438,6 +439,8 @@ public class JabatanKaryawan extends javax.swing.JDialog {
     }//GEN-LAST:event_tabelJabatanMouseClicked
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        disableButton();
+        clear();
         enableButton();
     }//GEN-LAST:event_btnTambahActionPerformed
 

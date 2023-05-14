@@ -10,14 +10,14 @@ package eo_management;
  * @author it
  */
 public class UserSession {
-    private static int u_id;
+    private static String u_id;
     private static String u_username;
      
-    public static int getU_id() {
+    public static String getU_id() {
         return u_id;
     }
  
-    public static void setU_id(int u_id) {
+    public static void setU_id(String u_id) {
         UserSession.u_id = u_id;
     }
  
