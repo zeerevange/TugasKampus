@@ -74,6 +74,8 @@ public class Menu extends javax.swing.JFrame {
         //menampilkan nama dari fungsi UserSession
         labelUsername.setText(UserSession.getU_username());
         
+        labelUserID.setText(UserSession.getU_id());
+        
         //membuat layar menu menjadi full screen
 //        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
@@ -157,7 +159,7 @@ public class Menu extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         labelUsername = new javax.swing.JLabel();
-        labelUsername1 = new javax.swing.JLabel();
+        labelUserID = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         panelJam = new javax.swing.JPanel();
         time = new javax.swing.JLabel();
@@ -209,6 +211,7 @@ public class Menu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu Utama Coy");
+        getContentPane().setLayout(new java.awt.BorderLayout());
 
         header.setBackground(new java.awt.Color(11, 36, 71));
         header.setPreferredSize(new java.awt.Dimension(1386, 100));
@@ -308,9 +311,9 @@ public class Menu extends javax.swing.JFrame {
         labelUsername.setForeground(new java.awt.Color(255, 255, 255));
         labelUsername.setText("username");
 
-        labelUsername1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        labelUsername1.setForeground(new java.awt.Color(255, 255, 255));
-        labelUsername1.setText("userId");
+        labelUserID.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        labelUserID.setForeground(new java.awt.Color(255, 255, 255));
+        labelUserID.setText("userId");
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -328,7 +331,7 @@ public class Menu extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelUsername1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelUserID, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
@@ -338,7 +341,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
-                        .addComponent(labelUsername1))
+                        .addComponent(labelUserID))
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
                         .addComponent(labelUsername)))
@@ -433,7 +436,7 @@ public class Menu extends javax.swing.JFrame {
         });
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jumlah Karyawan", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jumlah Karyawan", 2, 0, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         jPanel2.setOpaque(false);
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -466,7 +469,7 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel6.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, -1, -1));
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jumlah Pelanggan", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jumlah Pelanggan", 2, 0, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         jPanel5.setOpaque(false);
 
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -499,7 +502,7 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel6.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 22, -1, -1));
 
-        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jumlah Paket", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jumlah Paket", 2, 0, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         jPanel8.setOpaque(false);
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -532,7 +535,7 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel6.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 20, -1, 210));
 
-        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jumlah Inventaris", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jumlah Inventaris", 2, 0, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         jPanel9.setOpaque(false);
 
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -565,7 +568,7 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 300, -1, 200));
 
-        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jumlah Pesanan", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jumlah Pesanan", 2, 0, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         jPanel11.setOpaque(false);
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -903,8 +906,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jmlPesanan;
     private javax.swing.JLabel jmlPkt;
     private javax.swing.JLabel jmlPlgn;
+    private javax.swing.JLabel labelUserID;
     private javax.swing.JLabel labelUsername;
-    private javax.swing.JLabel labelUsername1;
     private javax.swing.JMenuItem menuExit;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenuItem menuInventaris;
