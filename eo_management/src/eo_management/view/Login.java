@@ -7,6 +7,7 @@ package eo_management.view;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import eo_management.UserSession;
+import eo_management.PasswordSecure;
 import eo_management.koneksi.koneksi;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -22,6 +23,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+
 /**
  *
  * @author it
@@ -31,6 +33,7 @@ public class Login extends javax.swing.JFrame {
         private int mouseX;
         private int mouseY;
         UserSession karyawanSession = new UserSession();
+        PasswordSecure passwordSecure = new PasswordSecure();
         
     /**
      * Creates new form Login
@@ -78,7 +81,7 @@ public class Login extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtUserId = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
         cbxShow = new javax.swing.JCheckBox();
@@ -87,6 +90,7 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login Dulu Mas Bro");
+        getContentPane().setLayout(new java.awt.BorderLayout());
 
         jPanel2.setBackground(new java.awt.Color(11, 36, 71));
         jPanel2.setPreferredSize(new java.awt.Dimension(650, 20));
@@ -154,12 +158,12 @@ public class Login extends javax.swing.JFrame {
         );
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
-        jLabel2.setText("User ID");
+        jLabel2.setText("Email");
 
         jLabel3.setFont(new java.awt.Font("Arial", 0, 48)); // NOI18N
         jLabel3.setText("Login");
 
-        txtUserId.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        txtEmail.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         jLabel4.setText("Password");
@@ -209,7 +213,7 @@ public class Login extends javax.swing.JFrame {
                                 .addComponent(cbxShow)
                                 .addComponent(jLabel2)
                                 .addComponent(jLabel4)
-                                .addComponent(txtUserId)
+                                .addComponent(txtEmail)
                                 .addComponent(jSeparator1)
                                 .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -227,7 +231,7 @@ public class Login extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtUserId, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -246,29 +250,50 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-                String login = txtUserId.getText();
+                String email = txtEmail.getText();
                 String password = txtPassword.getText();
                 
-                if (login.isEmpty() || password.isEmpty()) {
+                if (email.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Harap Masukkan Username dan Password Terlebih Dahulu !");
                 } else {
-                           String sql = "SELECT * FROM user WHERE id_user= ? AND password =? ";
+                           String user_check_query = "SELECT * FROM karyawan JOIN user ON karyawan.id = user.karyawan_id WHERE karyawan.email = ?;";
+                           String sql = "SELECT * FROM user JOIN karyawan ON user.karyawan_id = karyawan.id WHERE karyawan.email = ? AND user.password = ?;";
                            try {
-                                   PreparedStatement ps = conn.prepareStatement(sql);
-                                   ps.setString(1, login);
-                                   ps.setString(2, password);
-                                   ResultSet rs = ps.executeQuery();
-                                   if (rs.next()) {
-                                       UserSession.setU_id(rs.getString("id_user"));
-//                                       UserSession.setU_username(rs.getString("username"));
-                                           JOptionPane.showMessageDialog(null, "Selamat Datang Kembali " + login);
-                                           dispose();
-                                           new Menu().setVisible(true);
-                                           } else {
+                                    PreparedStatement user_mail_check = conn.prepareStatement(user_check_query);
+                                    user_mail_check.setString(1, email);
+                                    ResultSet result_user_check = user_mail_check.executeQuery();
+                                   
+                                    if (result_user_check.next()) {
+                                        String decodedPassword = passwordSecure.md5Decode(password);
+                                        String hashedPassword = result_user_check.getString("password");
+                                        
+                                        if (hashedPassword.equals(decodedPassword)) {
+                                            System.out.println("Passwords match!");
+                                            PreparedStatement user_validate = conn.prepareStatement(sql);
+                                            user_validate.setString(1, email);
+                                            user_validate.setString(2, passwordSecure.md5Encode(password));
+                                            ResultSet result_user_match_pass = user_validate.executeQuery();
+                                            if (result_user_match_pass.next()) {
+                                                UserSession.setU_id(result_user_match_pass.getString("id"));
+                                                UserSession.setU_username(result_user_match_pass.getString("nama"));
+                                                JOptionPane.showMessageDialog(null, "Selamat Datang Kembali " + result_user_match_pass.getString("nama"));
+                                                dispose();
+                                                new Menu().setVisible(true);
+                                            } else {
                                                 JOptionPane.showMessageDialog(null, "Username atau Password Salah");
                                             }
+                                       } else {
+                                           JOptionPane.showMessageDialog(null, "Password Salah!");
+                                       }
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Email Tidak Terdaftar!");
+                                    }
+//                                   
+                                   
+//                                    
+                                    
                             } catch (SQLException e) {
-                                            JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat melakukan koneksi ke database: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat melakukan koneksi ke database: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                           }
                     }
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -340,7 +365,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JTextField txtUserId;
     // End of variables declaration//GEN-END:variables
 }
