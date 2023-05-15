@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -40,6 +41,10 @@ public class KategoriGames extends javax.swing.JDialog {
         initUI();
         dataTable();
         disableButton();
+    }
+    //colorchange
+    public void changecolor(JPanel hover, Color rand) {
+        hover.setBackground(rand);
     }
     
     private void initUI(){ 
@@ -139,6 +144,8 @@ class HeaderRenderer implements TableCellRenderer {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        ButtonClose = new javax.swing.JPanel();
+        exit = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
@@ -157,6 +164,7 @@ class HeaderRenderer implements TableCellRenderer {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Data Kategori Games");
+        setUndecorated(true);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(11, 36, 71));
@@ -165,6 +173,33 @@ class HeaderRenderer implements TableCellRenderer {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Kategori Games");
 
+        ButtonClose.setBackground(new java.awt.Color(11, 36, 71));
+        ButtonClose.setPreferredSize(new java.awt.Dimension(60, 0));
+        ButtonClose.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ButtonCloseMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ButtonCloseMouseExited(evt);
+            }
+        });
+        ButtonClose.setLayout(new java.awt.BorderLayout());
+
+        exit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/Close.png"))); // NOI18N
+        exit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exitMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                exitMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                exitMouseExited(evt);
+            }
+        });
+        ButtonClose.add(exit, java.awt.BorderLayout.CENTER);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -172,11 +207,15 @@ class HeaderRenderer implements TableCellRenderer {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(307, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(253, 253, 253))
+                .addGap(193, 193, 193)
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -453,6 +492,31 @@ class HeaderRenderer implements TableCellRenderer {
         editButton();
     }//GEN-LAST:event_tabelRoleMouseClicked
 
+    private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked
+        String ObjButton[] = {"YES","NO"};
+        int pilihan = JOptionPane.showOptionDialog(null,"Ingin keluar halaman ?","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+            null,ObjButton,ObjButton[1]);
+        if(pilihan == 0){
+            this.dispose();
+        }
+    }//GEN-LAST:event_exitMouseClicked
+
+    private void exitMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseEntered
+        changecolor(ButtonClose, Color.RED);
+    }//GEN-LAST:event_exitMouseEntered
+
+    private void exitMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseExited
+        changecolor(ButtonClose, new Color (11,36,71));
+    }//GEN-LAST:event_exitMouseExited
+
+    private void ButtonCloseMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ButtonCloseMouseEntered
+
+    }//GEN-LAST:event_ButtonCloseMouseEntered
+
+    private void ButtonCloseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ButtonCloseMouseExited
+
+    }//GEN-LAST:event_ButtonCloseMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -497,11 +561,13 @@ class HeaderRenderer implements TableCellRenderer {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel ButtonClose;
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnUbah;
+    private javax.swing.JLabel exit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
