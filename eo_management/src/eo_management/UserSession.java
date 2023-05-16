@@ -12,20 +12,38 @@ package eo_management;
 public class UserSession {
     private static String u_id;
     private static String u_username;
+    private static String u_email;
+    private static String u_no_hp;
      
-    public static String getU_id() {
-        return u_id;
+    public String getU_id() {
+        return this.u_id;
     }
  
-    public static void setU_id(String u_id) {
-        UserSession.u_id = u_id;
+    public void setU_id(String u_id) {
+        this.u_id = u_id;
     }
  
-    public static String getU_username() {
-        return u_username;
+    public String getU_username() {
+        return this.u_username;
     }
     
-    public static void setU_username(String u_username) {
-        UserSession.u_username = u_username;
+    public void setU_username(String u_username) {
+        this.u_username = u_username;
+    }
+    
+    public void setU_Email(String u_email) {
+        this.u_email = u_email;
+    }
+    
+    public String getU_Email() {
+        return this.u_email;
+    }
+    
+    public void setU_NoHp(String u_no_hp) {
+        this.u_no_hp = u_no_hp;
+    }
+    
+    public String getU_NoHp() {
+        return this.u_no_hp;
     }
 }
