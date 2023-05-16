@@ -30,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
 public class PerusahaanPelanggan extends javax.swing.JDialog {
          private Connection conn = new koneksi().connect();
          private DefaultTableModel tabmode;
+         public String id, nama, notelpon, email;
     /**
      * Creates new form Pelanggan
      */
@@ -64,6 +65,13 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     //colorchange
     public void changecolor(JPanel hover, Color rand) {
         hover.setBackground(rand);
+    }
+    
+    //method insert nama pelanggan dari popuppelanggan
+    public void itemTerpilih(){
+        PopUpPelanggan Pp = new PopUpPelanggan(this, true);
+        Pp.plgn = this;
+        txtNama.setText(nama);
     }
     
      private void initUI(){ 
@@ -674,7 +682,10 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnCariPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPelangganActionPerformed
-        // TODO add your handling code here:
+        new PopUpPelanggan(this, rootPaneCheckingEnabled).setVisible(true);
+//        Pp.plgn = this;
+//        Pp.setVisible(true);
+//        Pp.setResizable(false);
     }//GEN-LAST:event_btnCariPelangganActionPerformed
 
     private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked
