@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
@@ -48,7 +49,7 @@ public class Karyawan extends javax.swing.JDialog {
         disableButton();
         clear();
         kode_id_otomatis();
-        
+        combobox();
         //fungsi cari
         txtCari.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -213,6 +214,22 @@ public class Karyawan extends javax.swing.JDialog {
             } tabelKaryawan.setModel(tabmode);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void combobox(){
+        try {
+            String sql = "SELECT id, nama FROM jabatan_karyawan";
+            Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while (hasil.next()) {
+                    int id = hasil.getInt("id");
+                    String nama = hasil.getString("nama");
+                    String item = id + " - " + nama;
+                    cbxJabatan.addItem(item);
+            }
+        } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error memunculkan combobox");
         }
     }
     /**
@@ -406,10 +423,12 @@ public class Karyawan extends javax.swing.JDialog {
         jLabel7.setText("Nama Karyawan     :");
 
         radioLaki.setBackground(new java.awt.Color(255, 255, 255));
+        pilihKelamin.add(radioLaki);
         radioLaki.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         radioLaki.setText("Laki-Laki");
 
         radioPerempuan.setBackground(new java.awt.Color(255, 255, 255));
+        pilihKelamin.add(radioPerempuan);
         radioPerempuan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         radioPerempuan.setText("Perempuan");
 
@@ -596,6 +615,7 @@ public class Karyawan extends javax.swing.JDialog {
         disableButton();
         clear();
         enableButton();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
@@ -638,7 +658,9 @@ public class Karyawan extends javax.swing.JDialog {
                             stat.setString(3, pilihKelamin);
                             stat.setString(4, txtNoTelpon.getText());
                             stat.setString(5, txtEmail.getText());
-                            stat.setString(6, cbxJabatan.getSelectedItem().toString());
+                            String selectedItem = cbxJabatan.getSelectedItem().toString();
+                            int selectedId = Integer.parseInt(selectedItem.split(" - ")[0]);
+                            stat.setInt(6, selectedId);
                             stat.executeUpdate();
 
                             // Ambil nilai id yang di-generate oleh basis data
@@ -698,17 +720,20 @@ public class Karyawan extends javax.swing.JDialog {
                         stat.setString(2, pilihKelamin);
                         stat.setString(3, txtNoTelpon.getText());
                         stat.setString(4, txtEmail.getText());
-                        stat.setString(5, cbxJabatan.getSelectedItem().toString());
+                        String selectedItem = cbxJabatan.getSelectedItem().toString();
+                        int selectedId = Integer.parseInt(selectedItem.split(" - ")[0]);
+                        stat.setInt(5, selectedId);
                         stat.executeUpdate();
                         JOptionPane.showMessageDialog(null, "Data berhasil diubah");
-                        dataTable();
-                        disableButton();
-                        clear();
-                         kode_id_otomatis();
+                        
                         } catch (SQLException e) {
                         JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         }
             }
+            dataTable();
+            disableButton();
+            clear();
+            kode_id_otomatis();
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
@@ -731,6 +756,7 @@ public class Karyawan extends javax.swing.JDialog {
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         disableButton();
         clear();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
@@ -768,7 +794,18 @@ public class Karyawan extends javax.swing.JDialog {
         }
         txtNoTelpon.setText(tabelKaryawan.getValueAt(bar,3).toString());
         txtEmail.setText(tabelKaryawan.getValueAt(bar,4).toString());
-        cbxJabatan.setSelectedItem(tabelKaryawan.getValueAt(bar,5).toString());
+        String jabatanValue = tabelKaryawan.getValueAt(bar,5).toString();
+        String jabatanId = jabatanValue.split(" - ")[0];
+
+        DefaultComboBoxModel<String> cbxModel = (DefaultComboBoxModel<String>) cbxJabatan.getModel();
+        for (int i = 0; i < cbxModel.getSize(); i++) {
+            String item = cbxModel.getElementAt(i);
+            String itemId = item.split(" - ")[0];
+        if (itemId.equals(jabatanId)) {
+            cbxJabatan.setSelectedIndex(i);
+            break;
+        }
+    }
         editButton();
     }//GEN-LAST:event_tabelKaryawanMouseClicked
 
