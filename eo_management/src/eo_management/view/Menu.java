@@ -39,7 +39,7 @@ public class Menu extends javax.swing.JFrame {
             
             @Override
             public void actionPerformed(ActionEvent evt) {
-            jam.setText(new WaktuSekarang().getWkt());
+            
             }
             
             };
