@@ -43,7 +43,7 @@ public class Karyawan extends javax.swing.JDialog {
         //set ketengah layar
         initUI();
 //        dataToComboBox();
-        dataTable();
+        dataTable("master");
         enableButton();
         editButton();
         disableButton();
@@ -54,17 +54,17 @@ public class Karyawan extends javax.swing.JDialog {
         txtCari.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-        dataTable();
+        dataTable("cari");
         }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                dataTable();
+                dataTable("master");
         }
 
         @Override
         public void changedUpdate(DocumentEvent e) {
-            dataTable();
+            dataTable("master");
         }
         });
     }
@@ -189,17 +189,20 @@ public class Karyawan extends javax.swing.JDialog {
         }
     }
     
-    public void dataTable() {
+    public void dataTable(String type_query) {
         Object[] header = {"ID", "Nama Karyawan", "Jenis Kelamin", "No Telpon" ," Email", "Jabatan"};
         tabmode = new DefaultTableModel (null, header);
         String cariitem = txtCari.getText();
         
         try {
-            String sql = "SELECT * FROM karyawan WHERE id LIKE '%"
-                    + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or jenis_kelamin LIKE '%"
-                    + cariitem+ "%' or no_telp LIKE '%"
-                    + cariitem+ "%' ORDER BY id asc";
+            String sql;
+            
+            if (type_query != "cari") {
+                sql = "SELECT * FROM karyawan JOIN jabatan_karyawan ON karyawan.id_jabatan_karyawan = jabatan_karyawan.id;";
+            } else {
+                sql = "SELECT * FROM karyawan JOIN jabatan_karyawan ON karyawan.id_jabatan_karyawan = jabatan_karyawan.id WHERE karyawan.id LIKE '%"+cariitem+"%' OR karyawan.nama LIKE '%"+cariitem+"%' OR karyawan.jenis_kelamin LIKE '%"+cariitem+"%' OR karyawan.no_telp LIKE '%"+cariitem+"%' OR karyawan.email LIKE '%"+cariitem+"%' OR jabatan_karyawan.nama LIKE '%"+cariitem+"%'";
+            }
+            
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
@@ -209,7 +212,7 @@ public class Karyawan extends javax.swing.JDialog {
                     hasil.getString(3),
                     hasil.getString(4),
                     hasil.getString(5),
-                    hasil.getString(6),
+                    hasil.getString(8),
                 });
             } tabelKaryawan.setModel(tabmode);
         } catch (SQLException e) {
@@ -318,7 +321,7 @@ public class Karyawan extends javax.swing.JDialog {
             .addGroup(headerLayout.createSequentialGroup()
                 .addGap(563, 563, 563)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 491, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 507, Short.MAX_VALUE)
                 .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         headerLayout.setVerticalGroup(
@@ -338,7 +341,7 @@ public class Karyawan extends javax.swing.JDialog {
         footer.setLayout(footerLayout);
         footerLayout.setHorizontalGroup(
             footerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1344, Short.MAX_VALUE)
+            .addGap(0, 1360, Short.MAX_VALUE)
         );
         footerLayout.setVerticalGroup(
             footerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -677,7 +680,7 @@ public class Karyawan extends javax.swing.JDialog {
             }
             clear();
             kode_id_otomatis();
-            dataTable();
+            dataTable("master");
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
@@ -730,7 +733,7 @@ public class Karyawan extends javax.swing.JDialog {
                         JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         }
             }
-            dataTable();
+            dataTable("master");
             disableButton();
             clear();
             kode_id_otomatis();
@@ -749,7 +752,7 @@ public class Karyawan extends javax.swing.JDialog {
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                dataTable();
+                dataTable("master");
             }
     }//GEN-LAST:event_btnHapusActionPerformed
 
@@ -760,7 +763,7 @@ public class Karyawan extends javax.swing.JDialog {
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
-         dataTable();
+         dataTable("cari");
     }//GEN-LAST:event_btnCariActionPerformed
 
     private void txtCariKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyTyped
@@ -769,7 +772,7 @@ public class Karyawan extends javax.swing.JDialog {
 
     private void txtCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            dataTable();
+            dataTable("cari");
         }
     }//GEN-LAST:event_txtCariKeyPressed
 
@@ -796,16 +799,20 @@ public class Karyawan extends javax.swing.JDialog {
         txtEmail.setText(tabelKaryawan.getValueAt(bar,4).toString());
         String jabatanValue = tabelKaryawan.getValueAt(bar,5).toString();
         String jabatanId = jabatanValue.split(" - ")[0];
-
-        DefaultComboBoxModel<String> cbxModel = (DefaultComboBoxModel<String>) cbxJabatan.getModel();
-        for (int i = 0; i < cbxModel.getSize(); i++) {
-            String item = cbxModel.getElementAt(i);
-            String itemId = item.split(" - ")[0];
-        if (itemId.equals(jabatanId)) {
-            cbxJabatan.setSelectedIndex(i);
-            break;
+        
+        try {
+            String sql = "SELECT * FROM jabatan_karyawan WHERE nama = '"+jabatanId+"'";
+            Statement stat = conn.createStatement();
+            ResultSet hasil_cari = stat.executeQuery(sql);
+            if (hasil_cari.next()) {
+                int id = hasil_cari.getInt("id");
+                DefaultComboBoxModel<String> cbxModel = (DefaultComboBoxModel<String>) cbxJabatan.getModel();
+                cbxJabatan.setSelectedIndex(id);
+                System.out.println(id);
+            }
+        } catch (Exception e) {
+            System.out.println("hahah error");
         }
-    }
         editButton();
     }//GEN-LAST:event_tabelKaryawanMouseClicked
 
