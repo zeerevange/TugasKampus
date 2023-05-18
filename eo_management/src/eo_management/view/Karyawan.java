@@ -18,7 +18,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -47,7 +49,7 @@ public class Karyawan extends javax.swing.JDialog {
         disableButton();
         clear();
         kode_id_otomatis();
-        
+        combobox();
         //fungsi cari
         txtCari.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -65,6 +67,11 @@ public class Karyawan extends javax.swing.JDialog {
             dataTable();
         }
         });
+    }
+    
+    //colorchange
+    public void changecolor(JPanel hover, Color rand) {
+        hover.setBackground(rand);
     }
     
     private void initUI(){ 
@@ -209,6 +216,22 @@ public class Karyawan extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    private void combobox(){
+        try {
+            String sql = "SELECT id, nama FROM jabatan_karyawan";
+            Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while (hasil.next()) {
+                    int id = hasil.getInt("id");
+                    String nama = hasil.getString("nama");
+                    String item = id + " - " + nama;
+                    cbxJabatan.addItem(item);
+            }
+        } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error memunculkan combobox");
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -221,6 +244,8 @@ public class Karyawan extends javax.swing.JDialog {
         pilihKelamin = new javax.swing.ButtonGroup();
         header = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        ButtonClose = new javax.swing.JPanel();
+        exit = new javax.swing.JLabel();
         footer = new javax.swing.JPanel();
         mid = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -249,6 +274,8 @@ public class Karyawan extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Data Karyawan");
+        setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(1310, 700));
         setResizable(false);
 
         header.setBackground(new java.awt.Color(11, 36, 71));
@@ -257,6 +284,33 @@ public class Karyawan extends javax.swing.JDialog {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Karyawan");
 
+        ButtonClose.setBackground(new java.awt.Color(11, 36, 71));
+        ButtonClose.setPreferredSize(new java.awt.Dimension(60, 0));
+        ButtonClose.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ButtonCloseMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ButtonCloseMouseExited(evt);
+            }
+        });
+        ButtonClose.setLayout(new java.awt.BorderLayout());
+
+        exit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/Close.png"))); // NOI18N
+        exit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exitMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                exitMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                exitMouseExited(evt);
+            }
+        });
+        ButtonClose.add(exit, java.awt.BorderLayout.CENTER);
+
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
         headerLayout.setHorizontalGroup(
@@ -264,11 +318,15 @@ public class Karyawan extends javax.swing.JDialog {
             .addGroup(headerLayout.createSequentialGroup()
                 .addGap(563, 563, 563)
                 .addComponent(jLabel1)
-                .addContainerGap(577, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 491, Short.MAX_VALUE)
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+            .addGroup(headerLayout.createSequentialGroup()
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         getContentPane().add(header, java.awt.BorderLayout.PAGE_START);
@@ -280,7 +338,7 @@ public class Karyawan extends javax.swing.JDialog {
         footer.setLayout(footerLayout);
         footerLayout.setHorizontalGroup(
             footerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1370, Short.MAX_VALUE)
+            .addGap(0, 1344, Short.MAX_VALUE)
         );
         footerLayout.setVerticalGroup(
             footerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,6 +349,7 @@ public class Karyawan extends javax.swing.JDialog {
 
         mid.setBackground(new java.awt.Color(255, 255, 255));
         mid.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mid.setPreferredSize(new java.awt.Dimension(1300, 600));
 
         tabelKaryawan.setAutoCreateRowSorter(true);
         tabelKaryawan.setModel(new javax.swing.table.DefaultTableModel(
@@ -364,10 +423,12 @@ public class Karyawan extends javax.swing.JDialog {
         jLabel7.setText("Nama Karyawan     :");
 
         radioLaki.setBackground(new java.awt.Color(255, 255, 255));
+        pilihKelamin.add(radioLaki);
         radioLaki.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         radioLaki.setText("Laki-Laki");
 
         radioPerempuan.setBackground(new java.awt.Color(255, 255, 255));
+        pilihKelamin.add(radioPerempuan);
         radioPerempuan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         radioPerempuan.setText("Perempuan");
 
@@ -496,8 +557,13 @@ public class Karyawan extends javax.swing.JDialog {
         mid.setLayout(midLayout);
         midLayout.setHorizontalGroup(
             midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(midLayout.createSequentialGroup()
-                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, midLayout.createSequentialGroup()
+                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(midLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(midLayout.createSequentialGroup()
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(midLayout.createSequentialGroup()
@@ -514,25 +580,19 @@ public class Karyawan extends javax.swing.JDialog {
                             .addGroup(midLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(midLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 830, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(50, 50, 50))
         );
         midLayout.setVerticalGroup(
             midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(midLayout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtCari)
                     .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(midLayout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15)
@@ -541,8 +601,9 @@ public class Karyawan extends javax.swing.JDialog {
                             .addComponent(btnUbah)
                             .addComponent(btnHapus)
                             .addComponent(btnBatal)
-                            .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(19, 19, 19))
+                            .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1))
+                .addGap(106, 106, 106))
         );
 
         getContentPane().add(mid, java.awt.BorderLayout.CENTER);
@@ -554,6 +615,7 @@ public class Karyawan extends javax.swing.JDialog {
         disableButton();
         clear();
         enableButton();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
@@ -596,7 +658,9 @@ public class Karyawan extends javax.swing.JDialog {
                             stat.setString(3, pilihKelamin);
                             stat.setString(4, txtNoTelpon.getText());
                             stat.setString(5, txtEmail.getText());
-                            stat.setString(6, cbxJabatan.getSelectedItem().toString());
+                            String selectedItem = cbxJabatan.getSelectedItem().toString();
+                            int selectedId = Integer.parseInt(selectedItem.split(" - ")[0]);
+                            stat.setInt(6, selectedId);
                             stat.executeUpdate();
 
                             // Ambil nilai id yang di-generate oleh basis data
@@ -656,17 +720,20 @@ public class Karyawan extends javax.swing.JDialog {
                         stat.setString(2, pilihKelamin);
                         stat.setString(3, txtNoTelpon.getText());
                         stat.setString(4, txtEmail.getText());
-                        stat.setString(5, cbxJabatan.getSelectedItem().toString());
+                        String selectedItem = cbxJabatan.getSelectedItem().toString();
+                        int selectedId = Integer.parseInt(selectedItem.split(" - ")[0]);
+                        stat.setInt(5, selectedId);
                         stat.executeUpdate();
                         JOptionPane.showMessageDialog(null, "Data berhasil diubah");
-                        dataTable();
-                        disableButton();
-                        clear();
-                         kode_id_otomatis();
+                        
                         } catch (SQLException e) {
                         JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         }
             }
+            dataTable();
+            disableButton();
+            clear();
+            kode_id_otomatis();
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
@@ -689,6 +756,7 @@ public class Karyawan extends javax.swing.JDialog {
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         disableButton();
         clear();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
@@ -726,9 +794,45 @@ public class Karyawan extends javax.swing.JDialog {
         }
         txtNoTelpon.setText(tabelKaryawan.getValueAt(bar,3).toString());
         txtEmail.setText(tabelKaryawan.getValueAt(bar,4).toString());
-        cbxJabatan.setSelectedItem(tabelKaryawan.getValueAt(bar,5).toString());
+        String jabatanValue = tabelKaryawan.getValueAt(bar,5).toString();
+        String jabatanId = jabatanValue.split(" - ")[0];
+
+        DefaultComboBoxModel<String> cbxModel = (DefaultComboBoxModel<String>) cbxJabatan.getModel();
+        for (int i = 0; i < cbxModel.getSize(); i++) {
+            String item = cbxModel.getElementAt(i);
+            String itemId = item.split(" - ")[0];
+        if (itemId.equals(jabatanId)) {
+            cbxJabatan.setSelectedIndex(i);
+            break;
+        }
+    }
         editButton();
     }//GEN-LAST:event_tabelKaryawanMouseClicked
+
+    private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked
+        String ObjButton[] = {"YES","NO"};
+        int pilihan = JOptionPane.showOptionDialog(null,"Ingin keluar halaman ?","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+            null,ObjButton,ObjButton[1]);
+        if(pilihan == 0){
+            this.dispose();
+        }
+    }//GEN-LAST:event_exitMouseClicked
+
+    private void exitMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseEntered
+        changecolor(ButtonClose, Color.RED);
+    }//GEN-LAST:event_exitMouseEntered
+
+    private void exitMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseExited
+        changecolor(ButtonClose, new Color (11,36,71));
+    }//GEN-LAST:event_exitMouseExited
+
+    private void ButtonCloseMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ButtonCloseMouseEntered
+
+    }//GEN-LAST:event_ButtonCloseMouseEntered
+
+    private void ButtonCloseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ButtonCloseMouseExited
+
+    }//GEN-LAST:event_ButtonCloseMouseExited
 
     /**
      * @param args the command line arguments
@@ -773,6 +877,7 @@ public class Karyawan extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel ButtonClose;
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnCari;
     private javax.swing.JButton btnHapus;
@@ -780,6 +885,7 @@ public class Karyawan extends javax.swing.JDialog {
     private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnUbah;
     private javax.swing.JComboBox<String> cbxJabatan;
+    private javax.swing.JLabel exit;
     private javax.swing.JPanel footer;
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel1;

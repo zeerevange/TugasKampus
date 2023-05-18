@@ -8,6 +8,7 @@ package eo_management.view;
 import com.formdev.flatlaf.FlatLightLaf;
 import eo_management.UserSession;
 import eo_management.PasswordSecure;
+import eo_management.PasswordSecure;
 import eo_management.koneksi.koneksi;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -99,7 +100,7 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(81, 81, 81));
         jLabel3.setText("Login Administrator");
 
-        txtUserId.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        txtEmail.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         jLabel4.setText("Password");
@@ -226,8 +227,11 @@ public class Login extends javax.swing.JFrame {
                 String password = txtPassword.getText();
                 
                 if (email.isEmpty() || password.isEmpty()) {
+                if (email.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Harap Masukkan Username dan Password Terlebih Dahulu !");
                 } else {
+                           String user_check_query = "SELECT * FROM karyawan JOIN user ON karyawan.id = user.karyawan_id WHERE karyawan.email = ?;";
+                           String sql = "SELECT * FROM user JOIN karyawan ON user.karyawan_id = karyawan.id WHERE karyawan.email = ? AND user.password = ?;";
                            String user_check_query = "SELECT * FROM karyawan JOIN user ON karyawan.id = user.karyawan_id WHERE karyawan.email = ?;";
                            String sql = "SELECT * FROM user JOIN karyawan ON user.karyawan_id = karyawan.id WHERE karyawan.email = ? AND user.password = ?;";
                            try {
@@ -338,7 +342,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JTextField txtUserId;
     // End of variables declaration//GEN-END:variables
 }
