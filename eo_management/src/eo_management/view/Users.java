@@ -5,22 +5,157 @@
  */
 package eo_management.view;
 
+import eo_management.PasswordSecure;
+import eo_management.koneksi.koneksi;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author it
  */
 public class Users extends javax.swing.JDialog {
-
+        private Connection conn = new koneksi().connect();
+        private DefaultTableModel tabmode;
     /**
      * Creates new form Users
      */
     public Users(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        initUI();
+//        dataToComboBox();
+        dataTable("master");
+        enableButton();
+        editButton();
+        disableButton();
+        clear();
+        combobox();
+        
+        //fungsi cari
+        txtCari.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+        dataTable("cari");
+        }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                dataTable("master");
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            dataTable("master");
+        }
+        });
     }
 
+    private void initUI(){ 
+        getContentPane().setBackground(new Color(245, 245, 245));
+        
+        Dimension windowSize = getSize();
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Point centerPoint = ge.getCenterPoint();
+        int dx = centerPoint.x - windowSize.width / 2;
+        int dy = centerPoint.y - windowSize.height / 2;    
+        setLocation(dx, dy);
+    }
+    
+    private void enableButton() {
+        txtId.setEnabled(true);
+        txtPassword.setEnabled(true);
+        cbxRole.setEnabled(true);
+        txtKaryawan.setEnabled(true);
+        btnSimpan.setEnabled(true);
+    }
+    
+    private void editButton(){
+        txtId.setEnabled(true);
+        txtPassword.setEnabled(true);
+        cbxRole.setEnabled(true);
+        txtKaryawan.setEnabled(true);
+        btnSimpan.setEnabled(false);
+        btnUbah.setEnabled(true);
+        btnHapus.setEnabled(true);
+    }
+    
+    private void clear() {
+        txtId.setText("");
+        txtPassword.setText("");
+        cbxRole.setSelectedIndex(0);
+        txtKaryawan.setText("");
+    }
+    
+    private void disableButton(){
+        txtId.setEnabled(false);
+        txtPassword.setEnabled(false);
+        cbxRole.setEnabled(false);
+        txtKaryawan.setEnabled(false);
+        btnTambah.setEnabled(true);
+        btnSimpan.setEnabled(false);
+        btnUbah.setEnabled(false);
+        btnHapus.setEnabled(false);
+    }
+    
+     public void dataTable(String type_query) {
+        Object[] header = {"ID", "Password", "Role", "Karyawan"};
+        tabmode = new DefaultTableModel (null, header);
+        String cariitem = txtCari.getText();
+        
+        try {
+            String sql;
+            
+            if (type_query != "cari") {
+                sql = "SELECT * FROM user JOIN role ON user.role_id = role.id_role;";
+            } else {
+                sql = "SELECT * FROM user JOIN karyawan ON user.karyawan_id = karyawan.id WHERE user.id_user LIKE '%"+cariitem+"%'  OR karyawan.nama LIKE '%"+cariitem+"%'";
+            }
+            
+            Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while (hasil.next()) {
+                tabmode.addRow(new Object[] {
+                    hasil.getString(1),
+                    hasil.getString(2),
+                    hasil.getString(3),
+                    hasil.getString(4),
+                });
+            } tabelUsers.setModel(tabmode);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+     
+     private void combobox(){
+        try {
+            String sql = "SELECT id_role, nama FROM role";
+            Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while (hasil.next()) {
+                    int id = hasil.getInt("id_role");
+                    String nama = hasil.getString("nama");
+                    String item = id + " - " + nama;
+                    cbxRole.addItem(item);
+            }
+        } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error memunculkan combobox");
+        }
+    }
+     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,9 +175,9 @@ public class Users extends javax.swing.JDialog {
         txtId = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         cbxRole = new javax.swing.JComboBox<>();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        txtPassword = new javax.swing.JPasswordField();
         btnCariId = new javax.swing.JButton();
+        txtKaryawan = new javax.swing.JTextField();
         btnBatal = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
         btnSimpan = new javax.swing.JButton();
@@ -51,11 +186,12 @@ public class Users extends javax.swing.JDialog {
         txtCari = new javax.swing.JTextField();
         btnCari = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelUsers = new javax.swing.JTable();
         footer = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Data Users Buat Login");
+        setPreferredSize(new java.awt.Dimension(1366, 650));
         setResizable(false);
 
         header.setBackground(new java.awt.Color(11, 36, 71));
@@ -115,6 +251,8 @@ public class Users extends javax.swing.JDialog {
             }
         });
 
+        txtKaryawan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -131,11 +269,11 @@ public class Users extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtId)
-                    .addComponent(cbxRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPasswordField1)
+                    .addComponent(cbxRole, 0, 254, Short.MAX_VALUE)
+                    .addComponent(txtPassword)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtKaryawan)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCariId, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -146,21 +284,22 @@ public class Users extends javax.swing.JDialog {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtId)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbxRole, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnCariId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(51, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnCariId, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                    .addComponent(txtKaryawan, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(51, 51, 51))
         );
 
         btnBatal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/return.png"))); // NOI18N
@@ -239,7 +378,7 @@ public class Users extends javax.swing.JDialog {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -250,7 +389,12 @@ public class Users extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tabelUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelUsersMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabelUsers);
 
         javax.swing.GroupLayout midLayout = new javax.swing.GroupLayout(mid);
         mid.setLayout(midLayout);
@@ -284,24 +428,22 @@ public class Users extends javax.swing.JDialog {
             midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(midLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtCari, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(btnCari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(midLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59)
+                        .addGap(36, 36, 36)
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnSimpan)
                             .addComponent(btnUbah)
                             .addComponent(btnHapus)
                             .addComponent(btnBatal)
                             .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(midLayout.createSequentialGroup()
-                        .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtCari, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                            .addComponent(btnCari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)))
-                .addGap(52, 52, 52))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         getContentPane().add(mid, java.awt.BorderLayout.CENTER);
@@ -326,156 +468,115 @@ public class Users extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbxRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxRoleActionPerformed
-        //        int idx = cbxJabatan.getSelectedIndex();
-        //
-        //        if (arrJabatan.size() > 0) {
-            //            id_jab = arrJabatan.get(idx).getId();
-            //            gaji = arrJabatan.get(idx).getGaji();
-            //        }
+
     }//GEN-LAST:event_cbxRoleActionPerformed
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
-//        disableButton();
-//        clear();
+        disableButton();
+        clear();
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-//        int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
-//        if (ok == 0) {
-//            String sql = "Delete FROM karyawan WHERE id = '" + txtId.getText()+"'";
-//            try {
-//                PreparedStatement stat = conn.prepareStatement(sql);
-//                stat.executeUpdate();
-//                JOptionPane.showMessageDialog(null, "data berhasil terhapus");
-//                clear();
-//                disableButton();
-//            } catch (SQLException e) {
-//                JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//            }
-//            dataTable();
-//        }
+                int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
+                   if (ok == 0) {
+                       String sql = "Delete FROM user WHERE id_user = '" + txtId.getText()+"'";
+                       try {
+                           PreparedStatement stat = conn.prepareStatement(sql);
+                           stat.executeUpdate();
+                           JOptionPane.showMessageDialog(null, "data berhasil terhapus");
+                           clear();
+                           disableButton();
+                       } catch (SQLException e) {
+                           JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                       }
+                       dataTable("master");
+                   }
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-//        String nama = txtNama.getText().trim();
-//        String email = txtEmail.getText().trim();
-//        String noTelpon = txtNoTelpon.getText().trim();
-//        String pilihKelamin = "";
-//        String pilihJabatan = cbxRole.getSelectedItem().toString();
-//
-//        if (radioLaki.isSelected()) {
-//            pilihKelamin = "Laki-Laki";
-//        } else if (radioPerempuan.isSelected()) {
-//            pilihKelamin = "Perempuan";
-//        }
-//
-//        if (!nama.matches("^[a-zA-Z\\s]+$")) {
-//            JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
-//            txtNama.requestFocus();
-//        } else if (pilihKelamin.equals("")) {
-//            JOptionPane.showMessageDialog(null, "Pilih kelamin terlebih dahulu");
-//            radioLaki.requestFocus();
-//        } else if (noTelpon.isEmpty() || !noTelpon.matches("\\d+")) {
-//            JOptionPane.showMessageDialog(null, "Isi no telpon dengan format angka saja");
-//            txtNoTelpon.requestFocus();
-//        } else if (txtEmail.getText().isEmpty()) {
-//            JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
-//            txtEmail.requestFocus();
-//        } else if (!isValidEmailAddress(email)) {
-//            JOptionPane.showMessageDialog(null, "Alamat email tidak valid");
-//            txtEmail.requestFocus();
-//        } else if (pilihJabatan.equals("Pilihan")) {
-//            JOptionPane.showMessageDialog(null, "Pilih jabatan terlebih dahulu");
-//            cbxRole.requestFocus();
-//        } else {
-//            String sql = "INSERT INTO karyawan VALUES (?,?,?,?,?,?)";
-//            try {
-//                PreparedStatement stat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//                stat.setString(1, txtId.getText());
-//                stat.setString(2, txtNama.getText());
-//                stat.setString(3, pilihKelamin);
-//                stat.setString(4, txtNoTelpon.getText());
-//                stat.setString(5, txtEmail.getText());
-//                stat.setString(6, cbxRole.getSelectedItem().toString());
-//                stat.executeUpdate();
-//
-//                // Ambil nilai id yang di-generate oleh basis data
-//                //                            ResultSet generatedKeys = stat.getGeneratedKeys();
-//                //                            if (generatedKeys.next()) {
-//                    //                                int idBaru = generatedKeys.getInt(1);
-//                    //                                JOptionPane.showMessageDialog(null,"Data Tersimpan dengan ID " + idBaru);
-//                    //                            }
-//                JOptionPane.showMessageDialog(null,"Data Tersimpan");
-//
-//            } catch (SQLException e) {
-//                JOptionPane.showMessageDialog(null,"Gagal tersimpan. Pesan error : " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//            }
-//        }
-//        clear();
-//        kode_id_otomatis();
-//        dataTable();
+        
+        String sql = "INSERT INTO user VALUES (?,?,?,?)";
+                    try {
+                            PreparedStatement stat = conn.prepareStatement(sql);
+                            stat.setString(1, txtId.getText());
+                            
+                            // Mengenkripsi password sebelum disimpan ke database
+                            String encryptedPassword = PasswordSecure.md5Encode(txtPassword.getText());
+                            stat.setString(2, encryptedPassword);
+                            
+                            String selectedItem = cbxRole.getSelectedItem().toString();
+                            int selectedId = Integer.parseInt(selectedItem.split(" - ")[0]);
+                            stat.setInt(3, selectedId);
+                            
+                            // Mendapatkan data karyawan dari database berdasarkan pilihan pada txtKaryawan
+                            String selectedKaryawan = txtKaryawan.getText();
+                            String karyawanSql = "SELECT * FROM karyawan WHERE nama = ?";
+                            PreparedStatement karyawanStat = conn.prepareStatement(karyawanSql);
+                            karyawanStat.setString(1, selectedKaryawan);
+                            ResultSet karyawanResult = karyawanStat.executeQuery();
+                            if (karyawanResult.next()) {
+                                int karyawanId = karyawanResult.getInt("id");
+                                stat.setInt(4, karyawanId);
+                            } else {
+                                // Jika data karyawan tidak ditemukan, berikan nilai null atau sesuaikan dengan kebutuhan Anda
+                                stat.setNull(4, java.sql.Types.INTEGER);
+                            }
+
+                            stat.executeUpdate();
+                            JOptionPane.showMessageDialog(null, "Data Tersimpan");
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "Gagal tersimpan. Pesan error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+            clear();
+            dataTable("master");
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
-//        enableButton();
+        disableButton();
+        clear();
+        enableButton();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-//        String nama = txtNama.getText().trim();
-//        String email = txtEmail.getText().trim();
-//        String noTelpon = txtNoTelpon.getText().trim();
-//        String pilihKelamin = "";
-//        String pilihJabatan = cbxRole.getSelectedItem().toString();
-//
-//        if (radioLaki.isSelected()) {
-//            pilihKelamin = "Laki-Laki";
-//        } else if (radioPerempuan.isSelected()) {
-//            pilihKelamin = "Perempuan";
-//        }
-//
-//        if (!nama.matches("^[a-zA-Z\\s]+$")) {
-//            JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
-//            txtNama.requestFocus();
-//        } else if (pilihKelamin.equals("")) {
-//            JOptionPane.showMessageDialog(null, "Pilih kelamin terlebih dahulu");
-//            radioLaki.requestFocus();
-//        } else if (noTelpon.isEmpty() || !noTelpon.matches("\\d+")) {
-//            JOptionPane.showMessageDialog(null, "Isi no telpon dengan format angka saja");
-//            txtNoTelpon.requestFocus();
-//        } else if (txtEmail.getText().isEmpty()) {
-//            JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
-//            txtEmail.requestFocus();
-//        } else if (!isValidEmailAddress(email)) {
-//            JOptionPane.showMessageDialog(null, "Alamat email tidak valid");
-//            txtEmail.requestFocus();
-//        } else if (pilihJabatan.equals("Pilihan")) {
-//            JOptionPane.showMessageDialog(null, "Pilih jabatan terlebih dahulu");
-//            cbxRole.requestFocus();
-//        } else {
-//            try {
-//                String sql = "UPDATE karyawan SET nama=? , jenis_kelamin=? , no_telp=? , email=? , id_jabatan_karyawan=? WHERE id = '"
-//                + txtId.getText()+"'";
-//                PreparedStatement stat = conn.prepareStatement(sql);
-//                stat.setString(1, txtNama.getText());
-//                stat.setString(2, pilihKelamin);
-//                stat.setString(3, txtNoTelpon.getText());
-//                stat.setString(4, txtEmail.getText());
-//                stat.setString(5, cbxRole.getSelectedItem().toString());
-//                stat.executeUpdate();
-//                JOptionPane.showMessageDialog(null, "Data berhasil diubah");
-//                dataTable();
-//                disableButton();
-//                clear();
-//                kode_id_otomatis();
-//            } catch (SQLException e) {
-//                JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//            }
-//        }
+        String sql = "UPDATE user SET password=?, role_id=?, karyawan_id=? WHERE id_user = '"
+                            + txtId.getText()+"'";
+        try {
+            PreparedStatement stat = conn.prepareStatement(sql);
+
+            // Mengenkripsi password sebelum disimpan ke database
+            String encryptedPassword = PasswordSecure.md5Encode(txtPassword.getText());
+            stat.setString(1, encryptedPassword);
+
+            String selectedItem = cbxRole.getSelectedItem().toString();
+            int selectedId = Integer.parseInt(selectedItem.split(" - ")[0]);
+            stat.setInt(2, selectedId);
+
+            // Mendapatkan data karyawan dari database berdasarkan pilihan pada txtKaryawan
+            String selectedKaryawan = txtKaryawan.getText();
+            String karyawanSql = "SELECT * FROM karyawan WHERE nama = ?";
+            PreparedStatement karyawanStat = conn.prepareStatement(karyawanSql);
+            karyawanStat.setString(1, selectedKaryawan);
+            ResultSet karyawanResult = karyawanStat.executeQuery();
+            if (karyawanResult.next()) {
+                int karyawanId = karyawanResult.getInt("id");
+                stat.setInt(3, karyawanId);
+            } else {
+                // Jika data karyawan tidak ditemukan, berikan nilai null atau sesuaikan dengan kebutuhan Anda
+                stat.setNull(3, java.sql.Types.INTEGER);
+            }
+
+                stat.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Data Tersimpan");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Gagal tersimpan. Pesan error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    clear();
+    dataTable("master");
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void txtCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-//            dataTable();
+            dataTable("cari");
         }
     }//GEN-LAST:event_txtCariKeyPressed
 
@@ -484,12 +585,36 @@ public class Users extends javax.swing.JDialog {
     }//GEN-LAST:event_txtCariKeyTyped
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
-//        dataTable();
+        dataTable("cari");
     }//GEN-LAST:event_btnCariActionPerformed
 
     private void btnCariIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCariIdActionPerformed
+
+    private void tabelUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelUsersMouseClicked
+        int bar = tabelUsers.getSelectedRow();
+        txtId.setText(tabelUsers.getValueAt(bar,0).toString());
+        txtPassword.setText(tabelUsers.getValueAt(bar, 1).toString());
+        String roleValue = tabelUsers.getValueAt(bar, 2).toString();
+        txtKaryawan.setText(tabelUsers.getValueAt(bar, 3).toString());
+        String roleId = roleValue.split("-")[0];
+        
+        try {
+            String sql = "SELECT * FROM role WHERE nama = '"+roleId+"'";
+            Statement stat = conn.createStatement();
+            ResultSet hasil_cari = stat.executeQuery(sql);
+            if (hasil_cari.next()){
+                int id = hasil_cari.getInt("id_user");
+                DefaultComboBoxModel<String> cbxModel = (DefaultComboBoxModel<String>) cbxRole.getModel();
+                cbxRole.setSelectedIndex(id);
+                System.out.println(id);
+            }
+        } catch (Exception e) {
+            System.out.println("hahah error");
+        }
+        editButton();
+    }//GEN-LAST:event_tabelUsersMouseClicked
 
     /**
      * @param args the command line arguments
@@ -550,12 +675,12 @@ public class Users extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel mid;
+    private javax.swing.JTable tabelUsers;
     private javax.swing.JTextField txtCari;
     private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtKaryawan;
+    private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
 }
