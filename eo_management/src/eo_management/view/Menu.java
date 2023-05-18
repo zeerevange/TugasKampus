@@ -861,10 +861,6 @@ public class Menu extends javax.swing.JFrame {
         new KategoriGames (this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_menuSupplier1ActionPerformed
 
-    private void menuPerusahaanPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPerusahaanPelangganActionPerformed
-        new PerusahaanPelanggan (this, rootPaneCheckingEnabled).setVisible(true);
-    }//GEN-LAST:event_menuPerusahaanPelangganActionPerformed
-
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice screenDevice = env.getDefaultScreenDevice();
@@ -902,6 +898,10 @@ public class Menu extends javax.swing.JFrame {
     private void menuPaketAddonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPaketAddonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuPaketAddonActionPerformed
+
+    private void menuPerusahaanPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPerusahaanPelangganActionPerformed
+        new PerusahaanPelanggan (this, rootPaneCheckingEnabled, "0 ").setVisible(true);
+    }//GEN-LAST:event_menuPerusahaanPelangganActionPerformed
 
     /**
      * @param args the command line arguments
