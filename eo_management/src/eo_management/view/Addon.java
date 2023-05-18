@@ -159,7 +159,7 @@ public class Addon extends javax.swing.JFrame {
         btnBatal = new javax.swing.JButton();
         btnUbah = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(11, 36, 71));
 
@@ -461,7 +461,7 @@ public class Addon extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCariSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariSubActionPerformed
-    new SubKategoriAddon (this, rootPaneCheckingEnabled).setVisible(true);
+    new PopUpSubKategoriAddon (this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_btnCariSubActionPerformed
 
     private void tabelAddonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelAddonMouseClicked
