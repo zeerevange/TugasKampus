@@ -102,7 +102,7 @@ public class Addon extends javax.swing.JFrame {
     Object[] header = {"ID Addon", "Nama Addon", "Harga Addon", "Include", "Deskripsi","ID Subkategori"};
     tabmode = new DefaultTableModel (null, header);
     try {
-        String sql = "SELECT * FROM sub_kategori_addon ORDER BY id ASC";
+        String sql = "SELECT * FROM addon ORDER BY id ASC";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet hasil = ps.executeQuery();
              while (hasil.next()) {
