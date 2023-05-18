@@ -69,7 +69,7 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     
     //method insert nama pelanggan dari popuppelanggan
     public void itemTerpilih(){
-        PopUpPelanggan Pp = new PopUpPelanggan(this, true);
+        PopUpPelanggan Pp = new PopUpPelanggan();
         Pp.plgn = this;
         txtNama.setText(nama);
     }
@@ -167,31 +167,29 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         }
     }
     
-    public void dataTable() {
-        Object[] header = {"ID", "Nama Perusahaan", "Jenis Perusahan", "Alamat", " Nama Pelanggan"};
-        tabmode = new DefaultTableModel (null, header);
-        String cariitem = txtCari.getText();
-        
-        try {
-            String sql = "SELECT * FROM pelanggan WHERE id LIKE '%"
-                    + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or jenis_perusahaan LIKE '%"
-                    + cariitem+ "%' ORDER BY id asc";
-            Statement stat = conn.createStatement();
-            ResultSet hasil = stat.executeQuery(sql);
-            while (hasil.next()) {
-                tabmode.addRow(new Object[] {
-                    hasil.getString(1),
-                    hasil.getString(2),
-                    hasil.getString(3),
-                    hasil.getString(4),
-                    hasil.getString(5),
-                  });
-            } tabelPelanggan.setModel(tabmode);
-            } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage());
+   public void dataTable() {
+    Object[] header = {"ID", "Nama Perusahaan", "Jenis Perusahaan", "Alamat", "Pelanggan"};
+    tabmode = new DefaultTableModel(null, header);
+    String cariitem = txtCari.getText();
+
+    try {
+        String sql = "SELECT * FROM perusahaan_pelanggan WHERE id LIKE '%" + cariitem + "%' or nama_perusahaan LIKE '%" + cariitem + "%' or jenis_perusahaan LIKE '%" + cariitem + "%' ORDER BY id ASC";
+        Statement stat = conn.createStatement();
+        ResultSet hasil = stat.executeQuery(sql);
+        while (hasil.next()) {
+            tabmode.addRow(new Object[]{
+                hasil.getString("id"),
+                hasil.getString("nama_perusahaan"),
+                hasil.getString("jenis_perusahaan"),
+                hasil.getString("alamat_perusahaan"),
+                hasil.getString("pelanggan_id")
+            });
         }
+        tabelPelanggan.setModel(tabmode);
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Data gagal dipanggil: " + e.getMessage());
     }
+}
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -603,10 +601,10 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
         txtNama.requestFocus();
         } else if (txtJenis.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
+        JOptionPane.showMessageDialog(null, "Isi jenis terlebih dahulu");
         txtJenis.requestFocus();
         } else if (txtAlamat.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
+        JOptionPane.showMessageDialog(null, "Isi alamat terlebih dahulu");
         txtAlamat.requestFocus();
         } else {
             String sql = "INSERT INTO perusahaan_pelanggan VALUES (?,?,?,?,?)";
@@ -633,24 +631,24 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(null, "Isi nama hanya boleh mengandung huruf dan spasi");
         txtNama.requestFocus();
         } else if (txtJenis.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
+        JOptionPane.showMessageDialog(null, "Isi jenis terlebih dahulu");
         txtJenis.requestFocus();
         } else if (txtAlamat.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Isi email terlebih dahulu");
+        JOptionPane.showMessageDialog(null, "Isi alamat terlebih dahulu");
         txtAlamat.requestFocus();
         } else {
                     try {
-                        String sql = "UPDATE perusahaan_pelanggan SET nama=? , jenis_perusahaan=? , alamat_perusahaan=? WHERE id = '"
+                        String sql = "UPDATE perusahaan_pelanggan SET nama_perusahaan=? , jenis_perusahaan=? , alamat_perusahaan=?, pelanggan_id=? WHERE id = '"
                                 + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
-                        stat.setString(3, txtJenis.getText());
-                        stat.setString(4, txtAlamat.getText());
-                        stat.setString(5, txtIdPelanggan.getText());
+                        stat.setString(2, txtJenis.getText());
+                        stat.setString(3, txtAlamat.getText());
+                        stat.setString(4, txtIdPelanggan.getText());
                         stat.executeUpdate();
                         JOptionPane.showMessageDialog(null, "Data berhasil diubah");
                     } catch (SQLException e) {
-                        JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error :  " + e.getMessage());
+                        JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error :  " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
                  }
         dataTable();
@@ -668,7 +666,7 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(null, "data berhasil terhapus");
 
                 } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage());
+                    JOptionPane.showMessageDialog(null, "data gagal terhapus " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
             clear();
@@ -682,10 +680,11 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnCariPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPelangganActionPerformed
-        new PopUpPelanggan(this, rootPaneCheckingEnabled).setVisible(true);
-//        Pp.plgn = this;
-//        Pp.setVisible(true);
-//        Pp.setResizable(false);
+//        new PopUpPelanggan(this, rootPaneCheckingEnabled).setVisible(true);
+        PopUpPelanggan Pp = new PopUpPelanggan();
+        Pp.plgn = this;
+        Pp.setVisible(true);
+        Pp.setResizable(false);
     }//GEN-LAST:event_btnCariPelangganActionPerformed
 
     private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked

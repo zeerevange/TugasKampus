@@ -37,7 +37,7 @@ public class PaketLayanan extends javax.swing.JDialog {
         initComponents();
         
         //set ketengah layar
-        //initUI();
+        initUI();
         dataTable();
         disableButton();
         kode_id_otomatis();
@@ -586,12 +586,11 @@ public class PaketLayanan extends javax.swing.JDialog {
             + txtId.getText()+"'";
             try {
                 PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setString(1, txtId.getText());
-                stat.setString(2, txtNama.getText());
-                stat.setString(3, txtHarga.getText());
-                stat.setString(4, txtMinimal.getText());
-                stat.setString(5, txtInclude.getText());
-                stat.setString(6, txtDeskripsi.getText());
+                stat.setString(1, txtNama.getText());
+                stat.setString(2, txtHarga.getText());
+                stat.setString(3, txtMinimal.getText());
+                stat.setString(4, txtInclude.getText());
+                stat.setString(5, txtDeskripsi.getText());
                 stat.executeUpdate();
                 JOptionPane.showMessageDialog(null,"Data Tersimpan");
             } catch (SQLException e) {

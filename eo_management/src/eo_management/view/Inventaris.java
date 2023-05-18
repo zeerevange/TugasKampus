@@ -36,7 +36,7 @@ public class Inventaris extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         //set ketengah layar
-        //initUI();
+        initUI();
         dataTable();
         disableButton();
         kode_id_otomatis();
@@ -242,7 +242,7 @@ public class Inventaris extends javax.swing.JDialog {
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
-                .addContainerGap(517, Short.MAX_VALUE)
+                .addContainerGap(522, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(522, 522, 522)
                 .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -264,7 +264,7 @@ public class Inventaris extends javax.swing.JDialog {
         footer.setLayout(footerLayout);
         footerLayout.setHorizontalGroup(
             footerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1322, Short.MAX_VALUE)
+            .addGap(0, 1327, Short.MAX_VALUE)
         );
         footerLayout.setVerticalGroup(
             footerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
