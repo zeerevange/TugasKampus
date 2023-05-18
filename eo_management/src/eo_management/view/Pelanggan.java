@@ -6,6 +6,7 @@
 package eo_management.view;
 
 import eo_management.koneksi.koneksi;
+import eo_management.OpsiPelanggan;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
@@ -38,7 +39,7 @@ public class Pelanggan extends javax.swing.JDialog {
         initComponents();
         //set ketengah layar
         initUI();
-        dataTable();
+        dataTable("master");
         disableButton();
         kode_id_otomatis();
         
@@ -46,17 +47,17 @@ public class Pelanggan extends javax.swing.JDialog {
         txtCari.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-        dataTable();
+        dataTable("master");
         }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                dataTable();
+                dataTable("master");
         }
 
         @Override
         public void changedUpdate(DocumentEvent e) {
-            dataTable();
+            dataTable("master");
         }
         });
     }
@@ -155,16 +156,24 @@ public class Pelanggan extends javax.swing.JDialog {
         }
     }
     
-    public void dataTable() {
-        Object[] header = {"ID", "Nama Pelanggan", "No Telpon", "Email"};
+    public void dataTable(String type_data) {
+        Object[] header = {"ID", "Nama Pelanggan", "No Telpon", "Email", "Nama Perusahaan"};
         tabmode = new DefaultTableModel (null, header);
         String cariitem = txtCari.getText();
         
         try {
-            String sql = "SELECT * FROM pelanggan WHERE id LIKE '%"
-                    + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or no_telp LIKE '%"
-                    + cariitem+ "%' ORDER BY id asc";
+            String sql;
+            if (type_data != "cari") {
+                sql = "SELECT * FROM pelanggan LEFT JOIN perusahaan_pelanggan ON perusahaan_pelanggan.pelanggan_id = pelanggan.id WHERE perusahaan_pelanggan.pelanggan_id IS NULL OR perusahaan_pelanggan.pelanggan_id IS NOT NULL;";
+            } else {
+                sql = "SELECT * FROM pelanggan LEFT JOIN perusahaan_pelanggan ON perusahaan_pelanggan.pelanggan_id = pelanggan.id WHERE perusahaan_pelanggan.pelanggan_id IS NULL OR perusahaan_pelanggan.pelanggan_id IS NOT NULL"
+                    + "WHERE id LIKE '%"
+                    + cariitem+ "%' OR pelanggan.nama LIKE '%" 
+                    + cariitem+ "%' OR pelanggan.no_telp LIKE '%"
+                    + cariitem+ "%'  OR perusahaan_pelanggan.nama LIKE '%"
+                    + cariitem+ "%';";
+            }
+            
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
@@ -173,6 +182,7 @@ public class Pelanggan extends javax.swing.JDialog {
                     hasil.getString(2),
                     hasil.getString(3),
                     hasil.getString(4),
+                    hasil.getString(6),
                   });
             } tabelPelanggan.setModel(tabmode);
             } catch (SQLException e) {
@@ -189,6 +199,8 @@ public class Pelanggan extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popUpTambahPerusahaan = new javax.swing.JPopupMenu();
+        menuDataPerusahaan = new javax.swing.JMenuItem();
         header = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         ButtonClose = new javax.swing.JPanel();
@@ -214,6 +226,10 @@ public class Pelanggan extends javax.swing.JDialog {
         btnUbah = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
         btnBatal = new javax.swing.JButton();
+
+        popUpTambahPerusahaan.setToolTipText("test");
+
+        menuDataPerusahaan.setText("Tambah Perusahaan");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Data Pelanggan");
@@ -373,6 +389,9 @@ public class Pelanggan extends javax.swing.JDialog {
         tabelPelanggan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelPelangganMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tabelPelangganMouseReleased(evt);
             }
         });
         jScrollPane1.setViewportView(tabelPelanggan);
@@ -534,11 +553,32 @@ public class Pelanggan extends javax.swing.JDialog {
         txtNoTelpon.setText(tabelPelanggan.getValueAt(bar,2).toString());
         txtEmail.setText(tabelPelanggan.getValueAt(bar,3).toString());
         editButton();
+        
+        try {
+            System.out.println(tabelPelanggan.getValueAt(bar,4).toString());
+            
+        } catch (Exception e) {
+            String ObjButton[] = {"Batal","Tambahkan"};
+        int pilihan = JOptionPane.showOptionDialog(null,tabelPelanggan.getValueAt(bar,1).toString() +" Tidak Memiliki Data Perusahaan, Ingin Menambahkan Data Perusahaan ?","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+            null,ObjButton,ObjButton[1]);
+            if(pilihan == 1){
+                PerusahaanPelanggan perusahaanPelangganDialog = new PerusahaanPelanggan(new javax.swing.JFrame(), true, tabelPelanggan.getValueAt(bar,0).toString());
+                perusahaanPelangganDialog.setVisible(true);
+                
+            } else {
+                this.dispose();
+            }
+        }
+        
+        
+        
     }//GEN-LAST:event_tabelPelangganMouseClicked
 
+   
+    
     private void txtCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            dataTable();
+            dataTable("cari");
         }
     }//GEN-LAST:event_txtCariKeyPressed
 
@@ -547,7 +587,7 @@ public class Pelanggan extends javax.swing.JDialog {
     }//GEN-LAST:event_txtCariKeyTyped
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
-        dataTable();
+        dataTable("cari");
     }//GEN-LAST:event_btnCariActionPerformed
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
@@ -589,7 +629,7 @@ public class Pelanggan extends javax.swing.JDialog {
                 }
         clear();
         kode_id_otomatis();       
-        dataTable();
+        dataTable("cari");
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
@@ -623,7 +663,7 @@ public class Pelanggan extends javax.swing.JDialog {
                         JOptionPane.showMessageDialog(null, "Data Gagal Diubah. Pesan error :  " + e.getMessage());
                     }
                  }
-        dataTable();
+        dataTable("master");
         disableButton();
         clear();
     }//GEN-LAST:event_btnUbahActionPerformed
@@ -643,7 +683,7 @@ public class Pelanggan extends javax.swing.JDialog {
             }
             clear();
             disableButton();
-            dataTable();
+            dataTable("master");
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
@@ -675,6 +715,20 @@ public class Pelanggan extends javax.swing.JDialog {
     private void ButtonCloseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ButtonCloseMouseExited
 
     }//GEN-LAST:event_ButtonCloseMouseExited
+
+    private void tabelPelangganMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPelangganMouseReleased
+        // TODO add your handling code here:
+        if (evt.isPopupTrigger()) {
+            popUpTambahPerusahaan.add(menuDataPerusahaan);
+            
+            int bar = tabelPelanggan.getSelectedRow();
+//            txtId.setText();
+            System.out.println(tabelPelanggan);
+            
+            menuDataPerusahaan.setText("hahahah");
+            popUpTambahPerusahaan.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tabelPelangganMouseReleased
 
     /**
      * @param args the command line arguments
@@ -737,7 +791,9 @@ public class Pelanggan extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JMenuItem menuDataPerusahaan;
     private javax.swing.JPanel mid;
+    private javax.swing.JPopupMenu popUpTambahPerusahaan;
     private javax.swing.JTable tabelPelanggan;
     private javax.swing.JTextField txtCari;
     private javax.swing.JTextField txtEmail;
