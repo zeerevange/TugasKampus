@@ -79,7 +79,7 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        txtUserId = new javax.swing.JTextField();
+        txtUserEMail = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
         cbxShow = new javax.swing.JCheckBox();
@@ -90,7 +90,6 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login Administrator");
         setResizable(false);
-        getContentPane().setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -100,7 +99,12 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(81, 81, 81));
         jLabel3.setText("Login Administrator");
 
-        txtEmail.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        txtUserEMail.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        txtUserEMail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUserEMailActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         jLabel4.setText("Password");
@@ -143,7 +147,7 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(cbxShow)
                     .addComponent(jLabel4)
                     .addComponent(jLabel2)
-                    .addComponent(txtUserId)
+                    .addComponent(txtUserEMail)
                     .addComponent(txtPassword)
                     .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -159,7 +163,7 @@ public class Login extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtUserId, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtUserEMail, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -223,15 +227,13 @@ public class Login extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
                 UserSession karyawanSession = new UserSession();
                 
-                String email = txtUserId.getText();
+                String email = txtUserEMail.getText();
                 String password = txtPassword.getText();
                 
-                if (email.isEmpty() || password.isEmpty()) {
+               
                 if (email.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Harap Masukkan Username dan Password Terlebih Dahulu !");
                 } else {
-                           String user_check_query = "SELECT * FROM karyawan JOIN user ON karyawan.id = user.karyawan_id WHERE karyawan.email = ?;";
-                           String sql = "SELECT * FROM user JOIN karyawan ON user.karyawan_id = karyawan.id WHERE karyawan.email = ? AND user.password = ?;";
                            String user_check_query = "SELECT * FROM karyawan JOIN user ON karyawan.id = user.karyawan_id WHERE karyawan.email = ?;";
                            String sql = "SELECT * FROM user JOIN karyawan ON user.karyawan_id = karyawan.id WHERE karyawan.email = ? AND user.password = ?;";
                            try {
@@ -274,6 +276,7 @@ public class Login extends javax.swing.JFrame {
                                 JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat melakukan koneksi ke database: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                           }
                     }
+                
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void cbxShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxShowActionPerformed
@@ -289,6 +292,10 @@ public class Login extends javax.swing.JFrame {
                 btnLoginActionPerformed(new ActionEvent(evt.getSource(), evt.getID(),"Key Press Login"));
         }
     }//GEN-LAST:event_txtPasswordKeyPressed
+
+    private void txtUserEMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserEMailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUserEMailActionPerformed
 
     /**
      * @param args the command line arguments
@@ -342,7 +349,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField txtEmail;
     private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtUserEMail;
     // End of variables declaration//GEN-END:variables
 }
