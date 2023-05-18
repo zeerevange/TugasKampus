@@ -8,17 +8,20 @@ package eo_management.view;
 import eo_management.koneksi.koneksi;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
 /**
  *
  * @author it
  */
-public class PopUpPelanggan extends javax.swing.JDialog {
+public class PopUpSubKategoriAddon extends javax.swing.JDialog {
          private Connection conn = new koneksi().connect();
          private DefaultTableModel tabmode;
          
@@ -26,40 +29,44 @@ public class PopUpPelanggan extends javax.swing.JDialog {
     /**
      * Creates new form PopUpPelanggan
      */
-    public PopUpPelanggan(java.awt.Frame parent, boolean modal) {
+    public PopUpSubKategoriAddon(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         dataTable();
     }
 
-    PopUpPelanggan() {
+    PopUpSubKategoriAddon() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
  
     protected void dataTable() {
-        Object[] header = {"ID", "Nama Pelanggan", "No Telpon", "Email"};
-        tabmode = new DefaultTableModel (null, header);
-        String cariitem = txtCari.getText();
-        
-        try {
-            String sql = "SELECT * FROM pelanggan WHERE id LIKE '%"
-                    + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or no_telp LIKE '%"
-                    + cariitem+ "%' ORDER BY id asc";
-            Statement stat = conn.createStatement();
-            ResultSet hasil = stat.executeQuery(sql);
-            while (hasil.next()) {
+    Object[] header = {"ID Katagori", "Nama Sub Katagori Addon", "ID Katagori Addon"};
+    tabmode = new DefaultTableModel (null, header);
+    try {
+        String sql = "SELECT * FROM sub_kategori_addon ORDER BY id ASC";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet hasil = ps.executeQuery();
+             while (hasil.next()) {
                 tabmode.addRow(new Object[] {
-                    hasil.getString(1),
-                    hasil.getString(2),
-                    hasil.getString(3),
-                    hasil.getString(4),
-                  });
-            } tabelPelanggan.setModel(tabmode);
-            } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "data gagal dipanggil" +e.getMessage());
+                hasil.getString(1),
+                hasil.getString(2),
+                hasil.getString(3),
+             });
         }
+        tabelSubKategori.setModel(tabmode);
+        // Set alignment for table cells to center
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            for (int columnIndex = 0; columnIndex < tabelSubKategori.getColumnCount(); columnIndex++) {
+                tabelSubKategori.getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
+            }
+//
+//            // Center align table header
+            ((DefaultTableCellRenderer) tabelSubKategori.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -71,7 +78,7 @@ public class PopUpPelanggan extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelPelanggan = new javax.swing.JTable();
+        tabelSubKategori = new javax.swing.JTable();
         txtCari = new javax.swing.JTextField();
         btnCari = new javax.swing.JButton();
 
@@ -79,9 +86,9 @@ public class PopUpPelanggan extends javax.swing.JDialog {
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Pelanggan", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Sub Kategori Addon\n", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        tabelPelanggan.setModel(new javax.swing.table.DefaultTableModel(
+        tabelSubKategori.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -92,12 +99,12 @@ public class PopUpPelanggan extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tabelPelanggan.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabelSubKategori.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelPelangganMouseClicked(evt);
+                tabelSubKategoriMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tabelPelanggan);
+        jScrollPane1.setViewportView(tabelSubKategori);
 
         txtCari.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -170,15 +177,15 @@ public class PopUpPelanggan extends javax.swing.JDialog {
         dataTable();
     }//GEN-LAST:event_btnCariActionPerformed
 
-    private void tabelPelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPelangganMouseClicked
-         int bar = tabelPelanggan.getSelectedRow();
-         plgn.id = tabelPelanggan.getValueAt(bar, 0).toString();
-         plgn.nama = tabelPelanggan.getValueAt(bar, 1).toString();
-         plgn.notelpon = tabelPelanggan.getValueAt(bar, 2).toString();
-         plgn.email = tabelPelanggan.getValueAt(bar, 3).toString();
+    private void tabelSubKategoriMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelSubKategoriMouseClicked
+         int bar = tabelSubKategori.getSelectedRow();
+         plgn.id = tabelSubKategori.getValueAt(bar, 0).toString();
+         plgn.nama = tabelSubKategori.getValueAt(bar, 1).toString();
+         plgn.notelpon = tabelSubKategori.getValueAt(bar, 2).toString();
+         plgn.email = tabelSubKategori.getValueAt(bar, 3).toString();
          plgn.itemTerpilih();
          this.dispose();
-    }//GEN-LAST:event_tabelPelangganMouseClicked
+    }//GEN-LAST:event_tabelSubKategoriMouseClicked
 
     /**
      * @param args the command line arguments
@@ -197,20 +204,21 @@ public class PopUpPelanggan extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PopUpPelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PopUpSubKategoriAddon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PopUpPelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PopUpSubKategoriAddon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PopUpPelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PopUpSubKategoriAddon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PopUpPelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PopUpSubKategoriAddon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                PopUpPelanggan dialog = new PopUpPelanggan(new javax.swing.JFrame(), true);
+                PopUpSubKategoriAddon dialog = new PopUpSubKategoriAddon(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -226,7 +234,7 @@ public class PopUpPelanggan extends javax.swing.JDialog {
     private javax.swing.JButton btnCari;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabelPelanggan;
+    private javax.swing.JTable tabelSubKategori;
     private javax.swing.JTextField txtCari;
     // End of variables declaration//GEN-END:variables
 }

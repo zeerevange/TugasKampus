@@ -594,6 +594,7 @@ public class Pelanggan extends javax.swing.JDialog {
         disableButton();
         clear();
         enableButton();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
@@ -689,6 +690,7 @@ public class Pelanggan extends javax.swing.JDialog {
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         disableButton();
         clear();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked

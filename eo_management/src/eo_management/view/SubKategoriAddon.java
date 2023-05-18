@@ -17,10 +17,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -42,6 +45,25 @@ public class SubKategoriAddon extends javax.swing.JDialog {
         initUI();
         dataTable();
         disableButton();
+        combobox();
+        
+        //fungsi cari
+        txtCari.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+        dataTable();
+        }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                dataTable();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            dataTable();
+        }
+        });
     }
     //colorchange
     public void changecolor(JPanel hover, Color rand) {
@@ -62,10 +84,12 @@ public class SubKategoriAddon extends javax.swing.JDialog {
     private void enableButton() {
         txtNama.setEnabled(true);
         btnSimpan.setEnabled(true);
+        cbxKategori.setEnabled(true);
     }
     
     private void editButton(){
         txtNama.setEnabled(true);
+        cbxKategori.setEnabled(true);
         btnSimpan.setEnabled(false);
         btnUbah.setEnabled(true);
         btnHapus.setEnabled(true);
@@ -74,6 +98,7 @@ public class SubKategoriAddon extends javax.swing.JDialog {
     private void clear() {
         txtId.setText("");
         txtNama.setText("");
+        cbxKategori.setSelectedItem("");
     }
     
     private void disableButton(){
@@ -83,22 +108,73 @@ public class SubKategoriAddon extends javax.swing.JDialog {
         btnSimpan.setEnabled(false);
         btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
+        cbxKategori.setEnabled(false);
     }
     
+//    private void autoIncrement(){
+//        try {
+//                // Membuat pernyataan SQL untuk mengambil nilai auto increment selanjutnya
+//                Statement stmt = conn.createStatement();
+//                String sql = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'eo_management' AND TABLE_NAME = 'sub_kategori_addon'";
+//                ResultSet rs = stmt.executeQuery(sql);
+//
+//                // Mengekstrak nilai auto increment selanjutnya
+//                int nextAutoIncrementValue = 1;
+//                if (rs.next()) {
+//                    nextAutoIncrementValue = rs.getInt("AUTO_INCREMENT");
+//                }
+//
+//                // Menetapkan nilai auto increment selanjutnya ke JTextField
+//                txtId.setText(String.valueOf(nextAutoIncrementValue));
+//
+//                // Menutup koneksi
+////                rs.close();
+////                stmt.close();
+////                conn.close();
+//            } catch (SQLException ex) {
+//                // Tangani kesalahan koneksi atau eksekusi query
+//                ex.printStackTrace();
+//}
+//    }
+    private void combobox(){
+        try {
+            String sql = "SELECT id, nama FROM kategori_addon";
+            Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while (hasil.next()) {
+                    int id = hasil.getInt("id");
+                    String nama = hasil.getString("nama");
+                    String item = id + " - " + nama;
+                    cbxKategori.addItem(item);
+            }
+        } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error memunculkan combobox");
+        }
+    }
     public void dataTable() {
-    Object[] header = {"ID Katagori", "Nama Katagori Addon"};
+    Object[] header = {"ID Katagori", "Nama Sub Katagori Addon", "ID Katagori Addon"};
     tabmode = new DefaultTableModel (null, header);
     try {
-        String sql = "SELECT * FROM kategori_addon ORDER BY id ASC";
+        String sql = "SELECT * FROM sub_kategori_addon ORDER BY id ASC";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet hasil = ps.executeQuery();
              while (hasil.next()) {
                 tabmode.addRow(new Object[] {
                 hasil.getString(1),
                 hasil.getString(2),
+                hasil.getString(3),
              });
         }
         tabelKategori.setModel(tabmode);
+//        // Set alignment for table cells to center
+//            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+//            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+//            for (int columnIndex = 0; columnIndex < tabelKategori.getColumnCount(); columnIndex++) {
+//                tabelKategori.getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
+//            }
+//
+//            // Center align table header
+//            ((DefaultTableCellRenderer) tabelKategori.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -141,7 +217,7 @@ class HeaderRenderer implements TableCellRenderer {
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbxKategori = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabelKategori = new javax.swing.JTable();
         btnBatal = new javax.swing.JButton();
@@ -229,7 +305,7 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Role", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Sub Kategori Addon", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel2.setText("ID Sub Kategori Addon       :");
@@ -240,7 +316,7 @@ class HeaderRenderer implements TableCellRenderer {
         jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel5.setText("Kategori Addon                   :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxKategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilihan" }));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -260,7 +336,7 @@ class HeaderRenderer implements TableCellRenderer {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cbxKategori, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -281,17 +357,14 @@ class HeaderRenderer implements TableCellRenderer {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1)
+                        .addComponent(cbxKategori)
                         .addContainerGap())))
         );
 
         tabelKategori.setAutoCreateRowSorter(true);
         tabelKategori.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
@@ -452,14 +525,22 @@ class HeaderRenderer implements TableCellRenderer {
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+        String pilihKategoriAddon = cbxKategori.getSelectedItem().toString();
+        
         if (txtNama.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Isi nama terlebih dahulu");
             txtNama.requestFocus();
+        } else if (pilihKategoriAddon.equals("Pilihan")) {
+            JOptionPane.showMessageDialog(null, "Pilih kategori terlebih dahulu");
+            cbxKategori.requestFocus();
         } else {
             try {
-                String sql = "INSERT INTO kategori_addon (nama) VALUES (?)";
+                String sql = "INSERT INTO sub_kategori_addon (nama, kategori_addon_id) VALUES (?,?)";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtNama.getText());
+                String selectedItem = cbxKategori.getSelectedItem().toString();
+                int selectedId = Integer.parseInt(selectedItem.split(" - ")[0]);
+                stat.setInt(2, selectedId);
                 int rowsAffected = stat.executeUpdate();
                 if (rowsAffected > 0) {
                     JOptionPane.showMessageDialog(null, "Data berhasil disimpan", "Informasi", JOptionPane.INFORMATION_MESSAGE);
@@ -468,6 +549,7 @@ class HeaderRenderer implements TableCellRenderer {
                 }
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat menyimpan data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
         }
         clear();
@@ -475,15 +557,24 @@ class HeaderRenderer implements TableCellRenderer {
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
+        String pilihKategoriAddon = cbxKategori.getSelectedItem().toString();
+        
         if (txtNama.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Isi nama terlebih dahulu");
             txtNama.requestFocus();
+         } else if (pilihKategoriAddon.equals("Pilihan")) {
+            JOptionPane.showMessageDialog(null, "Pilih kategori terlebih dahulu");
+            cbxKategori.requestFocus();
         } else {
             try {
-                String sql = "UPDATE kategori_addon SET nama=? WHERE id = '"
+                String sql = "UPDATE sub_kategori_addon SET nama=? ,kategori_addon_id=? WHERE id = '"
                                 + txtId.getText()+"'";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtNama.getText());
+                String selectedItem = cbxKategori.getSelectedItem().toString();
+                int selectedId = Integer.parseInt(selectedItem.split(" - ")[0]);
+                stat.setInt(2, selectedId);
+
                 int rowsAffected = stat.executeUpdate();
                 if (rowsAffected > 0) {
                     JOptionPane.showMessageDialog(null, "Data berhasil diubah", "Informasi", JOptionPane.INFORMATION_MESSAGE);
@@ -503,7 +594,7 @@ class HeaderRenderer implements TableCellRenderer {
         int ok = JOptionPane.showConfirmDialog(null, "Hapus data ini?", "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION);
         if (ok == JOptionPane.YES_OPTION) {
             try {
-                String sql = "DELETE FROM kategori_addon WHERE id=?";
+                String sql = "DELETE FROM sub_kategori_addon WHERE id=?";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtId.getText());
                 int rowsAffected = stat.executeUpdate();
@@ -545,6 +636,18 @@ class HeaderRenderer implements TableCellRenderer {
         int bar = tabelKategori.getSelectedRow();
         txtId.setText(tabelKategori.getValueAt(bar,0).toString());
         txtNama.setText(tabelKategori.getValueAt(bar,1).toString());
+        String kategoriValue = tabelKategori.getValueAt(bar,2).toString();
+        String kategoriId = kategoriValue.split(" - ")[0];
+
+        DefaultComboBoxModel<String> cbxModel = (DefaultComboBoxModel<String>) cbxKategori.getModel();
+        for (int i = 0; i < cbxModel.getSize(); i++) {
+            String item = cbxModel.getElementAt(i);
+            String itemId = item.split(" - ")[0];
+        if (itemId.equals(kategoriId)) {
+            cbxKategori.setSelectedIndex(i);
+            break;
+        }
+    }
         editButton();
     }//GEN-LAST:event_tabelKategoriMouseClicked
 
@@ -630,8 +733,8 @@ class HeaderRenderer implements TableCellRenderer {
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnUbah;
+    private javax.swing.JComboBox<String> cbxKategori;
     private javax.swing.JLabel exit;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;

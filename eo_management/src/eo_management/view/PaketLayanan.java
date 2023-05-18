@@ -543,6 +543,7 @@ public class PaketLayanan extends javax.swing.JDialog {
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         disableButton();
         clear();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
@@ -649,6 +650,7 @@ public class PaketLayanan extends javax.swing.JDialog {
         disableButton();
         clear();
         enableButton();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void txtCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyPressed
