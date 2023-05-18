@@ -21,6 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -42,6 +44,23 @@ public class KategoriAddon extends javax.swing.JDialog {
         initUI();
         dataTable();
         disableButton();
+        //fungsi cari
+        txtCari.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+        dataTable();
+        }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                dataTable();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            dataTable();
+        }
+        });
     }
     //colorchange
     public void changecolor(JPanel hover, Color rand) {
@@ -99,6 +118,23 @@ public class KategoriAddon extends javax.swing.JDialog {
              });
         }
         tabelKategori.setModel(tabmode);
+        
+            // Set alignment for table cells to center
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            for (int columnIndex = 0; columnIndex < tabelKategori.getColumnCount(); columnIndex++) {
+                tabelKategori.getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
+            }
+
+            // Center align table header
+            ((DefaultTableCellRenderer) tabelKategori.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+
+//            // Center align table itself
+//            JTableHeader header = tabelKategori.getTableHeader();
+//            header.setBackground(Color.LIGHT_GRAY);
+//            header.setForeground(Color.BLACK);
+//            header.setFont(new Font("SansSerif", Font.BOLD, 12));
+//            ((DefaultTableCellRenderer)header.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -153,7 +189,7 @@ class HeaderRenderer implements TableCellRenderer {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Data Kategori Addon");
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(980, 430));
+        setPreferredSize(new java.awt.Dimension(980, 450));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(11, 36, 71));
@@ -268,10 +304,7 @@ class HeaderRenderer implements TableCellRenderer {
         tabelKategori.setAutoCreateRowSorter(true);
         tabelKategori.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"

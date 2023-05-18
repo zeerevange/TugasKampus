@@ -138,34 +138,34 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     
     //memberikan kode id otomatis kepada id pelanggan
     private void kode_id_otomatis(){
-        try {
-            String sql = "SELECT * FROM perusahaan_pelanggan ORDER BY id DESC";
-            Statement stat = conn.createStatement();
-            ResultSet rs = stat.executeQuery(sql);
-            if (rs.next()){
-                String kode = rs.getString("id").substring(2);
-                String AN = "" + (Integer.parseInt(kode) + 1);
-                String Nol = "";
-                
-                if (AN.length() == 1)
-                {Nol = "0000";}
-                else if (AN.length() == 2)
-                {Nol = "000";}
-                else if (AN.length() == 3)
-                {Nol = "00";}
-                else if (AN.length() == 4)
-                {Nol = "0";}
-                else if (AN.length() == 5)
-                {Nol = "";}
-                
-                txtId.setText("PP" + Nol + AN);
-            } else {
-                txtId.setText("PP00001");
-            }
-        }catch (SQLException e){ 
-            JOptionPane.showMessageDialog(null, "Id otomatis tidak berjalan. Pesan error : " + e.getMessage());
+    try {
+        String sql = "SELECT * FROM perusahaan_pelanggan ORDER BY id DESC";
+        Statement stat = conn.createStatement();
+        ResultSet rs = stat.executeQuery(sql);
+        if (rs.next()){
+            String kode = rs.getString("id").substring(2);
+            String AN = "" + (Integer.parseInt(kode) + 1);
+            String Nol = "";
+
+            if (AN.length() == 1)
+            {Nol = "0000";}
+            else if (AN.length() == 2)
+            {Nol = "000";}
+            else if (AN.length() == 3)
+            {Nol = "00";}
+            else if (AN.length() == 4)
+            {Nol = "0";}
+            else if (AN.length() == 5)
+            {Nol = "";}
+
+            txtId.setText("1" + Nol + AN);
+        } else {
+            txtId.setText("100001");
         }
+    }catch (SQLException e){ 
+        JOptionPane.showMessageDialog(null, "Id otomatis tidak berjalan. Pesan error : " + e.getMessage());
     }
+}
     
    public void dataTable() {
     Object[] header = {"ID", "Nama Perusahaan", "Jenis Perusahaan", "Alamat", "Pelanggan"};
@@ -594,6 +594,7 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         disableButton();
         clear();
         enableButton();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
@@ -619,6 +620,7 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(null,"Data Tersimpan");
                     } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null,"Gagal tersimpan " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                     }
                 }
         clear();
@@ -654,6 +656,7 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         dataTable();
         disableButton();
         clear();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
@@ -677,10 +680,11 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         disableButton();
         clear();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnCariPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPelangganActionPerformed
-//        new PopUpPelanggan(this, rootPaneCheckingEnabled).setVisible(true);
+//      new PopUpPelanggan (this, rootPaneCheckingEnabled).setVisible(true);
         PopUpPelanggan Pp = new PopUpPelanggan();
         Pp.plgn = this;
         Pp.setVisible(true);

@@ -208,6 +208,7 @@ public class Menu extends javax.swing.JFrame {
         menuSupplier1 = new javax.swing.JMenuItem();
         menuPermainan = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
+        menuAddon = new javax.swing.JMenuItem();
         menuKategoriAddon = new javax.swing.JMenuItem();
         menuSubKategoriAddon = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -333,7 +334,7 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jmlPkt)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jumlah Inventaris", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
@@ -422,10 +423,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel18Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -670,8 +668,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 1212, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 1212, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -748,7 +745,15 @@ public class Menu extends javax.swing.JFrame {
 
         menuMaster.add(jMenu2);
 
-        jMenu1.setText("Katagory");
+        jMenu1.setText("Add-On");
+
+        menuAddon.setText("Addon");
+        menuAddon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAddonActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuAddon);
 
         menuKategoriAddon.setText("Kategori Addon");
         menuKategoriAddon.addActionListener(new java.awt.event.ActionListener() {
@@ -933,6 +938,11 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void menuAddonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAddonActionPerformed
+        Addon addon = new Addon();
+        addon.setVisible(true);
+    }//GEN-LAST:event_menuAddonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1017,6 +1027,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel labelNoHp;
     private javax.swing.JLabel labelUser_Id;
     private javax.swing.JLabel labelUsername;
+    private javax.swing.JMenuItem menuAddon;
     private javax.swing.JMenuItem menuExit;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenuItem menuInventaris;

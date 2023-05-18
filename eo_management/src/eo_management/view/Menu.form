@@ -80,9 +80,17 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="jMenu1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Katagory"/>
+                <Property name="text" type="java.lang.String" value="Add-On"/>
               </Properties>
               <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="menuAddon">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Addon"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuAddonActionPerformed"/>
+                  </Events>
+                </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="menuKategoriAddon">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Kategori Addon"/>
