@@ -194,7 +194,7 @@ public class Users extends javax.swing.JDialog {
         setPreferredSize(new java.awt.Dimension(1366, 650));
         setResizable(false);
 
-        header.setBackground(new java.awt.Color(11, 36, 71));
+        header.setBackground(new java.awt.Color(1, 86, 153));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -448,7 +448,7 @@ public class Users extends javax.swing.JDialog {
 
         getContentPane().add(mid, java.awt.BorderLayout.CENTER);
 
-        footer.setBackground(new java.awt.Color(11, 36, 71));
+        footer.setBackground(new java.awt.Color(0, 135, 242));
         footer.setPreferredSize(new java.awt.Dimension(1366, 30));
 
         javax.swing.GroupLayout footerLayout = new javax.swing.GroupLayout(footer);

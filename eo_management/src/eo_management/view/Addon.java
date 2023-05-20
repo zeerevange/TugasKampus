@@ -25,13 +25,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author it
  */
-public class Addon extends javax.swing.JFrame {
+public class Addon extends javax.swing.JDialog {
         private Connection conn = new koneksi().connect();
         private DefaultTableModel tabmode;
     /**
      * Creates new form Addon
      */
-    public Addon() {
+    public Addon(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
         initUI();
         dataTable();
@@ -171,7 +172,7 @@ public class Addon extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(11, 36, 71));
+        jPanel1.setBackground(new java.awt.Color(0, 135, 242));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -197,7 +198,7 @@ public class Addon extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
-        jPanel2.setBackground(new java.awt.Color(11, 36, 71));
+        jPanel2.setBackground(new java.awt.Color(0, 135, 242));
         jPanel2.setPreferredSize(new java.awt.Dimension(1100, 30));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -465,7 +466,7 @@ public class Addon extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCariSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariSubActionPerformed
-    new PopUpSubKategoriAddon (this, rootPaneCheckingEnabled).setVisible(true);
+//        new PopUpSubKategoriAddon (this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_btnCariSubActionPerformed
 
     private void tabelAddonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelAddonMouseClicked
@@ -595,7 +596,14 @@ public class Addon extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Addon().setVisible(true);
+                Addon dialog = new Addon(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }

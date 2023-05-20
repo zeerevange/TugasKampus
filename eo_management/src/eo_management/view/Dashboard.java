@@ -208,7 +208,7 @@ public class Dashboard extends javax.swing.JFrame {
         menuPerusahaanPelanggan = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         menuPaketLayanan = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        menuAddon = new javax.swing.JMenu();
         menuKategoriAddon = new javax.swing.JMenuItem();
         menuSubKategoriAddon = new javax.swing.JMenuItem();
         menuPaketAddon = new javax.swing.JMenuItem();
@@ -651,14 +651,14 @@ public class Dashboard extends javax.swing.JFrame {
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 56, Short.MAX_VALUE))
+                .addGap(0, 5, Short.MAX_VALUE))
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
         );
 
-        jPanel12.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 341, -1));
+        jPanel12.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 290, -1));
 
         jPanel17.setBackground(new java.awt.Color(1, 118, 211));
 
@@ -779,7 +779,12 @@ public class Dashboard extends javax.swing.JFrame {
 
         menuMaster.add(jMenu5);
 
-        jMenu1.setText("Addon");
+        menuAddon.setText("Addon");
+        menuAddon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAddonActionPerformed(evt);
+            }
+        });
 
         menuKategoriAddon.setText("Kategori Addon");
         menuKategoriAddon.addActionListener(new java.awt.event.ActionListener() {
@@ -787,7 +792,7 @@ public class Dashboard extends javax.swing.JFrame {
                 menuKategoriAddonActionPerformed(evt);
             }
         });
-        jMenu1.add(menuKategoriAddon);
+        menuAddon.add(menuKategoriAddon);
 
         menuSubKategoriAddon.setText("Sub Kategori Addon");
         menuSubKategoriAddon.addActionListener(new java.awt.event.ActionListener() {
@@ -795,7 +800,7 @@ public class Dashboard extends javax.swing.JFrame {
                 menuSubKategoriAddonActionPerformed(evt);
             }
         });
-        jMenu1.add(menuSubKategoriAddon);
+        menuAddon.add(menuSubKategoriAddon);
 
         menuPaketAddon.setText("Paket Addon");
         menuPaketAddon.addActionListener(new java.awt.event.ActionListener() {
@@ -803,9 +808,9 @@ public class Dashboard extends javax.swing.JFrame {
                 menuPaketAddonActionPerformed(evt);
             }
         });
-        jMenu1.add(menuPaketAddon);
+        menuAddon.add(menuPaketAddon);
 
-        menuMaster.add(jMenu1);
+        menuMaster.add(menuAddon);
 
         menuInventaris.setText("Inventaris");
         menuInventaris.addActionListener(new java.awt.event.ActionListener() {
@@ -931,11 +936,18 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void menuPaketAddonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPaketAddonActionPerformed
         // TODO add your handling code here:
+        new PaketAddon (this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_menuPaketAddonActionPerformed
 
     private void menuPerusahaanPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPerusahaanPelangganActionPerformed
         new PerusahaanPelanggan (this, rootPaneCheckingEnabled, "0 ").setVisible(true);
     }//GEN-LAST:event_menuPerusahaanPelangganActionPerformed
+
+    private void menuAddonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAddonActionPerformed
+        // TODO add your handling code here:
+//        Addon addon = new Addon();
+//        addon.setVisible(true);
+    }//GEN-LAST:event_menuAddonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -989,7 +1001,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -1021,6 +1032,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel labelNoHp;
     private javax.swing.JLabel labelUser_Id;
     private javax.swing.JLabel labelUsername;
+    private javax.swing.JMenu menuAddon;
     private javax.swing.JMenuItem menuInventaris;
     private javax.swing.JMenuItem menuJabatan;
     private javax.swing.JMenuItem menuKaryawan;
