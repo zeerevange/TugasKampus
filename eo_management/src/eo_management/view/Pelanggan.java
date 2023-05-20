@@ -6,7 +6,6 @@
 package eo_management.view;
 
 import eo_management.koneksi.koneksi;
-import eo_management.OpsiPelanggan;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
