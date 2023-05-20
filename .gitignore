@@ -1,2 +1,3 @@
-/eo_management/build/
-/eo_management/dist/
+eo_management/build/
+eo_management/dist/
+eo_management/nbproject/private/private.properties
