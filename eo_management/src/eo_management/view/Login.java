@@ -292,8 +292,8 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_cbxShowActionPerformed
 
     private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
-                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                btnLoginActionPerformed(new ActionEvent(evt.getSource(), evt.getID(),"Key Press Login"));
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btnLoginActionPerformed(new ActionEvent(evt.getSource(), evt.getID(),"Key Press Login"));
         }
     }//GEN-LAST:event_txtPasswordKeyPressed
 

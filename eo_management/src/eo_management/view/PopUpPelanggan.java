@@ -5,6 +5,7 @@
  */
 package eo_management.view;
 
+import eo_management.ThrowPesananLayananData;
 import eo_management.koneksi.koneksi;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -21,7 +22,6 @@ import javax.swing.JDialog;
 public class PopUpPelanggan extends javax.swing.JDialog {
          private Connection conn = new koneksi().connect();
          private DefaultTableModel tabmode;
-         
          public PerusahaanPelanggan plgn = null;
     /**
      * Creates new form PopUpPelanggan
@@ -171,13 +171,25 @@ public class PopUpPelanggan extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCariActionPerformed
 
     private void tabelPelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPelangganMouseClicked
-         int bar = tabelPelanggan.getSelectedRow();
-         plgn.id = tabelPelanggan.getValueAt(bar, 0).toString();
-         plgn.nama = tabelPelanggan.getValueAt(bar, 1).toString();
-         plgn.notelpon = tabelPelanggan.getValueAt(bar, 2).toString();
-         plgn.email = tabelPelanggan.getValueAt(bar, 3).toString();
-         plgn.itemTerpilih();
-         this.dispose();
+        ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
+        int bar = tabelPelanggan.getSelectedRow();
+        String id = tabelPelanggan.getValueAt(bar, 0).toString();
+        String ObjButton[] = {"Batal","Pilih"};
+        int pilihan = JOptionPane.showOptionDialog(null, "Pilih " + tabelPelanggan.getValueAt(bar,1).toString() + " Untuk Form Pemesanan Layanan ?","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+        null,ObjButton,ObjButton[1]);
+        if(pilihan == 1){
+            this.dispose();
+            throwDataPesanan.setId_Pelanggan(id);
+            System.out.println(throwDataPesanan.getModeInput() + "AHHAHAHA PAS SETTER POPUP " + id);
+            PesananLayanan pesananLayanan = new PesananLayanan(new javax.swing.JFrame(), true);
+            pesananLayanan.setVisible(true);
+            
+            
+        } else {
+            this.dispose();
+        }
+         
+         
     }//GEN-LAST:event_tabelPelangganMouseClicked
 
     /**
@@ -220,6 +232,8 @@ public class PopUpPelanggan extends javax.swing.JDialog {
                 dialog.setVisible(true);
             }
         });
+        
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
