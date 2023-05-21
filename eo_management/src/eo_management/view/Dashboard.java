@@ -65,6 +65,7 @@ public class Dashboard extends javax.swing.JFrame {
         updateJumlahData("karyawan"); // untuk memperbarui jumlah karyawan
         updateJumlahData("inventaris"); // untuk memperbarui jumlah inventaris
         updateJumlahData("paket_layanan"); // untuk memperbarui jumlah inventaris
+        updateJumlahData("pesanan_layanan"); // untuk memperbarui jumlah pesanan layanan
         
          //set ketengah
         initUI();
@@ -122,6 +123,8 @@ public class Dashboard extends javax.swing.JFrame {
                     sql = "SELECT COUNT(*) AS id FROM inventaris";
                 } else if (jenisData.equals("paket_layanan")) {
                     sql = "SELECT COUNT(*) AS id FROM paket_layanan";        
+                } else if (jenisData.equals("pesanan_layanan")) {
+                    sql = "SELECT COUNT(*) AS id FROM pesanan_layanan";        
                 }
                 try {
                     PreparedStatement ps = conn.prepareStatement(sql);
@@ -132,10 +135,12 @@ public class Dashboard extends javax.swing.JFrame {
                             jmlPlgn.setText(String.valueOf(jumlah));
                         } else if (jenisData.equals("karyawan")) {
                             jmlKywn.setText(String.valueOf(jumlah));
-                       } else if (jenisData.equals("inventaris")) {
-                            jmlInv.setText(String.valueOf(jumlah));
-                       } else if (jenisData.equals("paket_layanan")) {
+                        } else if (jenisData.equals("inventaris")) {
+                             jmlInv.setText(String.valueOf(jumlah));
+                        } else if (jenisData.equals("paket_layanan")) {
                             jmlPkt.setText(String.valueOf(jumlah));          
+                        } else if (jenisData.equals("pesanan_layanan")) {
+                            jmlPesanan.setText(String.valueOf(jumlah));          
                         }
                     }
                     rs.close();
@@ -960,6 +965,7 @@ public class Dashboard extends javax.swing.JFrame {
         updateJumlahData("karyawan"); // untuk memperbarui jumlah karyawan
         updateJumlahData("inventaris"); // untuk memperbarui jumlah inventaris
         updateJumlahData("paket_layanan"); // untuk memperbarui jumlah inventaris
+        updateJumlahData("pesanan_layanan"); // untuk memperbarui jumlah pesanan
     }//GEN-LAST:event_jPanel6MouseEntered
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed

@@ -120,7 +120,7 @@ public class Users extends javax.swing.JDialog {
             String sql;
             
             if (type_query != "cari") {
-                sql = "SELECT * FROM user JOIN role ON user.role_id = role.id_role;";
+                sql = "SELECT * FROM user JOIN role ON user.role_id = role.id_role JOIN karyawan ON user.karyawan_id = karyawan.id;";
             } else {
                 sql = "SELECT * FROM user JOIN karyawan ON user.karyawan_id = karyawan.id WHERE user.id_user LIKE '%"+cariitem+"%'  OR karyawan.nama LIKE '%"+cariitem+"%'";
             }
@@ -131,8 +131,8 @@ public class Users extends javax.swing.JDialog {
                 tabmode.addRow(new Object[] {
                     hasil.getString(1),
                     hasil.getString(2),
-                    hasil.getString(3),
-                    hasil.getString(4),
+                    hasil.getString(6),
+                    hasil.getString(8),
                 });
             } tabelUsers.setModel(tabmode);
         } catch (SQLException e) {
