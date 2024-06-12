@@ -59,7 +59,7 @@ public class KategoriGames extends javax.swing.JDialog {
     }
     
     private void enableButton() {
-        txtId.setEnabled(true);
+        txtId.setEnabled(false);
         txtNama.setEnabled(true);
         btnSimpan.setEnabled(true);
     }
@@ -414,10 +414,9 @@ class HeaderRenderer implements TableCellRenderer {
                 txtNama.requestFocus();
             } else {
                 try {
-                    String sql = "INSERT INTO kategori_games (id, nama) VALUES (?,?)";
+                    String sql = "INSERT INTO kategori_games (nama) VALUES (?)";
                     PreparedStatement stat = conn.prepareStatement(sql);
-                    stat.setString(1, txtId.getText());
-                    stat.setString(2, txtNama.getText());
+                    stat.setString(1, txtNama.getText());
                     int rowsAffected = stat.executeUpdate();
                     if (rowsAffected > 0) {
                         JOptionPane.showMessageDialog(null, "Data berhasil disimpan", "Informasi", JOptionPane.INFORMATION_MESSAGE);
