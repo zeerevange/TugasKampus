@@ -162,15 +162,15 @@ public class Pelanggan extends javax.swing.JDialog {
         
         try {
             String sql;
-            if (type_data != "cari") {
+            if (!type_data.equals("cari")) {
                 sql = "SELECT * FROM pelanggan LEFT JOIN perusahaan_pelanggan ON perusahaan_pelanggan.pelanggan_id = pelanggan.id WHERE perusahaan_pelanggan.pelanggan_id IS NULL OR perusahaan_pelanggan.pelanggan_id IS NOT NULL;";
             } else {
                 sql = "SELECT * FROM pelanggan LEFT JOIN perusahaan_pelanggan ON perusahaan_pelanggan.pelanggan_id = pelanggan.id WHERE perusahaan_pelanggan.pelanggan_id IS NULL OR perusahaan_pelanggan.pelanggan_id IS NOT NULL"
-                    + "WHERE id LIKE '%"
-                    + cariitem+ "%' OR pelanggan.nama LIKE '%" 
-                    + cariitem+ "%' OR pelanggan.no_telp LIKE '%"
-                    + cariitem+ "%'  OR perusahaan_pelanggan.nama LIKE '%"
-                    + cariitem+ "%';";
+                + " AND (pelanggan.id LIKE '%"
+                + cariitem + "%' OR pelanggan.nama LIKE '%"
+                + cariitem + "%' OR pelanggan.no_telp LIKE '%"
+                + cariitem + "%' OR perusahaan_pelanggan.nama_perusahaan LIKE '%"
+                + cariitem + "%');";
             }
             
             Statement stat = conn.createStatement();

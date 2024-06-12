@@ -198,9 +198,9 @@ public class Karyawan extends javax.swing.JDialog {
             String sql;
             
             if (type_query != "cari") {
-                sql = "SELECT * FROM karyawan JOIN jabatan_karyawan ON karyawan.id_jabatan_karyawan = jabatan_karyawan.id;";
+                sql = "SELECT * FROM karyawan JOIN jabatan_karyawan ON karyawan.jabatan_karyawan_id = jabatan_karyawan.id;";
             } else {
-                sql = "SELECT * FROM karyawan JOIN jabatan_karyawan ON karyawan.id_jabatan_karyawan = jabatan_karyawan.id WHERE karyawan.id LIKE '%"+cariitem+"%' OR karyawan.nama LIKE '%"+cariitem+"%' OR karyawan.jenis_kelamin LIKE '%"+cariitem+"%' OR karyawan.no_telp LIKE '%"+cariitem+"%' OR karyawan.email LIKE '%"+cariitem+"%' OR jabatan_karyawan.nama LIKE '%"+cariitem+"%'";
+                sql = "SELECT * FROM karyawan JOIN jabatan_karyawan ON karyawan.jabatan_karyawan_id = jabatan_karyawan.id WHERE karyawan.id LIKE '%"+cariitem+"%' OR karyawan.nama LIKE '%"+cariitem+"%' OR karyawan.jenis_kelamin LIKE '%"+cariitem+"%' OR karyawan.no_telp LIKE '%"+cariitem+"%' OR karyawan.email LIKE '%"+cariitem+"%' OR jabatan_karyawan.nama LIKE '%"+cariitem+"%'";
             }
             
             Statement stat = conn.createStatement();
@@ -720,7 +720,7 @@ public class Karyawan extends javax.swing.JDialog {
             cbxJabatan.requestFocus();
             } else {
                     try {
-                        String sql = "UPDATE karyawan SET nama=? , jenis_kelamin=? , no_telp=? , email=? , id_jabatan_karyawan=? WHERE id = '"
+                        String sql = "UPDATE karyawan SET nama=? , jenis_kelamin=? , no_telp=? , email=? , jabatan_karyawan_id=? WHERE id = '"
                                 + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());

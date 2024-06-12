@@ -33,7 +33,7 @@ public class PesananLayanan extends javax.swing.JDialog {
         private Connection conn = new koneksi().connect();
         private DefaultTableModel tabmode;
         private String[] data_pesanan_layanan;
-        private String id_pelanggan, id_paket_layanan, jumlah_peserta;
+        private String pelanggan_id, paket_layanan_id, jumlah_peserta;
         
     /**
      * Creates new form PaketLayanan
@@ -197,8 +197,8 @@ public class PesananLayanan extends javax.swing.JDialog {
         
         try {
             String sql = "SELECT * FROM pesanan_layanan\n" +
-                        "LEFT JOIN pelanggan ON pesanan_layanan.id_pelanggan = pelanggan.id\n" +
-                        "LEFT JOIN paket_layanan ON pesanan_layanan.id_paket_layanan = paket_layanan.id\n" +
+                        "LEFT JOIN pelanggan ON pesanan_layanan.pelanggan_id = pelanggan.id\n" +
+                        "LEFT JOIN paket_layanan ON pesanan_layanan.paket_layanan_id = paket_layanan.id\n" +
                         "LEFT JOIN pesanan_addon_layanan ON pesanan_addon_layanan.pesanan_layanan_id = pesanan_layanan.id\n" +
                         "LEFT JOIN addon ON pesanan_addon_layanan.addon_id = addon.id\n" +
                         "LEFT JOIN sub_kategori_addon ON addon.sub_kategori_addon_id = sub_kategori_addon.id;";
@@ -602,7 +602,7 @@ public class PesananLayanan extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Isi minimal order dengan format angka saja");
             txtIdPelanggan.requestFocus();
         } else {
-            String sql = "UPDATE pesanan_layanan SET id_pelanggan=? , id_paket_layanan=? , jumlah_peserta=? WHERE id = '"
+            String sql = "UPDATE pesanan_layanan SET pelanggan_id=? , paket_layanan_id=? , jumlah_peserta=? WHERE id = '"
             + txtId.getText()+"'";
             try {
                 PreparedStatement stat = conn.prepareStatement(sql);

@@ -23,11 +23,11 @@ public class koneksi {
                     catch (ClassNotFoundException e) {
                     System.out.println("Gagal Terkoneksi" + e.getMessage());    
                 }           
-                    String url = "jdbc:mysql://devlab.santeknovatif.xyz:3309/eo_management?autoReconnect=true&useSSL=true";
-//                    String url = "jdbc:mysql://localhost:3306/eo_management?autoReconnect=true&useSSL=true";
+//                    String url = "jdbc:mysql://localhost:3306/eo_sistem_management?autoReconnect=true&useSSL=false";
+                    String url = "jdbc:mysql://localhost:3306/eo_sistem_management?autoReconnect=true&useSSL=false";
                     try {
-                           koneksi = DriverManager.getConnection (url,"kelompok2","kelompok2kuy");
-//                            koneksi = DriverManager.getConnection (url,"root","root");
+//                           koneksi = DriverManager.getConnection (url,"kelompok2","kelompok2kuy");
+                            koneksi = DriverManager.getConnection (url,"root","");
                             System.out.println("berhasil koneksi ke database");
                         } catch (SQLException e) {
                             System.out.println("gagal terkoneksi ke database" + e.getMessage());
