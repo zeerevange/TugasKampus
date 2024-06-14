@@ -158,9 +158,9 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
                 else if (AN.length() == 5)
                 {Nol = "";}
                 
-                txtId.setText("INV" + DateNow + Nol + AN + "AN");
+                txtId.setText("INV" + Nol + AN + "AN");
             } else {
-                txtId.setText("INV" + DateNow + "00001AN");
+                txtId.setText("INV" + "00001AN");
             }
         }catch (SQLException e){ 
             JOptionPane.showMessageDialog(null, "Id otomatis tidak berjalan. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -175,7 +175,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         try {
             String sql = "SELECT * FROM pesanan_addon_layanan\n" +
                     "LEFT JOIN pesanan_layanan ON pesanan_addon_layanan.pesanan_layanan_id = pesanan_layanan.id\n" +
-                    "LEFT JOIN pelanggan ON pesanan_layanan.id_pelanggan = pelanggan.id\n" +
+                    "LEFT JOIN pelanggan ON pesanan_layanan.pelanggan_id = pelanggan.id\n" +
                     "LEFT JOIN addon ON pesanan_addon_layanan.addon_id = addon.id\n" +
                     "LEFT JOIN sub_kategori_addon ON addon.sub_kategori_addon_id = sub_kategori_addon.id;";
             Statement stat = conn.createStatement();
@@ -546,7 +546,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Isi minimal order dengan format angka saja");
             txtIdPesananUtama.requestFocus();
         } else {
-            String sql = "UPDATE pesanan_layanan SET id_pelanggan=? , id_paket_layanan=? , jumlah_peserta=? WHERE id = '"
+            String sql = "UPDATE pesanan_layanan SET pelanggan_id=? , id_paket_layanan=? , jumlah_peserta=? WHERE id = '"
             + txtId.getText()+"'";
             try {
                 PreparedStatement stat = conn.prepareStatement(sql);

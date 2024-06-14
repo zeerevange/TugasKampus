@@ -6,7 +6,6 @@
 package eo_management.view;
 
 import eo_management.UserSession;
-import eo_management.Main;
 import eo_management.koneksi.koneksi;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
@@ -21,17 +20,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import java.io.File;
-import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
-
 /**
  *
  * @author it
@@ -229,8 +225,11 @@ public class Dashboard extends javax.swing.JFrame {
         menuPesananLayanan = new javax.swing.JMenuItem();
         menuPesananAddonLayanan = new javax.swing.JMenuItem();
         menuMaster2 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        menuReportTransaksiPesanan = new javax.swing.JMenuItem();
+        menuReportPaketLayanan = new javax.swing.JMenuItem();
+        menuReportPaketAddonLayanan = new javax.swing.JMenuItem();
+        menuReportDataPelanggan = new javax.swing.JMenuItem();
+        menuReportTransaksiPesananLayanan = new javax.swing.JMenuItem();
+        menuReportTransaksiPesananAddon = new javax.swing.JMenuItem();
         menuMaster3 = new javax.swing.JMenu();
         menuUsers = new javax.swing.JMenuItem();
         menuRole = new javax.swing.JMenuItem();
@@ -596,8 +595,8 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE))
+                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel14Layout.setVerticalGroup(
@@ -857,23 +856,47 @@ public class Dashboard extends javax.swing.JFrame {
 
         jMenuBar1.add(menuMaster1);
 
-        menuMaster2.setText("Report");
+        menuMaster2.setText("Reports");
 
-        jMenuItem2.setText("Laporan Data Pelanggan");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        menuReportPaketLayanan.setText("Paket Layanan");
+        menuReportPaketLayanan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                menuReportPaketLayananActionPerformed(evt);
             }
         });
-        menuMaster2.add(jMenuItem2);
+        menuMaster2.add(menuReportPaketLayanan);
 
-        menuReportTransaksiPesanan.setText("Laporan Transaksi Pesanan Layanan");
-        menuReportTransaksiPesanan.addActionListener(new java.awt.event.ActionListener() {
+        menuReportPaketAddonLayanan.setText("Paket Add-on Layanan");
+        menuReportPaketAddonLayanan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuReportTransaksiPesananActionPerformed(evt);
+                menuReportPaketAddonLayananActionPerformed(evt);
             }
         });
-        menuMaster2.add(menuReportTransaksiPesanan);
+        menuMaster2.add(menuReportPaketAddonLayanan);
+
+        menuReportDataPelanggan.setText("Data Pelanggan");
+        menuReportDataPelanggan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuReportDataPelangganActionPerformed(evt);
+            }
+        });
+        menuMaster2.add(menuReportDataPelanggan);
+
+        menuReportTransaksiPesananLayanan.setText("Transaksi Pesanan Layanan");
+        menuReportTransaksiPesananLayanan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuReportTransaksiPesananLayananActionPerformed(evt);
+            }
+        });
+        menuMaster2.add(menuReportTransaksiPesananLayanan);
+
+        menuReportTransaksiPesananAddon.setText("Transaksi Pesanan Layanan Addon");
+        menuReportTransaksiPesananAddon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuReportTransaksiPesananAddonActionPerformed(evt);
+            }
+        });
+        menuMaster2.add(menuReportTransaksiPesananAddon);
 
         jMenuBar1.add(menuMaster2);
 
@@ -1006,26 +1029,63 @@ public class Dashboard extends javax.swing.JFrame {
         new PesananAddonLayanan (this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_menuPesananAddonLayananActionPerformed
 
-    private void menuReportTransaksiPesananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReportTransaksiPesananActionPerformed
+    private void menuReportTransaksiPesananLayananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReportTransaksiPesananLayananActionPerformed
         try {
-            File namafile = new File("src/eo_management/reports/ReportTransaksi.jasper");
+            File namafile = new File("src/eo_management/reports/DataTransaksi.jasper");
             JasperPrint jp = JasperFillManager.fillReport(namafile.getPath(), null, conn);
             JasperViewer.viewReport(jp, false);
         } catch (JRException e) {
             JOptionPane.showMessageDialog(rootPane, "File tidak ditemukan "+e);
         }
-    }//GEN-LAST:event_menuReportTransaksiPesananActionPerformed
+    }//GEN-LAST:event_menuReportTransaksiPesananLayananActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void menuReportDataPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReportDataPelangganActionPerformed
         // TODO add your handling code here:
         try {
-            File namafile = new File("src/eo_management/reports/ReportDataPelanggan.jasper");
+            
+            File namafile = new File("src/eo_management/reports/DataPelanggan.jasper");
+            
             JasperPrint jp = JasperFillManager.fillReport(namafile.getPath(), null, conn);
             JasperViewer.viewReport(jp, false);
         } catch (JRException e) {
             JOptionPane.showMessageDialog(rootPane, "File tidak ditemukan "+e);
         }
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_menuReportDataPelangganActionPerformed
+
+    private void menuReportTransaksiPesananAddonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReportTransaksiPesananAddonActionPerformed
+        // TODO add your handling code here:
+        try {
+            File namafile = new File("src/eo_management/reports/DataTransaksiAddon.jasper");
+            JasperPrint jp = JasperFillManager.fillReport(namafile.getPath(), null, conn);
+            JasperViewer.viewReport(jp, false);
+        } catch (JRException e) {
+            JOptionPane.showMessageDialog(rootPane, "File tidak ditemukan "+e);
+        }
+    }//GEN-LAST:event_menuReportTransaksiPesananAddonActionPerformed
+
+    private void menuReportPaketLayananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReportPaketLayananActionPerformed
+        // TODO add your handling code here:
+        try {
+            
+            File namafile = new File("src/eo_management/reports/DataPaketLayanan.jasper");
+            
+            JasperPrint jp = JasperFillManager.fillReport(namafile.getPath(), null, conn);
+            JasperViewer.viewReport(jp, false);
+        } catch (JRException e) {
+            JOptionPane.showMessageDialog(rootPane, "File tidak ditemukan "+e);
+        }
+    }//GEN-LAST:event_menuReportPaketLayananActionPerformed
+
+    private void menuReportPaketAddonLayananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReportPaketAddonLayananActionPerformed
+        // TODO add your handling code here:
+        try {
+            File namafile = new File("src/eo_management/reports/DataPaketAddonLayanan.jasper");
+            JasperPrint jp = JasperFillManager.fillReport(namafile.getPath(), null, conn);
+            JasperViewer.viewReport(jp, false);
+        } catch (JRException e) {
+            JOptionPane.showMessageDialog(rootPane, "File tidak ditemukan "+e);
+        }
+    }//GEN-LAST:event_menuReportPaketAddonLayananActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1084,7 +1144,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
@@ -1127,7 +1186,11 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuPerusahaanPelanggan;
     private javax.swing.JMenuItem menuPesananAddonLayanan;
     private javax.swing.JMenuItem menuPesananLayanan;
-    private javax.swing.JMenuItem menuReportTransaksiPesanan;
+    private javax.swing.JMenuItem menuReportDataPelanggan;
+    private javax.swing.JMenuItem menuReportPaketAddonLayanan;
+    private javax.swing.JMenuItem menuReportPaketLayanan;
+    private javax.swing.JMenuItem menuReportTransaksiPesananAddon;
+    private javax.swing.JMenuItem menuReportTransaksiPesananLayanan;
     private javax.swing.JMenuItem menuRole;
     private javax.swing.JMenuItem menuSubKategoriAddon;
     private javax.swing.JMenuItem menuSupplier1;
