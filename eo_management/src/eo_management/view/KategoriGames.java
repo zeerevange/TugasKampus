@@ -59,7 +59,6 @@ public class KategoriGames extends javax.swing.JDialog {
     }
     
     private void enableButton() {
-        txtId.setEnabled(true);
         txtNama.setEnabled(true);
         btnSimpan.setEnabled(true);
     }
@@ -85,37 +84,55 @@ public class KategoriGames extends javax.swing.JDialog {
         btnHapus.setEnabled(false);
     }
     
-    public void dataTable() {
-    Object[] header = {"ID Kategori Games", "Nama Kategori Games"};
-    tabmode = new DefaultTableModel (null, header);
-    try {
-        String sql = "SELECT * FROM kategori_games ORDER BY id ASC";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet hasil = ps.executeQuery();
-             while (hasil.next()) {
-                tabmode.addRow(new Object[] {
-                hasil.getString(1),
-                hasil.getString(2),
-             });
-        }
-        tabelRole.setModel(tabmode);
-        
-        // Set header renderer untuk header di tabel
-        JTableHeader headerTable = tabelRole.getTableHeader();
-        headerTable.setDefaultRenderer(new HeaderRenderer());
+    private void getLastId () {
+        try {
+            String sql = "SELECT * FROM kategori_games ORDER BY id DESC LIMIT 1";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet hasil = ps.executeQuery();
+            
+            if (hasil.next()){
+                String lastId = hasil.getString("id");
+                txtId.setText("" + (Integer.parseInt(lastId) + 1));
+            } else {
+                txtId.setText("1");
+            }
 
-        // Set cell renderer untuk kolom-kolom di tabel
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
-        for (int i = 0; i < tabelRole.getColumnCount(); i++) {
-            tabelRole.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "data ID terakhir gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-}
+    
+    public void dataTable() {
+        Object[] header = {"ID Kategori Games", "Nama Kategori Games"};
+        tabmode = new DefaultTableModel (null, header);
+        try {
+            String sql = "SELECT * FROM kategori_games ORDER BY id ASC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet hasil = ps.executeQuery();
+                 while (hasil.next()) {
+                    tabmode.addRow(new Object[] {
+                    hasil.getString(1),
+                    hasil.getString(2),
+                 });
+            }
+            tabelRole.setModel(tabmode);
+
+            // Set header renderer untuk header di tabel
+            JTableHeader headerTable = tabelRole.getTableHeader();
+            headerTable.setDefaultRenderer(new HeaderRenderer());
+
+            // Set cell renderer untuk kolom-kolom di tabel
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+            for (int i = 0; i < tabelRole.getColumnCount(); i++) {
+                tabelRole.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 class HeaderRenderer implements TableCellRenderer {
     JLabel label;
@@ -375,16 +392,13 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -393,7 +407,7 @@ class HeaderRenderer implements TableCellRenderer {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
@@ -407,6 +421,7 @@ class HeaderRenderer implements TableCellRenderer {
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         disableButton();
         clear();
+        getLastId ();
         enableButton();
     }//GEN-LAST:event_btnTambahActionPerformed
 

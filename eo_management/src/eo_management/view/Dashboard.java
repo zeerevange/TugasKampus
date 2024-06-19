@@ -757,6 +757,11 @@ public class Dashboard extends javax.swing.JFrame {
         jMenu2.add(menuSupplier1);
 
         menuPermainan.setText("Permainan");
+        menuPermainan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuPermainanActionPerformed(evt);
+            }
+        });
         jMenu2.add(menuPermainan);
 
         menuMaster.add(jMenu2);
@@ -1086,6 +1091,11 @@ public class Dashboard extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "File tidak ditemukan "+e);
         }
     }//GEN-LAST:event_menuReportPaketAddonLayananActionPerformed
+
+    private void menuPermainanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPermainanActionPerformed
+        // TODO add your handling code here:
+        new Games (this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_menuPermainanActionPerformed
 
     /**
      * @param args the command line arguments
