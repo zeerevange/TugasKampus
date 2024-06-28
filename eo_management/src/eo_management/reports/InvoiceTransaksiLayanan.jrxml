@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1d440b7a-6c9f-4479-92ad-30074db39bc4">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="550"/>
+	<property name="ireport.y" value="536"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -24,27 +24,91 @@
 		</box>
 	</style>
 	<style name="Crosstab Data Text" hAlign="Center"/>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<subDataset name="dataTransaksiAddon" uuid="92bf2663-5498-48e5-a046-617d0bbb3048">
+		<parameter name="NO_INVOICE" class="java.lang.String"/>
+		<parameter name="TOTAL_HARGA_ADDON" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT
+pesanan_addon_layanan.id AS inoice,
+pesanan_layanan.id AS inoice_induk,
+kategori_addon.nama AS nama_kategori,
+sub_kategori_addon.nama AS nama_addon,
+addon.harga,
+pesanan_addon_layanan.jumlah_pesanan,
+
+(addon.harga * pesanan_addon_layanan.jumlah_pesanan) AS total_harga
+FROM
+pesanan_addon_layanan
+LEFT JOIN
+pesanan_layanan ON pesanan_layanan.id = pesanan_addon_layanan.pesanan_layanan_id
+LEFT JOIN
+addon ON addon.id = pesanan_addon_layanan.addon_id
+LEFT JOIN
+sub_kategori_addon ON sub_kategori_addon.id = addon.sub_kategori_addon_id
+LEFT JOIN
+kategori_addon ON kategori_addon.id = sub_kategori_addon.kategori_addon_id
+LEFT JOIN
+pelanggan ON pelanggan.id = pesanan_layanan.pelanggan_id
+LEFT JOIN
+perusahaan_pelanggan ON perusahaan_pelanggan.pelanggan_id = pelanggan.id
+WHERE pesanan_layanan.id = $P{NO_INVOICE};]]>
+		</queryString>
+		<field name="inoice" class="java.lang.String"/>
+		<field name="inoice_induk" class="java.lang.String"/>
+		<field name="nama_kategori" class="java.lang.String"/>
+		<field name="nama_addon" class="java.lang.String"/>
+		<field name="harga" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="jumlah_pesanan" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="total_harga" class="java.lang.Long"/>
+		<variable name="TOTAL_HARGA_ADDON" class="java.lang.Integer" calculation="Sum">
+			<variableExpression><![CDATA[$F{total_harga}]]></variableExpression>
+		</variable>
+	</subDataset>
 	<parameter name="NO_INVOICE" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT 
-`pesanan_layanan`.`id`,
-`pelanggan`.`nama` AS `nama_pic`,
-`perusahaan_pelanggan`.`nama_perusahaan` AS `bill_to`,
-`perusahaan_pelanggan`.`alamat_perusahaan` AS `alamat_bill_to`,
-`pelanggan`.`no_telp`,
-`pelanggan`.`email`,
-`paket_layanan`.`nama` AS `nama_paket_layanan`,
-`paket_layanan`.`harga`,
-`paket_layanan`.`include`,
-`paket_layanan`.`deskripsi`,
-`pesanan_layanan`.`jumlah_peserta`,
-(`paket_layanan`.`harga` * `pesanan_layanan`.`jumlah_peserta`) AS `total_harga`,
-`pesanan_layanan`.`status_lunas`
-FROM `pesanan_layanan`
-LEFT JOIN `paket_layanan` ON `paket_layanan`.`id` = `pesanan_layanan`.`paket_layanan_id`
-LEFT JOIN `pelanggan` ON `pelanggan`.`id` = `pesanan_layanan`.`pelanggan_id`
-LEFT JOIN `perusahaan_pelanggan` ON `perusahaan_pelanggan`.`pelanggan_id` = `pelanggan`.`id`
-WHERE `pesanan_layanan`.`id` = $P{NO_INVOICE};]]>
+		<![CDATA[SELECT
+pesanan_layanan.id,
+pelanggan.nama AS nama_pic,
+perusahaan_pelanggan.nama_perusahaan AS bill_to,
+perusahaan_pelanggan.alamat_perusahaan AS alamat_bill_to,
+pelanggan.no_telp,
+pelanggan.email,
+paket_layanan.nama AS nama_paket_layanan,
+paket_layanan.harga,
+paket_layanan.include,
+paket_layanan.deskripsi,
+pesanan_layanan.jumlah_peserta,
+(paket_layanan.harga * pesanan_layanan.jumlah_peserta) AS total_harga,
+pesanan_layanan.status_lunas
+FROM pesanan_layanan
+LEFT JOIN paket_layanan ON paket_layanan.id = pesanan_layanan.paket_layanan_id
+LEFT JOIN pelanggan ON pelanggan.id = pesanan_layanan.pelanggan_id
+LEFT JOIN perusahaan_pelanggan ON perusahaan_pelanggan.pelanggan_id = pelanggan.id
+WHERE pesanan_layanan.id = $P{NO_INVOICE}]]>
 	</queryString>
 	<field name="id" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -237,7 +301,7 @@ WHERE `pesanan_layanan`.`id` = $P{NO_INVOICE};]]>
 				<text><![CDATA[Include:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="64" width="254" height="153" isPrintWhenDetailOverflows="true" uuid="0ec41724-b03c-4d12-8609-42c24056c041"/>
+				<reportElement x="0" y="64" width="254" height="74" isPrintWhenDetailOverflows="true" uuid="0ec41724-b03c-4d12-8609-42c24056c041"/>
 				<textElement>
 					<font size="9"/>
 					<paragraph lineSpacing="1_1_2" leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
@@ -258,7 +322,7 @@ WHERE `pesanan_layanan`.`id` = $P{NO_INVOICE};]]>
 					<font size="9"/>
 					<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0.00").format($F{harga})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0").format($F{harga})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="455" y="24" width="100" height="20" uuid="9798774c-2ded-456a-88e0-d201f57b45ee"/>
@@ -266,8 +330,116 @@ WHERE `pesanan_layanan`.`id` = $P{NO_INVOICE};]]>
 					<font size="9"/>
 					<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0.00").format($F{total_harga})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0").format($F{total_harga})]]></textFieldExpression>
 			</textField>
+			<componentElement>
+				<reportElement key="table 1" style="table 1" x="-1" y="138" width="255" height="65" uuid="8d905fa9-bf7f-4390-bb16-39b2cccaf801"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataTransaksiAddon" uuid="59d62510-9b23-4bb8-ac89-85ccef76b456">
+						<datasetParameter name="NO_INVOICE">
+							<datasetParameterExpression><![CDATA[$P{NO_INVOICE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="256" uuid="1e03989c-7dc6-46b0-85d1-94766951f97f">
+						<jr:tableHeader style="table 1" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="256" height="30" uuid="c7b5be81-4c93-4eab-af80-beca15a50b7c"/>
+								<textElement verticalAlignment="Middle">
+									<font size="9" isBold="true"/>
+									<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+								</textElement>
+								<text><![CDATA[Pesanan Addon Layanan]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table 1_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="256" height="20" uuid="ddb8909d-9836-4558-8408-3c7e0c7dce72"/>
+								<textElement>
+									<font size="9"/>
+									<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nama_addon}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 1" style="table 1" x="253" y="138" width="101" height="65" uuid="6059fe95-5b5b-4cd2-ae96-cb42f07b1156"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataTransaksiAddon" uuid="40c1f295-595f-4807-bab9-3866bd38f52e">
+						<datasetParameter name="NO_INVOICE">
+							<datasetParameterExpression><![CDATA[$P{NO_INVOICE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="256" uuid="e8dfe297-64ef-4448-b94f-2bd932ddf602">
+						<jr:tableHeader style="table 1" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 1_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="256" height="20" uuid="9fc4d760-c084-4ec0-bc66-fa30a5475210"/>
+								<textElement>
+									<font size="9"/>
+									<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{jumlah_pesanan}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 1" style="table 1" x="354" y="138" width="101" height="65" uuid="0cf0faa4-8a85-4d03-81a4-789305c3d8ed"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataTransaksiAddon" uuid="2bb98cff-810b-434c-b366-6e6b6114f6b8">
+						<datasetParameter name="NO_INVOICE">
+							<datasetParameterExpression><![CDATA[$P{NO_INVOICE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="256" uuid="27a75a70-4903-4879-bc1f-264197161fc2">
+						<jr:tableHeader style="table 1" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 1_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="256" height="20" uuid="32fe35bc-cf25-4184-af13-43d957249c5d"/>
+								<textElement>
+									<font size="9"/>
+									<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0").format($F{harga})]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 1" style="table 1" x="453" y="138" width="102" height="65" uuid="2491674f-876f-4671-9d72-769e8f72d126"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataTransaksiAddon" uuid="05fa41c5-0462-4f2c-903b-becac047848a">
+						<datasetParameter name="NO_INVOICE">
+							<datasetParameterExpression><![CDATA[$P{NO_INVOICE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="TOTAL_HARGA_ADDON">
+							<datasetParameterExpression><![CDATA[$F{total_harga}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="256" uuid="8a366894-b049-49cb-acc9-84aa6088bd3f">
+						<jr:tableHeader style="table 1" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 1_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="256" height="20" uuid="fca63746-e0f4-43f7-95f9-9efdc7782fb0"/>
+								<textElement>
+									<font size="9"/>
+									<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0").format($F{total_harga})]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
 		</band>
 		<band height="225">
 			<staticText>
@@ -284,7 +456,7 @@ WHERE `pesanan_layanan`.`id` = $P{NO_INVOICE};]]>
 					<font size="9"/>
 					<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0.00").format($F{total_harga})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0").format($F{total_harga}+$V{TOTAL_HARGA_ADDON})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="355" y="20" width="100" height="20" forecolor="#FFFFFF" backcolor="#3399FF" uuid="b150fe37-a0a1-43c6-8cda-6d31ab25eb06"/>
@@ -308,7 +480,7 @@ WHERE `pesanan_layanan`.`id` = $P{NO_INVOICE};]]>
 					<font size="9"/>
 					<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0.00").format($F{total_harga} * 0.11)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0").format($F{total_harga} * 0.11)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="454" y="40" width="100" height="20" uuid="3aa4a266-2097-4906-954f-3d5d0f3ceca4"/>
@@ -316,7 +488,7 @@ WHERE `pesanan_layanan`.`id` = $P{NO_INVOICE};]]>
 					<font size="9"/>
 					<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0.00").format($F{total_harga} + $F{total_harga} * 0.11)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0").format($F{total_harga} + $F{total_harga} * 0.11)]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="413" y="130" width="108" height="20" uuid="bd50f527-5b1b-47e2-a524-4d35853bccfb">
