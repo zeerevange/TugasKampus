@@ -127,11 +127,11 @@ public class Pelanggan extends javax.swing.JDialog {
     //memberikan kode id otomatis kepada id pelanggan
     private void kode_id_otomatis(){
         try {
-            String sql = "SELECT * FROM pelanggan ORDER BY id DESC";
+            String sql = "SELECT * FROM pelanggan ORDER BY id_pelanggan DESC";
             Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()){
-                String kode = rs.getString("id").substring(2);
+                String kode = rs.getString("id_pelanggan").substring(2);
                 String AN = "" + (Integer.parseInt(kode) + 1);
                 String Nol = "";
                 
@@ -163,13 +163,13 @@ public class Pelanggan extends javax.swing.JDialog {
         try {
             String sql;
             if (!type_data.equals("cari")) {
-                sql = "SELECT * FROM pelanggan LEFT JOIN perusahaan_pelanggan ON perusahaan_pelanggan.pelanggan_id = pelanggan.id WHERE perusahaan_pelanggan.pelanggan_id IS NULL OR perusahaan_pelanggan.pelanggan_id IS NOT NULL;";
+                sql = "SELECT * FROM pelanggan LEFT JOIN perusahaan_pelanggan ON perusahaan_pelanggan.id_pelanggan = pelanggan.id_pelanggan WHERE perusahaan_pelanggan.id_pelanggan IS NULL OR perusahaan_pelanggan.id_pelanggan IS NOT NULL;";
             } else {
-                sql = "SELECT * FROM pelanggan LEFT JOIN perusahaan_pelanggan ON perusahaan_pelanggan.pelanggan_id = pelanggan.id WHERE perusahaan_pelanggan.pelanggan_id IS NULL OR perusahaan_pelanggan.pelanggan_id IS NOT NULL"
-                + " AND (pelanggan.id LIKE '%"
-                + cariitem + "%' OR pelanggan.nama LIKE '%"
-                + cariitem + "%' OR pelanggan.no_telp LIKE '%"
-                + cariitem + "%' OR perusahaan_pelanggan.nama_perusahaan LIKE '%"
+                sql = "SELECT * FROM pelanggan LEFT JOIN perusahaan_pelanggan ON perusahaan_pelanggan.id_pelanggan = pelanggan.id_pelanggan WHERE perusahaan_pelanggan.id_pelanggan IS NULL OR perusahaan_pelanggan.id_pelanggan IS NOT NULL"
+                + " AND (pelanggan.id_pelanggan LIKE '%"
+                + cariitem + "%' OR pelanggan.nama_pelanggan LIKE '%"
+                + cariitem + "%' OR pelanggan.no_telp_pelanggan LIKE '%"
+                + cariitem + "%' OR perusahaan_pelanggan.nama_perusahaan_pelanggan LIKE '%"
                 + cariitem + "%');";
             }
             
@@ -651,7 +651,7 @@ public class Pelanggan extends javax.swing.JDialog {
         txtEmail.requestFocus();
         } else {
                     try {
-                        String sql = "UPDATE pelanggan SET nama=? , no_telp=? , email=? WHERE id = '"
+                        String sql = "UPDATE pelanggan SET nama_pelanggan=? , no_telp_pelanggan=? , email_pelanggan=? WHERE id_pelanggan = '"
                                 + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
@@ -671,7 +671,7 @@ public class Pelanggan extends javax.swing.JDialog {
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
             if (ok == 0) {
-                String sql = "Delete FROM pelanggan WHERE id = '" + txtId.getText()+"'";
+                String sql = "Delete FROM pelanggan WHERE id_pelanggan = '" + txtId.getText()+"'";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.executeUpdate();

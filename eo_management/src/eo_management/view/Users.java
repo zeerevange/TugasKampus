@@ -120,9 +120,9 @@ public class Users extends javax.swing.JDialog {
             String sql;
             
             if (type_query != "cari") {
-                sql = "SELECT * FROM user JOIN role ON user.role_id = role.id_role JOIN karyawan ON user.karyawan_id = karyawan.id;";
+                sql = "SELECT * FROM user JOIN role ON user.id_role = role.id_role JOIN karyawan ON user.id_karyawan = karyawan.id_karyawan;";
             } else {
-                sql = "SELECT * FROM user JOIN karyawan ON user.karyawan_id = karyawan.id WHERE user.id_user LIKE '%"+cariitem+"%'  OR karyawan.nama LIKE '%"+cariitem+"%'";
+                sql = "SELECT * FROM user JOIN karyawan ON user.id_karyawan = karyawan.id_karyawan WHERE user.id_user LIKE '%"+cariitem+"%'  OR karyawan.nama_karyawan LIKE '%"+cariitem+"%'";
             }
             
             Statement stat = conn.createStatement();
@@ -142,12 +142,12 @@ public class Users extends javax.swing.JDialog {
      
      private void combobox(){
         try {
-            String sql = "SELECT id_role, nama FROM role";
+            String sql = "SELECT id_role, nama_role FROM role";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
                     int id = hasil.getInt("id_role");
-                    String nama = hasil.getString("nama");
+                    String nama = hasil.getString("nama_role");
                     String item = id + " - " + nama;
                     cbxRole.addItem(item);
             }
@@ -296,7 +296,7 @@ public class Users extends javax.swing.JDialog {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 2, Short.MAX_VALUE))
                     .addComponent(btnCariId, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
                     .addComponent(txtKaryawan, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(51, 51, 51))
@@ -429,7 +429,7 @@ public class Users extends javax.swing.JDialog {
             .addGroup(midLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(txtCari, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(txtCari)
                     .addComponent(btnCari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -538,7 +538,7 @@ public class Users extends javax.swing.JDialog {
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-        String sql = "UPDATE user SET password=?, role_id=?, karyawan_id=? WHERE id_user = '"
+        String sql = "UPDATE user SET password=?, id_role=?, id_karyawan=? WHERE id_user = '"
                             + txtId.getText()+"'";
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
@@ -553,12 +553,12 @@ public class Users extends javax.swing.JDialog {
 
             // Mendapatkan data karyawan dari database berdasarkan pilihan pada txtKaryawan
             String selectedKaryawan = txtKaryawan.getText();
-            String karyawanSql = "SELECT * FROM karyawan WHERE nama = ?";
+            String karyawanSql = "SELECT * FROM karyawan WHERE nama_karyawan = ?";
             PreparedStatement karyawanStat = conn.prepareStatement(karyawanSql);
             karyawanStat.setString(1, selectedKaryawan);
             ResultSet karyawanResult = karyawanStat.executeQuery();
             if (karyawanResult.next()) {
-                int karyawanId = karyawanResult.getInt("id");
+                int karyawanId = karyawanResult.getInt("id_karyawan");
                 stat.setInt(3, karyawanId);
             } else {
                 // Jika data karyawan tidak ditemukan, berikan nilai null atau sesuaikan dengan kebutuhan Anda
@@ -601,7 +601,7 @@ public class Users extends javax.swing.JDialog {
         String roleId = roleValue.split("-")[0];
         
         try {
-            String sql = "SELECT * FROM role WHERE nama = '"+roleId+"'";
+            String sql = "SELECT * FROM role WHERE nama_role = '"+roleId+"'";
             Statement stat = conn.createStatement();
             ResultSet hasil_cari = stat.executeQuery(sql);
             if (hasil_cari.next()){

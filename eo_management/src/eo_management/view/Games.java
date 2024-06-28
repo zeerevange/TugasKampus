@@ -101,12 +101,12 @@ public class Games extends javax.swing.JDialog {
     
     private void combobox(){
         try {
-            String sql = "SELECT id, nama FROM kategori_games";
+            String sql = "SELECT id_kategori_game, nama_kategori_game FROM kategori_game";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
-                    int id = hasil.getInt("id");
-                    String nama = hasil.getString("nama");
+                    int id = hasil.getInt("id_kategori_game");
+                    String nama = hasil.getString("nama_kategori_game");
                     String item = id + " - " + nama;
                     cbxKategori.addItem(item);
             }
@@ -117,12 +117,12 @@ public class Games extends javax.swing.JDialog {
     
     private void getLastId () {
         try {
-            String sql = "SELECT * FROM games ORDER BY id DESC LIMIT 1";
+            String sql = "SELECT * FROM game ORDER BY id_game DESC LIMIT 1";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet hasil = ps.executeQuery();
             
             if (hasil.next()){
-                String lastId = hasil.getString("id");
+                String lastId = hasil.getString("id_game");
                 txtId.setText("" + (Integer.parseInt(lastId) + 1));
             } else {
                 txtId.setText("1");
@@ -137,7 +137,7 @@ public class Games extends javax.swing.JDialog {
     Object[] header = {"ID Game", "Kategori Game", "Nama Game", "Value Game", "Deskripsi"};
     tabmode = new DefaultTableModel (null, header);
     try {
-        String sql = "SELECT `games`.*, `kategori_games`.`nama` AS `nama_kategori` FROM `games` LEFT JOIN `kategori_games` ON `kategori_games`.`id` = `games`.`kategori_games_id`; ";
+        String sql = "SELECT `game`.*, `kategori_game`.`nama_kategori_game` AS `nama_kategori` FROM `game` LEFT JOIN `kategori_game` ON `kategori_game`.`id_kategori_game` = `game`.`id_kategori_game`; ";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet hasil = ps.executeQuery();
              
@@ -516,7 +516,7 @@ class HeaderRenderer implements TableCellRenderer {
                 txtId.requestFocus();
             } else {
                 try {
-                    String sql = "INSERT INTO games (id, nama, value, deskripsi, kategori_games_id) VALUES (?, ?, ?, ?, ?)";
+                    String sql = "INSERT INTO game (id_game, nama_game, value_game, deskripsi_game, id_kategori_game) VALUES (?, ?, ?, ?, ?)";
                     PreparedStatement stat = conn.prepareStatement(sql);
                     
                     String selectedItem = cbxKategori.getSelectedItem().toString();
@@ -548,7 +548,7 @@ class HeaderRenderer implements TableCellRenderer {
                 txtId.requestFocus();
                 } else {
                     try {
-                        String sql = "UPDATE games SET nama=?, value=?, deskripsi=?, kategori_games_id=? WHERE id = '"+ txtId.getText()+"'";
+                        String sql = "UPDATE game SET nama_game=?, value_game=?, deskripsi_game=?, id_kategori_game=? WHERE id_game = '"+ txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         
                         stat.setString(1, txtNama.getText());
@@ -580,7 +580,7 @@ class HeaderRenderer implements TableCellRenderer {
         int ok = JOptionPane.showConfirmDialog(null, "Hapus data ini?", "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION);
         if (ok == JOptionPane.YES_OPTION) {
             try {
-                String sql = "DELETE FROM games WHERE id=?";
+                String sql = "DELETE FROM game WHERE id_game=?";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtId.getText());
                 int rowsAffected = stat.executeUpdate();
@@ -612,11 +612,11 @@ class HeaderRenderer implements TableCellRenderer {
         String kategoriId = kategoriNama.split(" - ")[0];
         
         try {
-            String sql = "SELECT * FROM kategori_games WHERE nama = '"+kategoriId+"'";
+            String sql = "SELECT * FROM kategori_game WHERE nama_kategori_game = '"+kategoriId+"'";
             Statement stat = conn.createStatement();
             ResultSet hasil_cari = stat.executeQuery(sql);
             if (hasil_cari.next()) {
-                int id = hasil_cari.getInt("id");
+                int id = hasil_cari.getInt("id_kategori_game");
                 DefaultComboBoxModel<String> cbxModel = (DefaultComboBoxModel<String>) cbxKategori.getModel();
                 cbxKategori.setSelectedIndex(id);
                 System.out.println(id);

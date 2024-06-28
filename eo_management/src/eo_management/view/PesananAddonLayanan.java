@@ -147,12 +147,12 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
     //memberikan kode id otomatis kepada id pelanggan
     private void kode_id_otomatis(){
         try {
-            String sql = "SELECT * FROM pesanan_addon_layanan ORDER BY id DESC LIMIT 1";
+            String sql = "SELECT * FROM pesanan_addon ORDER BY id_pesanan_addon DESC LIMIT 1";
             Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             
             if (rs.next()){
-                String kode = rs.getString("id").substring(3).replace("AN", "") ;
+                String kode = rs.getString("id_pesanan_addon").substring(3).replace("AN", "") ;
                 System.out.println(kode);
                 String AN = "" + (Integer.parseInt(kode) + 1);
                 String Nol = "";
@@ -183,11 +183,11 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         String cariitem = txtCari.getText();
         
         try {
-            String sql = "SELECT * FROM pesanan_addon_layanan\n" +
-                    "LEFT JOIN pesanan_layanan ON pesanan_addon_layanan.pesanan_layanan_id = pesanan_layanan.id\n" +
-                    "LEFT JOIN pelanggan ON pesanan_layanan.pelanggan_id = pelanggan.id\n" +
-                    "LEFT JOIN addon ON pesanan_addon_layanan.addon_id = addon.id\n" +
-                    "LEFT JOIN sub_kategori_addon ON addon.sub_kategori_addon_id = sub_kategori_addon.id;";
+            String sql = "SELECT * FROM pesanan_addon\n" +
+                    "LEFT JOIN pesanan_layanan ON pesanan_addon.id_pesanan_layanan = pesanan_layanan.id_pesanan_layanan\n" +
+                    "LEFT JOIN pelanggan ON pesanan_layanan.id_pelanggan = pelanggan.id_pelanggan\n" +
+                    "LEFT JOIN paket_addon ON pesanan_addon.id_paket_addon = paket_addon.id_paket_addon\n" +
+                    "LEFT JOIN sub_kategori_addon ON paket_addon.id_sub_kategori_addon = sub_kategori_addon.id_sub_kategori_addon;";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
@@ -556,7 +556,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null,"Hapus Data Yang Dipilih ?", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
-            String sql = "DELETE FROM pesanan_layanan WHERE id = '" + txtId.getText()+"'";
+            String sql = "DELETE FROM pesanan_addon WHERE id_pesanan_addon = '" + txtId.getText()+"'";
             try {
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.executeUpdate();
@@ -577,12 +577,12 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Isi minimal order dengan format angka saja");
             txtIdPesananUtama.requestFocus();
         } else {
-            String sql = "UPDATE pesanan_layanan SET pelanggan_id=? , id_paket_layanan=? , jumlah_peserta=? WHERE id = '"
+            String sql = "UPDATE pesanan_addon SET id_paket_addon=? , id_pesanan_layanan=? , jumlah_pesanan_addon=? WHERE id_pesanan_addon = '"
             + txtId.getText()+"'";
             try {
                 PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setString(1, txtIdPesananUtama.getText());
-                stat.setString(2, txtIdAddon.getText());
+                stat.setString(1, txtIdAddon.getText());
+                stat.setString(2, txtIdPesananUtama.getText());
                 stat.setString(3, txtJumlahPesanan.getText());
                 stat.executeUpdate();
                 JOptionPane.showMessageDialog(null,"Data Update Telah Tersimpan");
@@ -603,7 +603,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Isi minimal order dengan format angka saja");
             txtJumlahPesanan.requestFocus();
         } else {
-            String sql = "INSERT INTO pesanan_addon_layanan VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO pesanan_addon VALUES (?,?,?,?,?)";
             try {
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtId.getText());
@@ -729,7 +729,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
             this.getDataIdSubKategoriAddonLayanan(throwDataPesanan.getId_SubKategoriLayanan());
             
         } else {
-            String sql = "INSERT INTO pesanan_addon_layanan VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO pesanan_addon VALUES (?,?,?,?,?)";
             try {
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtId.getText());

@@ -86,12 +86,12 @@ public class KategoriGames extends javax.swing.JDialog {
     
     private void getLastId () {
         try {
-            String sql = "SELECT * FROM kategori_games ORDER BY id DESC LIMIT 1";
+            String sql = "SELECT * FROM kategori_game ORDER BY id_kategori_game DESC LIMIT 1";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet hasil = ps.executeQuery();
             
             if (hasil.next()){
-                String lastId = hasil.getString("id");
+                String lastId = hasil.getString("id_kategori_game");
                 txtId.setText("" + (Integer.parseInt(lastId) + 1));
             } else {
                 txtId.setText("1");
@@ -106,7 +106,7 @@ public class KategoriGames extends javax.swing.JDialog {
         Object[] header = {"ID Kategori Games", "Nama Kategori Games"};
         tabmode = new DefaultTableModel (null, header);
         try {
-            String sql = "SELECT * FROM kategori_games ORDER BY id ASC";
+            String sql = "SELECT * FROM kategori_game ORDER BY id_kategori_game ASC";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet hasil = ps.executeQuery();
                  while (hasil.next()) {
@@ -431,7 +431,7 @@ class HeaderRenderer implements TableCellRenderer {
                 txtNama.requestFocus();
             } else {
                 try {
-                    String sql = "INSERT INTO kategori_games (id, nama) VALUES (?,?)";
+                    String sql = "INSERT INTO kategori_game (id_kategori_game, nama_kategori_game) VALUES (?,?)";
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.setString(1, txtId.getText());
                     stat.setString(2, txtNama.getText());
@@ -455,7 +455,7 @@ class HeaderRenderer implements TableCellRenderer {
                 txtNama.requestFocus();
                 } else {
                     try {
-                        String sql = "UPDATE kategori_games SET nama=? WHERE id = '"
+                        String sql = "UPDATE kategori_game SET nama_kategori_game=? WHERE id_kategori_game = '"
                         + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
@@ -478,7 +478,7 @@ class HeaderRenderer implements TableCellRenderer {
         int ok = JOptionPane.showConfirmDialog(null, "Hapus data ini?", "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION);
         if (ok == JOptionPane.YES_OPTION) {
             try {
-                String sql = "DELETE FROM kategori_games WHERE id=?";
+                String sql = "DELETE FROM kategori_game WHERE id_kategori_game=?";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtId.getText());
                 int rowsAffected = stat.executeUpdate();

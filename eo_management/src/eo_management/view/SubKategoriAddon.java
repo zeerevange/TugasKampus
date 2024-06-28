@@ -138,24 +138,26 @@ public class SubKategoriAddon extends javax.swing.JDialog {
 //    }
     private void combobox(){
         try {
-            String sql = "SELECT id, nama FROM kategori_addon";
+            String sql = "SELECT id_kategori_addon, nama_kategori_addon FROM kategori_addon";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
-                    int id = hasil.getInt("id");
-                    String nama = hasil.getString("nama");
+                    int id = hasil.getInt("id_kategori_addon");
+                    String nama = hasil.getString("nama_kategori_addon");
                     String item = id + " - " + nama;
                     cbxKategori.addItem(item);
             }
         } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Error memunculkan combobox");
         }
+        
     }
+    
     public void dataTable() {
     Object[] header = {"ID Katagori", "Nama Sub Katagori Addon", "Katagori Addon"};
     tabmode = new DefaultTableModel (null, header);
     try {
-        String sql = "SELECT * FROM sub_kategori_addon LEFT JOIN kategori_addon ON sub_kategori_addon.kategori_addon_id = kategori_addon.id;";
+        String sql = "SELECT * FROM sub_kategori_addon LEFT JOIN kategori_addon ON sub_kategori_addon.id_kategori_addon = kategori_addon.id_kategori_addon;";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet hasil = ps.executeQuery();
              while (hasil.next()) {
@@ -534,7 +536,7 @@ class HeaderRenderer implements TableCellRenderer {
             cbxKategori.requestFocus();
         } else {
             try {
-                String sql = "INSERT INTO sub_kategori_addon (nama, kategori_addon_id) VALUES (?,?)";
+                String sql = "INSERT INTO sub_kategori_addon (nama_sub_kategori_addon, id_kategori_addon) VALUES (?,?)";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtNama.getText());
                 String selectedItem = cbxKategori.getSelectedItem().toString();
@@ -566,7 +568,7 @@ class HeaderRenderer implements TableCellRenderer {
             cbxKategori.requestFocus();
         } else {
             try {
-                String sql = "UPDATE sub_kategori_addon SET nama=? ,kategori_addon_id=? WHERE id = '"
+                String sql = "UPDATE sub_kategori_addon SET nama_sub_kategori_addon=? ,id_kategori_addon=? WHERE id_kategori_addon = '"
                                 + txtId.getText()+"'";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtNama.getText());
@@ -593,7 +595,7 @@ class HeaderRenderer implements TableCellRenderer {
         int ok = JOptionPane.showConfirmDialog(null, "Hapus data ini?", "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION);
         if (ok == JOptionPane.YES_OPTION) {
             try {
-                String sql = "DELETE FROM sub_kategori_addon WHERE id=?";
+                String sql = "DELETE FROM sub_kategori_addon WHERE id_sub_kategori_addon=?";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtId.getText());
                 int rowsAffected = stat.executeUpdate();
@@ -636,17 +638,29 @@ class HeaderRenderer implements TableCellRenderer {
         txtId.setText(tabelKategori.getValueAt(bar,0).toString());
         txtNama.setText(tabelKategori.getValueAt(bar,1).toString());
         String kategoriValue = tabelKategori.getValueAt(bar,2).toString();
-        String kategoriId = kategoriValue.split(" - ")[0];
-
-        DefaultComboBoxModel<String> cbxModel = (DefaultComboBoxModel<String>) cbxKategori.getModel();
-        for (int i = 0; i < cbxModel.getSize(); i++) {
-            String item = cbxModel.getElementAt(i);
-            String itemId = item.split(" - ")[0];
-        if (itemId.equals(kategoriId)) {
-            cbxKategori.setSelectedIndex(i);
-            break;
+        System.out.println(kategoriValue);
+        
+        try {
+                String sql_subkategori_check = "SELECT id_kategori_addon, nama_kategori_addon FROM kategori_addon WHERE nama_kategori_addon='"+kategoriValue+"'";
+                PreparedStatement stat = conn.prepareStatement(sql_subkategori_check);
+                ResultSet hasil = stat.executeQuery(sql_subkategori_check);
+                if (hasil.next()) {
+                    int id = hasil.getInt("id_kategori_addon");
+                    
+                    for (int i = 0; i < cbxKategori.getItemCount(); i++) {
+                        String item = cbxKategori.getItemAt(i);
+                        if (item.startsWith(id + " - ")) {
+                            cbxKategori.setSelectedIndex(i);
+                            break; // Exit loop once found
+                        }
+                    }
+        
+                }
+                
+        } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat memanggil data kategori data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
+        
         editButton();
     }//GEN-LAST:event_tabelKategoriMouseClicked
 

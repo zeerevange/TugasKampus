@@ -238,8 +238,8 @@ public class Login extends javax.swing.JFrame {
                 if (email.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Harap Masukkan Username dan Password Terlebih Dahulu !");
                 } else {
-                           String user_check_query = "SELECT * FROM karyawan JOIN user ON karyawan.id = user.karyawan_id WHERE karyawan.email = ?;";
-                           String sql = "SELECT * FROM user JOIN karyawan ON user.karyawan_id = karyawan.id WHERE karyawan.email = ? AND user.password = ?;";
+                           String user_check_query = "SELECT * FROM karyawan JOIN user ON karyawan.id_karyawan = user.id_karyawan WHERE karyawan.email_karyawan = ?;";
+                           String sql = "SELECT * FROM user JOIN karyawan ON user.id_karyawan = karyawan.id_karyawan WHERE karyawan.email_karyawan = ? AND user.password = ?;";
                            try {
                                     PreparedStatement user_mail_check = conn.prepareStatement(user_check_query);
                                     user_mail_check.setString(1, email);
@@ -256,11 +256,11 @@ public class Login extends javax.swing.JFrame {
                                             user_validate.setString(2, passwordSecure.md5Encode(password));
                                             ResultSet result_user_match_pass = user_validate.executeQuery();
                                             if (result_user_match_pass.next()) {
-                                                karyawanSession.setU_id(result_user_match_pass.getString("id"));
-                                                karyawanSession.setU_username(result_user_match_pass.getString("nama"));
-                                                karyawanSession.setU_NoHp(result_user_match_pass.getString("no_telp"));
-                                                karyawanSession.setU_Email(result_user_match_pass.getString("email"));
-                                                JOptionPane.showMessageDialog(null, "Selamat Datang Kembali " + result_user_match_pass.getString("nama"));
+                                                karyawanSession.setU_id(result_user_match_pass.getString("id_karyawan"));
+                                                karyawanSession.setU_username(result_user_match_pass.getString("nama_karyawan"));
+                                                karyawanSession.setU_NoHp(result_user_match_pass.getString("no_telp_karyawan"));
+                                                karyawanSession.setU_Email(result_user_match_pass.getString("email_karyawan"));
+                                                JOptionPane.showMessageDialog(null, "Selamat Datang Kembali " + result_user_match_pass.getString("nama_karyawan"));
                                                 dispose();
                                                 new Dashboard().setVisible(true);
                                             } else {

@@ -120,10 +120,10 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         String cariitem = txtCari.getText();
         
         try {
-            String sql = "SELECT * FROM jabatan_karyawan WHERE id LIKE '%"
-                    + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or gaji LIKE '%"
-                    + cariitem+ "%' ORDER BY id asc";
+            String sql = "SELECT * FROM jabatan_karyawan WHERE id_jabatan_karyawan LIKE '%"
+                    + cariitem+ "%' or nama_jabatan_karyawan LIKE '%" 
+                    + cariitem+ "%' or gaji_jabatan_karyawan LIKE '%"
+                    + cariitem+ "%' ORDER BY id_jabatan_karyawan asc";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
@@ -505,7 +505,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         txtDeskripsi.requestFocus();
         } else {
             try {
-            String sql = "INSERT INTO jabatan_karyawan (nama, gaji, deskripsi_pekerjaan) VALUES ('"
+            String sql = "INSERT INTO jabatan_karyawan (nama_jabatan_karyawan, gaji_jabatan_karyawan, deskripsi_pekerjaan_jabatan_karyawan) VALUES ('"
                     +txtNamaJabatan.getText()+"','"
                     +txtGaji.getText()+"','"
                     +txtDeskripsi.getText()+"')";
@@ -536,7 +536,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         txtDeskripsi.requestFocus();
         } else {
         try {
-            String sql = "UPDATE jabatan_karyawan SET nama=? , gaji=? , deskripsi_pekerjaan=? WHERE id = '"
+            String sql = "UPDATE jabatan_karyawan SET nama_jabatan_karyawan=? , gaji_jabatan_karyawan=? , deskripsi_pekerjaan_jabatan_karyawan=? WHERE id_jabatan_karyawan = '"
                     + txtId.getText()+"'";
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, txtNamaJabatan.getText());
@@ -556,7 +556,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
             if (ok == 0) {
-                String sql = "DELETE FROM jabatan_karyawan WHERE id = '" + txtId.getText()+"'";
+                String sql = "DELETE FROM jabatan_karyawan WHERE id_jabatan_karyawan = '" + txtId.getText()+"'";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.executeUpdate();

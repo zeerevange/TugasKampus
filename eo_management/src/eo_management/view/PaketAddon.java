@@ -115,11 +115,11 @@ public class PaketAddon extends javax.swing.JDialog {
     
     private void kode_id_otomatis(){
         try {
-            String sql = "SELECT * FROM addon ORDER BY id DESC";
+            String sql = "SELECT * FROM paket_addon ORDER BY id_paket_addon DESC";
             Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()){
-                String kode = rs.getString("id").substring(2);
+                String kode = rs.getString("id_paket_addon").substring(2);
                 String AN = "" + (Integer.parseInt(kode) + 1);
                 String Nol = "";
                 
@@ -145,12 +145,12 @@ public class PaketAddon extends javax.swing.JDialog {
     
     private void combobox(){
         try {
-            String sql = "SELECT id, nama FROM sub_kategori_addon";
+            String sql = "SELECT id_sub_kategori_addon, nama_sub_kategori_addon FROM sub_kategori_addon";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
-                    int id = hasil.getInt("id");
-                    String nama = hasil.getString("nama");
+                    int id = hasil.getInt("id_sub_kategori_addon");
+                    String nama = hasil.getString("nama_sub_kategori_addon");
                     String item = id + " - " + nama;
                     cbxSubKategori.addItem(item);
             }
@@ -162,9 +162,9 @@ public class PaketAddon extends javax.swing.JDialog {
     Object[] header = {"ID Addon", "Jenis Addon", "Katagori Addon", "Harga", "Include", "Deskripsi"};
     tabmode = new DefaultTableModel (null, header);
     try {
-        String sql = "SELECT * FROM addon \n" +
-                        "LEFT JOIN sub_kategori_addon ON addon.sub_kategori_addon_id = sub_kategori_addon.id\n" +
-                        "LEFT JOIN kategori_addon ON sub_kategori_addon.kategori_addon_id = kategori_addon.id;";
+        String sql = "SELECT * FROM paket_addon \n" +
+                        "LEFT JOIN sub_kategori_addon ON paket_addon.id_sub_kategori_addon = sub_kategori_addon.id_sub_kategori_addon\n" +
+                        "LEFT JOIN kategori_addon ON sub_kategori_addon.id_kategori_addon = kategori_addon.id_kategori_addon;";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet hasil = ps.executeQuery();
              while (hasil.next()) {
@@ -174,7 +174,7 @@ public class PaketAddon extends javax.swing.JDialog {
                 hasil.getString(10),
                 hasil.getString(2),
                 hasil.getString(3),
-                hasil.getString(5)
+                hasil.getString(4)
              });
         }
         tabelKategori.setModel(tabmode);
@@ -296,7 +296,7 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(364, Short.MAX_VALUE)
+                .addContainerGap(455, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(328, 328, 328)
                 .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -318,7 +318,7 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1023, Short.MAX_VALUE)
+            .addGap(0, 1135, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -339,12 +339,12 @@ class HeaderRenderer implements TableCellRenderer {
         jLabel4.setText("Harga Addon                      :");
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel5.setText("Sub Kategori Addon           :");
+        jLabel5.setText("Sub Kategori Addon            :");
 
         cbxSubKategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilihan" }));
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel7.setText("Include                                :");
+        jLabel7.setText("Include                              :");
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel8.setText("Deskripsi                            :");
@@ -381,7 +381,7 @@ class HeaderRenderer implements TableCellRenderer {
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
                             .addComponent(jScrollPane4)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbxSubKategori, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -407,12 +407,9 @@ class HeaderRenderer implements TableCellRenderer {
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(416, 416, 416))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                    .addComponent(jLabel8)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(359, 359, 359))
         );
 
         tabelKategori.setAutoCreateRowSorter(true);
@@ -518,31 +515,29 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnTambah)
-                        .addGap(0, 0, 0)
-                        .addComponent(btnSimpan)
-                        .addGap(0, 0, 0)
-                        .addComponent(btnUbah)
-                        .addGap(0, 0, 0)
-                        .addComponent(btnHapus)
-                        .addGap(0, 0, 0)
-                        .addComponent(btnBatal)
-                        .addGap(18, 18, 18)))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(btnTambah)
+                                .addGap(0, 0, 0)
+                                .addComponent(btnSimpan)
+                                .addGap(0, 0, 0)
+                                .addComponent(btnUbah)
+                                .addGap(0, 0, 0)
+                                .addComponent(btnHapus)
+                                .addGap(0, 0, 0)
+                                .addComponent(btnBatal))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -564,7 +559,7 @@ class HeaderRenderer implements TableCellRenderer {
                             .addComponent(btnHapus)
                             .addComponent(btnBatal)))
                     .addComponent(jScrollPane2))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -590,7 +585,7 @@ class HeaderRenderer implements TableCellRenderer {
             cbxSubKategori.requestFocus();
         } else {
             try {
-                String sql = "INSERT INTO addon (id, harga, include, sub_kategori_addon_id, deskripsi) VALUES (?,?,?,?,?)";
+                String sql = "INSERT INTO paket_addon (id_paket_addon, harga_paket_addon, include_paket_addon, id_sub_kategori_addon, deskripsi_paket_addon) VALUES (?,?,?,?,?)";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtId.getText());
                 stat.setString(2, txtHarga.getText());
@@ -625,7 +620,7 @@ class HeaderRenderer implements TableCellRenderer {
             cbxSubKategori.requestFocus();
         } else {
             try {
-                String sql = "UPDATE addon SET harga=? , sub_kategori_addon_id=?, include=?, deskripsi=? WHERE id = '"
+                String sql = "UPDATE paket_addon SET harga_paket_addon=? , id_sub_kategori_addon=?, include_paket_addon=?, deskripsi_paket_addon=? WHERE id_paket_addon = '"
                                 + txtId.getText()+"'";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtHarga.getText());
@@ -654,7 +649,7 @@ class HeaderRenderer implements TableCellRenderer {
         int ok = JOptionPane.showConfirmDialog(null, "Hapus data ini?", "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION);
         if (ok == JOptionPane.YES_OPTION) {
             try {
-                String sql = "DELETE FROM addon WHERE id=?";
+                String sql = "DELETE FROM paket_addon WHERE id_paket_addon=?";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtId.getText());
                 int rowsAffected = stat.executeUpdate();
@@ -703,12 +698,19 @@ class HeaderRenderer implements TableCellRenderer {
         String sub_kategoriValue = tabelKategori.getValueAt(bar,1).toString();
 //        String subKategoriId = sub_kategoriValue.split(" - ")[0];
         try {
-                String sql_subkategori_check = "SELECT * FROM sub_kategori_addon WHERE nama='"+sub_kategoriValue+"'";
+                String sql_subkategori_check = "SELECT * FROM sub_kategori_addon WHERE nama_sub_kategori_addon='"+sub_kategoriValue+"'";
                 PreparedStatement stat = conn.prepareStatement(sql_subkategori_check);
                 ResultSet hasil = stat.executeQuery(sql_subkategori_check);
                 if (hasil.next()) {
-                    int id = hasil.getInt("id");
-                    cbxSubKategori.setSelectedIndex(id);
+                    int id = hasil.getInt("id_sub_kategori_addon");
+                    
+                    for (int i = 0; i < cbxSubKategori.getItemCount(); i++) {
+                        String item = cbxSubKategori.getItemAt(i);
+                        if (item.startsWith(id + " - ")) {
+                            cbxSubKategori.setSelectedIndex(i);
+                            break; // Exit loop once found
+                        }
+                    }
                 }
                 
         } catch (SQLException e) {

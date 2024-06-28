@@ -42,10 +42,10 @@ public class PopUpPelanggan extends javax.swing.JDialog {
         String cariitem = txtCari.getText();
         
         try {
-            String sql = "SELECT * FROM pelanggan WHERE id LIKE '%"
-                    + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or no_telp LIKE '%"
-                    + cariitem+ "%' ORDER BY id asc";
+            String sql = "SELECT * FROM pelanggan WHERE id_pelanggan LIKE '%"
+                    + cariitem+ "%' or nama_pelanggan LIKE '%" 
+                    + cariitem+ "%' or no_telp_pelanggan LIKE '%"
+                    + cariitem+ "%' ORDER BY id_pelanggan asc";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {

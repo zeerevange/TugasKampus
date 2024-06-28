@@ -108,11 +108,11 @@ public class Inventaris extends javax.swing.JDialog {
     //memberikan kode id otomatis kepada id pelanggan
     private void kode_id_otomatis(){
         try {
-            String sql = "SELECT * FROM inventaris ORDER BY id DESC";
+            String sql = "SELECT * FROM inventaris ORDER BY id_inventaris DESC";
             Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()){
-                String kode = rs.getString("id").substring(2);
+                String kode = rs.getString("id_inventaris").substring(2);
                 String AN = "" + (Integer.parseInt(kode) + 1);
                 String Nol = "";
                 
@@ -142,11 +142,11 @@ public class Inventaris extends javax.swing.JDialog {
         String cariitem = txtCari.getText();
         
         try {
-            String sql = "SELECT * FROM inventaris WHERE id LIKE '%"
-                    + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or id LIKE '%"
-                    + cariitem+ "%' or jumlah LIKE '%"
-                    + cariitem+ "%' ORDER BY id asc";
+            String sql = "SELECT * FROM inventaris WHERE id_inventaris LIKE '%"
+                    + cariitem+ "%' or nama_inventaris LIKE '%" 
+                    + cariitem+ "%' or id_inventaris LIKE '%"
+                    + cariitem+ "%' or jumlah_inventaris LIKE '%"
+                    + cariitem+ "%' ORDER BY id_inventaris asc";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
@@ -502,7 +502,7 @@ public class Inventaris extends javax.swing.JDialog {
                     .addGroup(midLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtCari, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                            .addComponent(txtCari)
                             .addComponent(btnCari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -595,7 +595,7 @@ public class Inventaris extends javax.swing.JDialog {
         txtDeskripsi.requestFocus();
         } else {
                     try {
-                        String sql = "UPDATE inventaris SET nama=? , jumlah=? , deskripsi=? WHERE id = '"
+                        String sql = "UPDATE inventaris SET nama_inventaris=? , jumlah_inventaris=? , deskripsi_inventaris=? WHERE id_inventaris = '"
                                 + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
@@ -616,7 +616,7 @@ public class Inventaris extends javax.swing.JDialog {
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
             if (ok == 0) {
-                String sql = "Delete FROM inventaris WHERE id = '" + txtId.getText()+"'";
+                String sql = "Delete FROM inventaris WHERE id_inventaris = '" + txtId.getText()+"'";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.executeUpdate();

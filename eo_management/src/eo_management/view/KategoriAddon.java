@@ -108,7 +108,7 @@ public class KategoriAddon extends javax.swing.JDialog {
     Object[] header = {"ID Katagori", "Nama Katagori Addon"};
     tabmode = new DefaultTableModel (null, header);
     try {
-        String sql = "SELECT * FROM kategori_addon ORDER BY id ASC";
+        String sql = "SELECT * FROM kategori_addon ORDER BY id_kategori_addon ASC";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet hasil = ps.executeQuery();
              while (hasil.next()) {
@@ -232,7 +232,7 @@ class HeaderRenderer implements TableCellRenderer {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(289, 289, 289)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 294, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 265, Short.MAX_VALUE)
                 .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -252,7 +252,7 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 980, Short.MAX_VALUE)
+            .addGap(0, 982, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -472,7 +472,7 @@ class HeaderRenderer implements TableCellRenderer {
             txtNama.requestFocus();
         } else {
             try {
-                String sql = "INSERT INTO kategori_addon (nama) VALUES (?)";
+                String sql = "INSERT INTO kategori_addon (nama_kategori_addon) VALUES (?)";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtNama.getText());
                 int rowsAffected = stat.executeUpdate();
@@ -495,7 +495,7 @@ class HeaderRenderer implements TableCellRenderer {
             txtNama.requestFocus();
         } else {
             try {
-                String sql = "UPDATE kategori_addon SET nama=? WHERE id = '"
+                String sql = "UPDATE kategori_addon SET nama_kategori_addon=? WHERE id_kategori_addon = '"
                                 + txtId.getText()+"'";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtNama.getText());
@@ -518,7 +518,7 @@ class HeaderRenderer implements TableCellRenderer {
         int ok = JOptionPane.showConfirmDialog(null, "Hapus data ini?", "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION);
         if (ok == JOptionPane.YES_OPTION) {
             try {
-                String sql = "DELETE FROM kategori_addon WHERE id=?";
+                String sql = "DELETE FROM kategori_addon WHERE id_kategori_addon=?";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtId.getText());
                 int rowsAffected = stat.executeUpdate();

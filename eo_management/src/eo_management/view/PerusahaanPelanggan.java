@@ -146,11 +146,11 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     //memberikan kode id otomatis kepada id pelanggan
     private void kode_id_otomatis(){
     try {
-        String sql = "SELECT * FROM perusahaan_pelanggan ORDER BY id DESC";
+        String sql = "SELECT * FROM perusahaan_pelanggan ORDER BY id_perusahaan_pelanggan DESC";
         Statement stat = conn.createStatement();
         ResultSet rs = stat.executeQuery(sql);
         if (rs.next()){
-            String kode = rs.getString("id").substring(2);
+            String kode = rs.getString("id_perusahaan_pelanggan").substring(2);
             String AN = "" + (Integer.parseInt(kode) + 1);
             String Nol = "";
 
@@ -180,16 +180,16 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     String cariitem = txtCari.getText();
 
     try {
-        String sql = "SELECT * FROM perusahaan_pelanggan JOIN pelanggan ON perusahaan_pelanggan.pelanggan_id = pelanggan.id WHERE perusahaan_pelanggan.id LIKE '%" + cariitem + "%' or perusahaan_pelanggan.nama_perusahaan LIKE '%" + cariitem + "%' or perusahaan_pelanggan.jenis_perusahaan LIKE '%" + cariitem + "%' or pelanggan.nama LIKE '%" + cariitem + "%'";
+        String sql = "SELECT * FROM perusahaan_pelanggan JOIN pelanggan ON perusahaan_pelanggan.id_pelanggan = pelanggan.id_pelanggan WHERE perusahaan_pelanggan.id_perusahaan_pelanggan LIKE '%" + cariitem + "%' or perusahaan_pelanggan.nama_perusahaan_pelanggan LIKE '%" + cariitem + "%' or perusahaan_pelanggan.jenis_perusahaan_pelanggan LIKE '%" + cariitem + "%' or pelanggan.nama_pelanggan LIKE '%" + cariitem + "%'";
         Statement stat = conn.createStatement();
         ResultSet hasil = stat.executeQuery(sql);
         while (hasil.next()) {
             tabmode.addRow(new Object[]{
-                hasil.getString("id"),
-                hasil.getString("nama_perusahaan"),
-                hasil.getString("jenis_perusahaan"),
-                hasil.getString("alamat_perusahaan"),
-                hasil.getString("pelanggan.nama")
+                hasil.getString("id_perusahaan_pelanggan"),
+                hasil.getString("nama_perusahaan_pelanggan"),
+                hasil.getString("jenis_perusahaan_pelanggan"),
+                hasil.getString("alamat_perusahaan_pelanggan"),
+                hasil.getString("pelanggan.id_pelanggan") + " - " + hasil.getString("pelanggan.nama_pelanggan")
             });
         }
         tabelPelanggan.setModel(tabmode);
@@ -354,12 +354,12 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtNama, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(txtNama, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
                     .addComponent(txtJenis)
-                    .addComponent(txtId, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtAlamat, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtIdPelanggan))
-                .addGap(300, 300, 300))
+                    .addComponent(txtIdPelanggan)
+                    .addComponent(txtAlamat)
+                    .addComponent(txtId))
+                .addGap(311, 311, 311))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -507,7 +507,7 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
                                         .addComponent(btnBatal))
                                     .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 887, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, midLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -549,8 +549,14 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         txtNama.setText(tabelPelanggan.getValueAt(bar,1).toString());
         txtJenis.setText(tabelPelanggan.getValueAt(bar,2).toString());
         txtAlamat.setText(tabelPelanggan.getValueAt(bar,3).toString());
-        txtIdPelanggan.setText(tabelPelanggan.getValueAt(bar,4).toString());
+        
+        String pelangganName = tabelPelanggan.getValueAt(bar,4).toString();
+        String pelangganId = pelangganName.split(" - ")[0];
+        
+        txtIdPelanggan.setText(pelangganId);
+        
         editButton();
+        txtIdPelanggan.setEnabled(false);
     }//GEN-LAST:event_tabelPelangganMouseClicked
 
     private void txtCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyPressed
@@ -610,7 +616,7 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         txtAlamat.requestFocus();
         } else {
                     try {
-                        String sql = "UPDATE perusahaan_pelanggan SET nama_perusahaan=? , jenis_perusahaan=? , alamat_perusahaan=?, pelanggan_id=? WHERE id = '"
+                        String sql = "UPDATE perusahaan_pelanggan SET nama_perusahaan_pelanggan=? , jenis_perusahaan_pelanggan=? , alamat_perusahaan_pelanggan=?, id_pelanggan=? WHERE id_perusahaan_pelanggan = '"
                                 + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
@@ -632,7 +638,7 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
             if (ok == 0) {
-                String sql = "Delete FROM perusahaan_pelanggan WHERE id = '" + txtId.getText()+"'";
+                String sql = "Delete FROM perusahaan_pelanggan WHERE id_perusahaan_pelanggan = '" + txtId.getText()+"'";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.executeUpdate();

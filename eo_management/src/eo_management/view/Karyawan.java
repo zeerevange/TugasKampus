@@ -161,11 +161,11 @@ public class Karyawan extends javax.swing.JDialog {
     //memberikan kode id otomatis kepada id pelanggan
     private void kode_id_otomatis(){
         try {
-            String sql = "SELECT * FROM karyawan ORDER BY id DESC";
+            String sql = "SELECT * FROM karyawan ORDER BY id_karyawan DESC";
             Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()){
-                String kode = rs.getString("id").substring(2);
+                String kode = rs.getString("id_karyawan").substring(2);
                 String AN = "" + (Integer.parseInt(kode) + 1);
                 String Nol = "";
                 
@@ -198,9 +198,9 @@ public class Karyawan extends javax.swing.JDialog {
             String sql;
             
             if (type_query != "cari") {
-                sql = "SELECT * FROM karyawan JOIN jabatan_karyawan ON karyawan.jabatan_karyawan_id = jabatan_karyawan.id;";
+                sql = "SELECT * FROM karyawan JOIN jabatan_karyawan ON karyawan.id_jabatan_karyawan = jabatan_karyawan.id_jabatan_karyawan;";
             } else {
-                sql = "SELECT * FROM karyawan JOIN jabatan_karyawan ON karyawan.jabatan_karyawan_id = jabatan_karyawan.id WHERE karyawan.id LIKE '%"+cariitem+"%' OR karyawan.nama LIKE '%"+cariitem+"%' OR karyawan.jenis_kelamin LIKE '%"+cariitem+"%' OR karyawan.no_telp LIKE '%"+cariitem+"%' OR karyawan.email LIKE '%"+cariitem+"%' OR jabatan_karyawan.nama LIKE '%"+cariitem+"%'";
+                sql = "SELECT * FROM karyawan JOIN jabatan_karyawan ON karyawan.id_jabatan_karyawan = jabatan_karyawan.id_jabatan_karyawan WHERE karyawan.id_karyawan LIKE '%"+cariitem+"%' OR karyawan.nama_karyawan LIKE '%"+cariitem+"%' OR karyawan.jenis_kelamin_karyawan LIKE '%"+cariitem+"%' OR karyawan.no_telp_karyawan LIKE '%"+cariitem+"%' OR karyawan.email_karyawan LIKE '%"+cariitem+"%' OR jabatan_karyawan.nama_jabatan_karyawan LIKE '%"+cariitem+"%'";
             }
             
             Statement stat = conn.createStatement();
@@ -222,12 +222,12 @@ public class Karyawan extends javax.swing.JDialog {
     
     private void combobox(){
         try {
-            String sql = "SELECT id, nama FROM jabatan_karyawan";
+            String sql = "SELECT id_jabatan_karyawan, nama_jabatan_karyawan FROM jabatan_karyawan";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
-                    int id = hasil.getInt("id");
-                    String nama = hasil.getString("nama");
+                    int id = hasil.getInt("id_jabatan_karyawan");
+                    String nama = hasil.getString("nama_jabatan_karyawan");
                     String item = id + " - " + nama;
                     cbxJabatan.addItem(item);
             }
@@ -720,7 +720,7 @@ public class Karyawan extends javax.swing.JDialog {
             cbxJabatan.requestFocus();
             } else {
                     try {
-                        String sql = "UPDATE karyawan SET nama=? , jenis_kelamin=? , no_telp=? , email=? , jabatan_karyawan_id=? WHERE id = '"
+                        String sql = "UPDATE karyawan SET nama_karyawan=? , jenis_kelamin_karyawan=? , no_telp_karyawan=? , email_karyawan=? , id_jabatan_karyawan=? WHERE id_karyawan = '"
                                 + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
@@ -746,7 +746,7 @@ public class Karyawan extends javax.swing.JDialog {
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
             if (ok == 0) {
-                String sql = "Delete FROM karyawan WHERE id = '" + txtId.getText()+"'";
+                String sql = "Delete FROM karyawan WHERE id_karyawan = '" + txtId.getText()+"'";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.executeUpdate();
@@ -805,11 +805,11 @@ public class Karyawan extends javax.swing.JDialog {
         String jabatanId = jabatanValue.split(" - ")[0];
         
         try {
-            String sql = "SELECT * FROM jabatan_karyawan WHERE nama = '"+jabatanId+"'";
+            String sql = "SELECT * FROM jabatan_karyawan WHERE nama_jabatan_karyawan = '"+jabatanId+"'";
             Statement stat = conn.createStatement();
             ResultSet hasil_cari = stat.executeQuery(sql);
             if (hasil_cari.next()) {
-                int id = hasil_cari.getInt("id");
+                int id = hasil_cari.getInt("id_jabatan_karyawan");
                 DefaultComboBoxModel<String> cbxModel = (DefaultComboBoxModel<String>) cbxJabatan.getModel();
                 cbxJabatan.setSelectedIndex(id);
                 System.out.println(id);

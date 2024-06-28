@@ -418,7 +418,7 @@ class HeaderRenderer implements TableCellRenderer {
                 txtNama.requestFocus();
             } else {
                 try {
-                    String sql = "INSERT INTO role (nama) VALUES (?)";
+                    String sql = "INSERT INTO role (nama_role) VALUES (?)";
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.setString(1, txtNama.getText());
                     int rowsAffected = stat.executeUpdate();
@@ -441,7 +441,7 @@ class HeaderRenderer implements TableCellRenderer {
                 txtNama.requestFocus();
                 } else {
                     try {
-                        String sql = "UPDATE role SET nama=? WHERE id_role = '"
+                        String sql = "UPDATE role SET nama_role=? WHERE id_role = '"
                                 + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
