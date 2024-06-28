@@ -117,11 +117,11 @@ public class PaketLayanan extends javax.swing.JDialog {
     //memberikan kode id otomatis kepada id pelanggan
     private void kode_id_otomatis(){
         try {
-            String sql = "SELECT * FROM paket_layanan ORDER BY id DESC";
+            String sql = "SELECT * FROM paket_layanan ORDER BY id_paket_layanan DESC";
             Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()){
-                String kode = rs.getString("id").substring(2);
+                String kode = rs.getString("id_paket_layanan").substring(2);
                 String AN = "" + (Integer.parseInt(kode) + 1);
                 String Nol = "";
                 
@@ -151,10 +151,10 @@ public class PaketLayanan extends javax.swing.JDialog {
         String cariitem = txtCari.getText();
         
         try {
-            String sql = "SELECT * FROM paket_layanan WHERE id LIKE '%"
-                    + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or harga LIKE '%"
-                    + cariitem+ "%' ORDER BY id asc";
+            String sql = "SELECT * FROM paket_layanan WHERE id_paket_layanan LIKE '%"
+                    + cariitem+ "%' or nama_paket_layanan LIKE '%" 
+                    + cariitem+ "%' or harga_paket_layanan LIKE '%"
+                    + cariitem+ "%' ORDER BY id_paket_layanan asc";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
@@ -256,7 +256,7 @@ public class PaketLayanan extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(498, Short.MAX_VALUE)
+                .addContainerGap(472, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(462, 462, 462)
                 .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -278,7 +278,7 @@ public class PaketLayanan extends javax.swing.JDialog {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1337, Short.MAX_VALUE)
+            .addGap(0, 1328, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,10 +295,10 @@ public class PaketLayanan extends javax.swing.JDialog {
         txtMinimal.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel3.setText("Harga Paket          Rp");
+        jLabel3.setText("Harga Paket              :");
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel5.setText("Minimal Order          :");
+        jLabel5.setText("Minimal Order      :");
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel2.setText("ID Paket                   :");
@@ -308,12 +308,12 @@ public class PaketLayanan extends javax.swing.JDialog {
         txtNama.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel4.setText("Nama Paket Event   :");
+        jLabel4.setText("Nama Paket Event     :");
 
         txtId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel6.setText("Include                     :");
+        jLabel6.setText("Include                :");
 
         txtInclude.setColumns(20);
         txtInclude.setLineWrap(true);
@@ -334,7 +334,7 @@ public class PaketLayanan extends javax.swing.JDialog {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -346,7 +346,7 @@ public class PaketLayanan extends javax.swing.JDialog {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtHarga)))
+                        .addComponent(txtHarga, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -355,13 +355,13 @@ public class PaketLayanan extends javax.swing.JDialog {
                         .addComponent(txtMinimal, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1)))
-                .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addGap(32, 32, 32)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(70, 70, 70))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -493,7 +493,7 @@ public class PaketLayanan extends javax.swing.JDialog {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(422, Short.MAX_VALUE)
+                .addContainerGap(442, Short.MAX_VALUE)
                 .addComponent(btnTambah)
                 .addGap(0, 0, 0)
                 .addComponent(btnSimpan)
@@ -503,16 +503,19 @@ public class PaketLayanan extends javax.swing.JDialog {
                 .addComponent(btnHapus)
                 .addGap(0, 0, 0)
                 .addComponent(btnBatal)
-                .addGap(510, 510, 510))
-            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(486, 486, 486))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1318, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1318, Short.MAX_VALUE)))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1318, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -548,7 +551,7 @@ public class PaketLayanan extends javax.swing.JDialog {
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
-            String sql = "Delete FROM paket_layanan WHERE id = '" + txtId.getText()+"'";
+            String sql = "Delete FROM paket_layanan WHERE id_paket_layanan = '" + txtId.getText()+"'";
             try {
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.executeUpdate();
@@ -582,7 +585,7 @@ public class PaketLayanan extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Isi minimal order dengan format angka saja");
             txtMinimal.requestFocus();
         } else {
-            String sql = "UPDATE paket_layanan SET nama=? , harga=? , minimal_order=? , include=? , deskripsi=? WHERE id = '"
+            String sql = "UPDATE paket_layanan SET nama_paket_layanan=? , harga_paket_layanan=? , minimal_order_paket_layanan=? , include_paket_layanan=? , deskripsi_paket_layanan=? WHERE id_paket_layanan = '"
             + txtId.getText()+"'";
             try {
                 PreparedStatement stat = conn.prepareStatement(sql);
