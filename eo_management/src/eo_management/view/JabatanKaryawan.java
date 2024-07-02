@@ -120,10 +120,10 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         String cariitem = txtCari.getText();
         
         try {
-            String sql = "SELECT * FROM jabatan_karyawan WHERE id LIKE '%"
-                    + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or gaji LIKE '%"
-                    + cariitem+ "%' ORDER BY id asc";
+            String sql = "SELECT * FROM jabatan_karyawan WHERE id_jabatan_karyawan LIKE '%"
+                    + cariitem+ "%' or nama_jabatan_karyawan LIKE '%" 
+                    + cariitem+ "%' or gaji_jabatan_karyawan LIKE '%"
+                    + cariitem+ "%' ORDER BY id_jabatan_karyawan asc";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
@@ -180,13 +180,13 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         setPreferredSize(new java.awt.Dimension(1312, 580));
         setResizable(false);
 
-        header.setBackground(new java.awt.Color(11, 36, 71));
+        header.setBackground(new java.awt.Color(1, 86, 153));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Jabatan Karyawan");
 
-        ButtonClose.setBackground(new java.awt.Color(11, 36, 71));
+        ButtonClose.setBackground(new java.awt.Color(1, 86, 153));
         ButtonClose.setPreferredSize(new java.awt.Dimension(60, 0));
         ButtonClose.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -218,22 +218,22 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
-                .addContainerGap(419, Short.MAX_VALUE)
+                .addContainerGap(439, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(416, 416, 416)
-                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
             .addGroup(headerLayout.createSequentialGroup()
-                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         getContentPane().add(header, java.awt.BorderLayout.PAGE_START);
 
-        footer.setBackground(new java.awt.Color(11, 36, 71));
+        footer.setBackground(new java.awt.Color(0, 135, 242));
         footer.setPreferredSize(new java.awt.Dimension(1366, 30));
 
         javax.swing.GroupLayout footerLayout = new javax.swing.GroupLayout(footer);
@@ -505,7 +505,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         txtDeskripsi.requestFocus();
         } else {
             try {
-            String sql = "INSERT INTO jabatan_karyawan (nama, gaji, deskripsi_pekerjaan) VALUES ('"
+            String sql = "INSERT INTO jabatan_karyawan (nama_jabatan_karyawan, gaji_jabatan_karyawan, deskripsi_pekerjaan_jabatan_karyawan) VALUES ('"
                     +txtNamaJabatan.getText()+"','"
                     +txtGaji.getText()+"','"
                     +txtDeskripsi.getText()+"')";
@@ -536,7 +536,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
         txtDeskripsi.requestFocus();
         } else {
         try {
-            String sql = "UPDATE jabatan_karyawan SET nama=? , gaji=? , deskripsi_pekerjaan=? WHERE id = '"
+            String sql = "UPDATE jabatan_karyawan SET nama_jabatan_karyawan=? , gaji_jabatan_karyawan=? , deskripsi_pekerjaan_jabatan_karyawan=? WHERE id_jabatan_karyawan = '"
                     + txtId.getText()+"'";
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, txtNamaJabatan.getText());
@@ -556,7 +556,7 @@ public class JabatanKaryawan extends javax.swing.JDialog {
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
             if (ok == 0) {
-                String sql = "DELETE FROM jabatan_karyawan WHERE id = '" + txtId.getText()+"'";
+                String sql = "DELETE FROM jabatan_karyawan WHERE id_jabatan_karyawan = '" + txtId.getText()+"'";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.executeUpdate();

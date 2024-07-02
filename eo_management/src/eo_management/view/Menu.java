@@ -862,7 +862,9 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_menuSupplier1ActionPerformed
 
     private void menuPerusahaanPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPerusahaanPelangganActionPerformed
-        new PerusahaanPelanggan (this, rootPaneCheckingEnabled).setVisible(true);
+        //new PerusahaanPelanggan (this, rootPaneCheckingEnabled).setVisible(true);
+        new PerusahaanPelanggan (this, rootPaneCheckingEnabled, "0 ").setVisible(true);
+
     }//GEN-LAST:event_menuPerusahaanPelangganActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened

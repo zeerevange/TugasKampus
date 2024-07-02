@@ -52,6 +52,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Permainan"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuPermainanActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -127,6 +130,21 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
+            <Menu class="javax.swing.JMenu" name="jMenu1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Acara"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Rincian Acara"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="menuInventaris">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Inventaris"/>
@@ -162,23 +180,47 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuMaster2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Report"/>
+            <Property name="text" type="java.lang.String" value="Reports"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="menuReportPaketLayanan">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Laporan Data Pelanggan"/>
+                <Property name="text" type="java.lang.String" value="Paket Layanan"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuReportPaketLayananActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuReportTransaksiPesanan">
+            <MenuItem class="javax.swing.JMenuItem" name="menuReportPaketAddonLayanan">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Laporan Transaksi Pesanan Layanan"/>
+                <Property name="text" type="java.lang.String" value="Paket Add-on Layanan"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuReportTransaksiPesananActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuReportPaketAddonLayananActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuReportDataPelanggan">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Data Pelanggan"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuReportDataPelangganActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuReportTransaksiPesananLayanan">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Transaksi Pesanan Layanan"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuReportTransaksiPesananLayananActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuReportTransaksiPesananAddon">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Transaksi Pesanan Layanan Addon"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuReportTransaksiPesananAddonActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -232,7 +274,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,-85,0,0,5,32"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,-84,0,0,5,32"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -734,8 +776,8 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jPanel4" max="32767" attributes="0"/>
                                   <Component id="jPanel16" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="jPanel7" alignment="1" pref="265" max="32767" attributes="0"/>
-                                  <Component id="jPanel13" pref="265" max="32767" attributes="0"/>
+                                  <Component id="jPanel7" alignment="1" pref="273" max="32767" attributes="0"/>
+                                  <Component id="jPanel13" pref="273" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>

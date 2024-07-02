@@ -31,35 +31,43 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
          private Connection conn = new koneksi().connect();
          private DefaultTableModel tabmode;
          public String id, nama, notelpon, email;
+         private String id_pelanggan;
     /**
      * Creates new form Pelanggan
      */
-    public PerusahaanPelanggan(java.awt.Frame parent, boolean modal) {
+    
+    public PerusahaanPelanggan(java.awt.Frame parent, boolean modal, String id_pelanggan) {
         super(parent, modal);
         initComponents();
         //set ketengah layar
         initUI();
         dataTable();
-        disableButton();
+        enableButton();
         kode_id_otomatis();
+        
+        this.id_pelanggan = id_pelanggan;
         
         //fungsi pencarian
         txtCari.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-        dataTable();
-        }
+                dataTable();
+            }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                dataTable();
-        }
+                    dataTable();
+            }
 
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            dataTable();
-        }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                dataTable();
+            }
         });
+        
+        txtIdPelanggan.setText(this.id_pelanggan);
+        txtIdPelanggan.setEnabled(false);
+        txtId.setEnabled(false);
     }
      
     //colorchange
@@ -117,7 +125,6 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         txtJenis.setEnabled(false);
         txtAlamat.setEnabled(false);
         txtIdPelanggan.setEnabled(false);
-        btnTambah.setEnabled(true);
         btnSimpan.setEnabled(false);
         btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
@@ -138,34 +145,34 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     
     //memberikan kode id otomatis kepada id pelanggan
     private void kode_id_otomatis(){
-        try {
-            String sql = "SELECT * FROM perusahaan_pelanggan ORDER BY id DESC";
-            Statement stat = conn.createStatement();
-            ResultSet rs = stat.executeQuery(sql);
-            if (rs.next()){
-                String kode = rs.getString("id").substring(2);
-                String AN = "" + (Integer.parseInt(kode) + 1);
-                String Nol = "";
-                
-                if (AN.length() == 1)
-                {Nol = "0000";}
-                else if (AN.length() == 2)
-                {Nol = "000";}
-                else if (AN.length() == 3)
-                {Nol = "00";}
-                else if (AN.length() == 4)
-                {Nol = "0";}
-                else if (AN.length() == 5)
-                {Nol = "";}
-                
-                txtId.setText("PP" + Nol + AN);
-            } else {
-                txtId.setText("PP00001");
-            }
-        }catch (SQLException e){ 
-            JOptionPane.showMessageDialog(null, "Id otomatis tidak berjalan. Pesan error : " + e.getMessage());
+    try {
+        String sql = "SELECT * FROM perusahaan_pelanggan ORDER BY id_perusahaan_pelanggan DESC";
+        Statement stat = conn.createStatement();
+        ResultSet rs = stat.executeQuery(sql);
+        if (rs.next()){
+            String kode = rs.getString("id_perusahaan_pelanggan").substring(2);
+            String AN = "" + (Integer.parseInt(kode) + 1);
+            String Nol = "";
+
+            if (AN.length() == 1)
+            {Nol = "0000";}
+            else if (AN.length() == 2)
+            {Nol = "000";}
+            else if (AN.length() == 3)
+            {Nol = "00";}
+            else if (AN.length() == 4)
+            {Nol = "0";}
+            else if (AN.length() == 5)
+            {Nol = "";}
+
+            txtId.setText("1" + Nol + AN);
+        } else {
+            txtId.setText("100001");
         }
+    }catch (SQLException e){ 
+        JOptionPane.showMessageDialog(null, "Id otomatis tidak berjalan. Pesan error : " + e.getMessage());
     }
+}
     
    public void dataTable() {
     Object[] header = {"ID", "Nama Perusahaan", "Jenis Perusahaan", "Alamat", "Pelanggan"};
@@ -173,16 +180,16 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     String cariitem = txtCari.getText();
 
     try {
-        String sql = "SELECT * FROM perusahaan_pelanggan WHERE id LIKE '%" + cariitem + "%' or nama_perusahaan LIKE '%" + cariitem + "%' or jenis_perusahaan LIKE '%" + cariitem + "%' ORDER BY id ASC";
+        String sql = "SELECT * FROM perusahaan_pelanggan JOIN pelanggan ON perusahaan_pelanggan.id_pelanggan = pelanggan.id_pelanggan WHERE perusahaan_pelanggan.id_perusahaan_pelanggan LIKE '%" + cariitem + "%' or perusahaan_pelanggan.nama_perusahaan_pelanggan LIKE '%" + cariitem + "%' or perusahaan_pelanggan.jenis_perusahaan_pelanggan LIKE '%" + cariitem + "%' or pelanggan.nama_pelanggan LIKE '%" + cariitem + "%'";
         Statement stat = conn.createStatement();
         ResultSet hasil = stat.executeQuery(sql);
         while (hasil.next()) {
             tabmode.addRow(new Object[]{
-                hasil.getString("id"),
-                hasil.getString("nama_perusahaan"),
-                hasil.getString("jenis_perusahaan"),
-                hasil.getString("alamat_perusahaan"),
-                hasil.getString("pelanggan_id")
+                hasil.getString("id_perusahaan_pelanggan"),
+                hasil.getString("nama_perusahaan_pelanggan"),
+                hasil.getString("jenis_perusahaan_pelanggan"),
+                hasil.getString("alamat_perusahaan_pelanggan"),
+                hasil.getString("pelanggan.id_pelanggan") + " - " + hasil.getString("pelanggan.nama_pelanggan")
             });
         }
         tabelPelanggan.setModel(tabmode);
@@ -217,13 +224,11 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         txtAlamat = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtIdPelanggan = new javax.swing.JTextField();
-        btnCariPelanggan = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelPelanggan = new javax.swing.JTable();
         txtCari = new javax.swing.JTextField();
         btnCari = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
-        btnTambah = new javax.swing.JButton();
         btnSimpan = new javax.swing.JButton();
         btnUbah = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
@@ -232,15 +237,16 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Data Perusahaan Pelanggan");
         setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(1260, 730));
         setResizable(false);
 
-        header.setBackground(new java.awt.Color(11, 36, 71));
+        header.setBackground(new java.awt.Color(1, 86, 153));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Data Perusahaan Pelanggan");
 
-        ButtonClose.setBackground(new java.awt.Color(11, 36, 71));
+        ButtonClose.setBackground(new java.awt.Color(1, 86, 153));
         ButtonClose.setPreferredSize(new java.awt.Dimension(60, 0));
         ButtonClose.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -274,20 +280,21 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
             .addGroup(headerLayout.createSequentialGroup()
                 .addGap(358, 358, 358)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 306, Short.MAX_VALUE)
-                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(72, 72, 72))
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
             .addGroup(headerLayout.createSequentialGroup()
-                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         getContentPane().add(header, java.awt.BorderLayout.PAGE_START);
 
-        footer.setBackground(new java.awt.Color(11, 36, 71));
+        footer.setBackground(new java.awt.Color(0, 135, 242));
         footer.setPreferredSize(new java.awt.Dimension(1366, 30));
 
         javax.swing.GroupLayout footerLayout = new javax.swing.GroupLayout(footer);
@@ -328,16 +335,9 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         jLabel4.setText("Alamat                    :");
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel5.setText("Pelanggan             :");
+        jLabel5.setText("Pelanggan ID          :");
 
         txtIdPelanggan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        btnCariPelanggan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/Search.png"))); // NOI18N
-        btnCariPelanggan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCariPelangganActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -356,15 +356,12 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtNama, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(txtNama, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
                     .addComponent(txtJenis)
-                    .addComponent(txtId, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtAlamat, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(txtIdPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCariPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                .addGap(300, 300, 300))
+                    .addComponent(txtIdPelanggan)
+                    .addComponent(txtAlamat)
+                    .addComponent(txtId))
+                .addGap(311, 311, 311))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -390,11 +387,9 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
                         .addGap(0, 11, Short.MAX_VALUE)
                         .addComponent(txtAlamat, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)))
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnCariPelanggan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtIdPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -418,11 +413,11 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         jScrollPane1.setViewportView(tabelPelanggan);
 
         txtCari.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCariKeyPressed(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCariKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCariKeyPressed(evt);
             }
         });
 
@@ -437,19 +432,6 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         jToolBar1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
-
-        btnTambah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/add.png"))); // NOI18N
-        btnTambah.setText("Tambah");
-        btnTambah.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
-        btnTambah.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnTambah.setFocusable(false);
-        btnTambah.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnTambah.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnTambah.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTambahActionPerformed(evt);
-            }
-        });
 
         btnSimpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/save-file.png"))); // NOI18N
         btnSimpan.setText("Simpan");
@@ -507,19 +489,22 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         mid.setLayout(midLayout);
         midLayout.setHorizontalGroup(
             midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(midLayout.createSequentialGroup()
-                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, midLayout.createSequentialGroup()
+                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(midLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(midLayout.createSequentialGroup()
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(midLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(midLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
+                                .addGap(121, 121, 121)
                                 .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(midLayout.createSequentialGroup()
-                                        .addComponent(btnTambah)
-                                        .addGap(0, 0, 0)
                                         .addComponent(btnSimpan)
                                         .addGap(0, 0, 0)
                                         .addComponent(btnUbah)
@@ -529,13 +514,8 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
                                         .addComponent(btnBatal))
                                     .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, midLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)))
+                .addGap(69, 69, 69))
         );
         midLayout.setVerticalGroup(
             midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -550,7 +530,6 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29)
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnTambah)
                             .addComponent(btnSimpan)
                             .addComponent(btnUbah)
                             .addComponent(btnHapus)
@@ -572,8 +551,14 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         txtNama.setText(tabelPelanggan.getValueAt(bar,1).toString());
         txtJenis.setText(tabelPelanggan.getValueAt(bar,2).toString());
         txtAlamat.setText(tabelPelanggan.getValueAt(bar,3).toString());
-        txtIdPelanggan.setText(tabelPelanggan.getValueAt(bar,4).toString());
+        
+        String pelangganName = tabelPelanggan.getValueAt(bar,4).toString();
+        String pelangganId = pelangganName.split(" - ")[0];
+        
+        txtIdPelanggan.setText(pelangganId);
+        
         editButton();
+        txtIdPelanggan.setEnabled(false);
     }//GEN-LAST:event_tabelPelangganMouseClicked
 
     private void txtCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyPressed
@@ -589,12 +574,6 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
         dataTable();
     }//GEN-LAST:event_btnCariActionPerformed
-
-    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
-        disableButton();
-        clear();
-        enableButton();
-    }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         if (txtNama.getText().isEmpty()) {
@@ -619,6 +598,7 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(null,"Data Tersimpan");
                     } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null,"Gagal tersimpan " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                     }
                 }
         clear();
@@ -638,7 +618,7 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         txtAlamat.requestFocus();
         } else {
                     try {
-                        String sql = "UPDATE perusahaan_pelanggan SET nama_perusahaan=? , jenis_perusahaan=? , alamat_perusahaan=?, pelanggan_id=? WHERE id = '"
+                        String sql = "UPDATE perusahaan_pelanggan SET nama_perusahaan_pelanggan=? , jenis_perusahaan_pelanggan=? , alamat_perusahaan_pelanggan=?, id_pelanggan=? WHERE id_perusahaan_pelanggan = '"
                                 + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
@@ -654,12 +634,13 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         dataTable();
         disableButton();
         clear();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
             if (ok == 0) {
-                String sql = "Delete FROM perusahaan_pelanggan WHERE id = '" + txtId.getText()+"'";
+                String sql = "Delete FROM perusahaan_pelanggan WHERE id_perusahaan_pelanggan = '" + txtId.getText()+"'";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.executeUpdate();
@@ -677,15 +658,8 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         disableButton();
         clear();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnBatalActionPerformed
-
-    private void btnCariPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPelangganActionPerformed
-//        new PopUpPelanggan(this, rootPaneCheckingEnabled).setVisible(true);
-        PopUpPelanggan Pp = new PopUpPelanggan();
-        Pp.plgn = this;
-        Pp.setVisible(true);
-        Pp.setResizable(false);
-    }//GEN-LAST:event_btnCariPelangganActionPerformed
 
     private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked
         String ObjButton[] = {"YES","NO"};
@@ -712,6 +686,9 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
 
     }//GEN-LAST:event_ButtonCloseMouseExited
 
+    public String getIdPelanggan() {
+        return id_pelanggan;
+    }
     /**
      * @param args the command line arguments
      */
@@ -743,7 +720,7 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                PerusahaanPelanggan dialog = new PerusahaanPelanggan(new javax.swing.JFrame(), true);
+                PerusahaanPelanggan dialog = new PerusahaanPelanggan(new javax.swing.JFrame(), true, "0");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -751,18 +728,18 @@ public class PerusahaanPelanggan extends javax.swing.JDialog {
                     }
                 });
                 dialog.setVisible(true);
+                
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ButtonClose;
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnCari;
-    private javax.swing.JButton btnCariPelanggan;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnSimpan;
-    private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnUbah;
     private javax.swing.JLabel exit;
     private javax.swing.JPanel footer;

@@ -59,7 +59,6 @@ public class KategoriGames extends javax.swing.JDialog {
     }
     
     private void enableButton() {
-        txtId.setEnabled(false);
         txtNama.setEnabled(true);
         btnSimpan.setEnabled(true);
     }
@@ -85,37 +84,55 @@ public class KategoriGames extends javax.swing.JDialog {
         btnHapus.setEnabled(false);
     }
     
-    public void dataTable() {
-    Object[] header = {"ID Kategori Games", "Nama Kategori Games"};
-    tabmode = new DefaultTableModel (null, header);
-    try {
-        String sql = "SELECT * FROM kategori_games ORDER BY id ASC";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet hasil = ps.executeQuery();
-             while (hasil.next()) {
-                tabmode.addRow(new Object[] {
-                hasil.getString(1),
-                hasil.getString(2),
-             });
-        }
-        tabelRole.setModel(tabmode);
-        
-        // Set header renderer untuk header di tabel
-        JTableHeader headerTable = tabelRole.getTableHeader();
-        headerTable.setDefaultRenderer(new HeaderRenderer());
+    private void getLastId () {
+        try {
+            String sql = "SELECT * FROM kategori_game ORDER BY id_kategori_game DESC LIMIT 1";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet hasil = ps.executeQuery();
+            
+            if (hasil.next()){
+                String lastId = hasil.getString("id_kategori_game");
+                txtId.setText("" + (Integer.parseInt(lastId) + 1));
+            } else {
+                txtId.setText("1");
+            }
 
-        // Set cell renderer untuk kolom-kolom di tabel
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
-        for (int i = 0; i < tabelRole.getColumnCount(); i++) {
-            tabelRole.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "data ID terakhir gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-}
+    
+    public void dataTable() {
+        Object[] header = {"ID Kategori Games", "Nama Kategori Games"};
+        tabmode = new DefaultTableModel (null, header);
+        try {
+            String sql = "SELECT * FROM kategori_game ORDER BY id_kategori_game ASC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet hasil = ps.executeQuery();
+                 while (hasil.next()) {
+                    tabmode.addRow(new Object[] {
+                    hasil.getString(1),
+                    hasil.getString(2),
+                 });
+            }
+            tabelRole.setModel(tabmode);
+
+            // Set header renderer untuk header di tabel
+            JTableHeader headerTable = tabelRole.getTableHeader();
+            headerTable.setDefaultRenderer(new HeaderRenderer());
+
+            // Set cell renderer untuk kolom-kolom di tabel
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+            for (int i = 0; i < tabelRole.getColumnCount(); i++) {
+                tabelRole.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 class HeaderRenderer implements TableCellRenderer {
     JLabel label;
@@ -167,13 +184,13 @@ class HeaderRenderer implements TableCellRenderer {
         setUndecorated(true);
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(11, 36, 71));
+        jPanel1.setBackground(new java.awt.Color(1, 86, 153));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Kategori Games");
 
-        ButtonClose.setBackground(new java.awt.Color(11, 36, 71));
+        ButtonClose.setBackground(new java.awt.Color(1, 86, 153));
         ButtonClose.setPreferredSize(new java.awt.Dimension(60, 0));
         ButtonClose.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -205,22 +222,22 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(307, Short.MAX_VALUE)
+                .addContainerGap(327, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(193, 193, 193)
-                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
-        jPanel2.setBackground(new java.awt.Color(11, 36, 71));
+        jPanel2.setBackground(new java.awt.Color(0, 135, 242));
         jPanel2.setPreferredSize(new java.awt.Dimension(799, 30));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -353,9 +370,8 @@ class HeaderRenderer implements TableCellRenderer {
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtId)
-                    .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                    .addComponent(txtNama)))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -380,9 +396,9 @@ class HeaderRenderer implements TableCellRenderer {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -391,7 +407,7 @@ class HeaderRenderer implements TableCellRenderer {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
@@ -405,6 +421,7 @@ class HeaderRenderer implements TableCellRenderer {
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         disableButton();
         clear();
+        getLastId ();
         enableButton();
     }//GEN-LAST:event_btnTambahActionPerformed
 
@@ -414,9 +431,10 @@ class HeaderRenderer implements TableCellRenderer {
                 txtNama.requestFocus();
             } else {
                 try {
-                    String sql = "INSERT INTO kategori_games (nama) VALUES (?)";
+                    String sql = "INSERT INTO kategori_game (id_kategori_game, nama_kategori_game) VALUES (?,?)";
                     PreparedStatement stat = conn.prepareStatement(sql);
-                    stat.setString(1, txtNama.getText());
+                    stat.setString(1, txtId.getText());
+                    stat.setString(2, txtNama.getText());
                     int rowsAffected = stat.executeUpdate();
                     if (rowsAffected > 0) {
                         JOptionPane.showMessageDialog(null, "Data berhasil disimpan", "Informasi", JOptionPane.INFORMATION_MESSAGE);
@@ -437,7 +455,7 @@ class HeaderRenderer implements TableCellRenderer {
                 txtNama.requestFocus();
                 } else {
                     try {
-                        String sql = "UPDATE kategori_games SET nama=? WHERE id = '"
+                        String sql = "UPDATE kategori_game SET nama_kategori_game=? WHERE id_kategori_game = '"
                         + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
@@ -460,7 +478,7 @@ class HeaderRenderer implements TableCellRenderer {
         int ok = JOptionPane.showConfirmDialog(null, "Hapus data ini?", "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION);
         if (ok == JOptionPane.YES_OPTION) {
             try {
-                String sql = "DELETE FROM kategori_games WHERE id=?";
+                String sql = "DELETE FROM kategori_game WHERE id_kategori_game=?";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtId.getText());
                 int rowsAffected = stat.executeUpdate();

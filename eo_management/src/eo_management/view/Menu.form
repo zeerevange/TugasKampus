@@ -281,11 +281,11 @@
                       <Component id="jPanel18" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jPanel8" pref="0" max="32767" attributes="0"/>
-                          <Component id="jPanel11" pref="0" max="32767" attributes="0"/>
+                          <Component id="jPanel8" max="32767" attributes="0"/>
+                          <Component id="jPanel11" max="32767" attributes="0"/>
                           <Component id="jPanel5" max="32767" attributes="0"/>
-                          <Component id="jPanel9" pref="0" max="32767" attributes="0"/>
-                          <Component id="jPanel2" pref="0" max="32767" attributes="0"/>
+                          <Component id="jPanel9" max="32767" attributes="0"/>
+                          <Component id="jPanel2" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>

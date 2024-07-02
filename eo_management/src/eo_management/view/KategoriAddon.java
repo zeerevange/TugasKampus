@@ -21,6 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -42,6 +44,23 @@ public class KategoriAddon extends javax.swing.JDialog {
         initUI();
         dataTable();
         disableButton();
+        //fungsi cari
+        txtCari.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+        dataTable();
+        }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                dataTable();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            dataTable();
+        }
+        });
     }
     //colorchange
     public void changecolor(JPanel hover, Color rand) {
@@ -89,7 +108,7 @@ public class KategoriAddon extends javax.swing.JDialog {
     Object[] header = {"ID Katagori", "Nama Katagori Addon"};
     tabmode = new DefaultTableModel (null, header);
     try {
-        String sql = "SELECT * FROM kategori_addon ORDER BY id ASC";
+        String sql = "SELECT * FROM kategori_addon ORDER BY id_kategori_addon ASC";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet hasil = ps.executeQuery();
              while (hasil.next()) {
@@ -99,6 +118,23 @@ public class KategoriAddon extends javax.swing.JDialog {
              });
         }
         tabelKategori.setModel(tabmode);
+        
+            // Set alignment for table cells to center
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            for (int columnIndex = 0; columnIndex < tabelKategori.getColumnCount(); columnIndex++) {
+                tabelKategori.getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
+            }
+
+            // Center align table header
+            ((DefaultTableCellRenderer) tabelKategori.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+
+//            // Center align table itself
+//            JTableHeader header = tabelKategori.getTableHeader();
+//            header.setBackground(Color.LIGHT_GRAY);
+//            header.setForeground(Color.BLACK);
+//            header.setFont(new Font("SansSerif", Font.BOLD, 12));
+//            ((DefaultTableCellRenderer)header.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -153,16 +189,16 @@ class HeaderRenderer implements TableCellRenderer {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Data Kategori Addon");
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(980, 430));
+        setPreferredSize(new java.awt.Dimension(980, 450));
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(11, 36, 71));
+        jPanel1.setBackground(new java.awt.Color(1, 86, 153));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Katagori Addon");
 
-        ButtonClose.setBackground(new java.awt.Color(11, 36, 71));
+        ButtonClose.setBackground(new java.awt.Color(1, 86, 153));
         ButtonClose.setPreferredSize(new java.awt.Dimension(60, 0));
         ButtonClose.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -196,27 +232,27 @@ class HeaderRenderer implements TableCellRenderer {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(289, 289, 289)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
-                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 265, Short.MAX_VALUE)
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
-        jPanel2.setBackground(new java.awt.Color(11, 36, 71));
+        jPanel2.setBackground(new java.awt.Color(0, 135, 242));
         jPanel2.setPreferredSize(new java.awt.Dimension(799, 30));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 980, Short.MAX_VALUE)
+            .addGap(0, 982, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,10 +304,7 @@ class HeaderRenderer implements TableCellRenderer {
         tabelKategori.setAutoCreateRowSorter(true);
         tabelKategori.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
@@ -439,7 +472,7 @@ class HeaderRenderer implements TableCellRenderer {
             txtNama.requestFocus();
         } else {
             try {
-                String sql = "INSERT INTO kategori_addon (nama) VALUES (?)";
+                String sql = "INSERT INTO kategori_addon (nama_kategori_addon) VALUES (?)";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtNama.getText());
                 int rowsAffected = stat.executeUpdate();
@@ -462,7 +495,7 @@ class HeaderRenderer implements TableCellRenderer {
             txtNama.requestFocus();
         } else {
             try {
-                String sql = "UPDATE kategori_addon SET nama=? WHERE id = '"
+                String sql = "UPDATE kategori_addon SET nama_kategori_addon=? WHERE id_kategori_addon = '"
                                 + txtId.getText()+"'";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtNama.getText());
@@ -485,7 +518,7 @@ class HeaderRenderer implements TableCellRenderer {
         int ok = JOptionPane.showConfirmDialog(null, "Hapus data ini?", "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION);
         if (ok == JOptionPane.YES_OPTION) {
             try {
-                String sql = "DELETE FROM kategori_addon WHERE id=?";
+                String sql = "DELETE FROM kategori_addon WHERE id_kategori_addon=?";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtId.getText());
                 int rowsAffected = stat.executeUpdate();

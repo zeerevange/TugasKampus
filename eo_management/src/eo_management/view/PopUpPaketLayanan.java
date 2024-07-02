@@ -43,10 +43,10 @@ public class PopUpPaketLayanan extends javax.swing.JDialog {
         String cariitem = txtCari.getText();
         
         try {
-            String sql = "SELECT * FROM paket_layanan WHERE id LIKE '%"
-                    + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or harga LIKE '%"
-                    + cariitem+ "%' ORDER BY id asc";
+            String sql = "SELECT * FROM paket_layanan WHERE id_paket_layanan LIKE '%"
+                    + cariitem+ "%' or nama_paket_layanan LIKE '%" 
+                    + cariitem+ "%' or harga_paket_layanan LIKE '%"
+                    + cariitem+ "%' ORDER BY id_paket_layanan asc";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {

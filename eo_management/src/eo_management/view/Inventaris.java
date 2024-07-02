@@ -108,11 +108,11 @@ public class Inventaris extends javax.swing.JDialog {
     //memberikan kode id otomatis kepada id pelanggan
     private void kode_id_otomatis(){
         try {
-            String sql = "SELECT * FROM inventaris ORDER BY id DESC";
+            String sql = "SELECT * FROM inventaris ORDER BY id_inventaris DESC";
             Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()){
-                String kode = rs.getString("id").substring(2);
+                String kode = rs.getString("id_inventaris").substring(2);
                 String AN = "" + (Integer.parseInt(kode) + 1);
                 String Nol = "";
                 
@@ -142,11 +142,11 @@ public class Inventaris extends javax.swing.JDialog {
         String cariitem = txtCari.getText();
         
         try {
-            String sql = "SELECT * FROM inventaris WHERE id LIKE '%"
-                    + cariitem+ "%' or nama LIKE '%" 
-                    + cariitem+ "%' or id LIKE '%"
-                    + cariitem+ "%' or jumlah LIKE '%"
-                    + cariitem+ "%' ORDER BY id asc";
+            String sql = "SELECT * FROM inventaris WHERE id_inventaris LIKE '%"
+                    + cariitem+ "%' or nama_inventaris LIKE '%" 
+                    + cariitem+ "%' or id_inventaris LIKE '%"
+                    + cariitem+ "%' or jumlah_inventaris LIKE '%"
+                    + cariitem+ "%' ORDER BY id_inventaris asc";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
@@ -203,14 +203,14 @@ public class Inventaris extends javax.swing.JDialog {
         setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(1330, 650));
 
-        header.setBackground(new java.awt.Color(11, 36, 71));
+        header.setBackground(new java.awt.Color(1, 86, 153));
         header.setPreferredSize(new java.awt.Dimension(1100, 100));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Inventaris");
 
-        ButtonClose.setBackground(new java.awt.Color(11, 36, 71));
+        ButtonClose.setBackground(new java.awt.Color(1, 86, 153));
         ButtonClose.setPreferredSize(new java.awt.Dimension(60, 0));
         ButtonClose.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -242,22 +242,22 @@ public class Inventaris extends javax.swing.JDialog {
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
-                .addContainerGap(522, Short.MAX_VALUE)
+                .addContainerGap(554, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(522, 522, 522)
-                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(506, 506, 506)
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
             .addGroup(headerLayout.createSequentialGroup()
-                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         getContentPane().add(header, java.awt.BorderLayout.PAGE_START);
 
-        footer.setBackground(new java.awt.Color(11, 36, 71));
+        footer.setBackground(new java.awt.Color(0, 135, 242));
         footer.setPreferredSize(new java.awt.Dimension(1100, 30));
 
         javax.swing.GroupLayout footerLayout = new javax.swing.GroupLayout(footer);
@@ -458,7 +458,7 @@ public class Inventaris extends javax.swing.JDialog {
                 .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(midLayout.createSequentialGroup()
                         .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(midLayout.createSequentialGroup()
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -502,7 +502,7 @@ public class Inventaris extends javax.swing.JDialog {
                     .addGroup(midLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtCari, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                            .addComponent(txtCari)
                             .addComponent(btnCari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -541,6 +541,7 @@ public class Inventaris extends javax.swing.JDialog {
         disableButton();
         clear();
         enableButton();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
@@ -594,7 +595,7 @@ public class Inventaris extends javax.swing.JDialog {
         txtDeskripsi.requestFocus();
         } else {
                     try {
-                        String sql = "UPDATE inventaris SET nama=? , jumlah=? , deskripsi=? WHERE id = '"
+                        String sql = "UPDATE inventaris SET nama_inventaris=? , jumlah_inventaris=? , deskripsi_inventaris=? WHERE id_inventaris = '"
                                 + txtId.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         stat.setString(1, txtNama.getText());
@@ -609,12 +610,13 @@ public class Inventaris extends javax.swing.JDialog {
         dataTable();
         disableButton();
         clear();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null,"Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
             if (ok == 0) {
-                String sql = "Delete FROM inventaris WHERE id = '" + txtId.getText()+"'";
+                String sql = "Delete FROM inventaris WHERE id_inventaris = '" + txtId.getText()+"'";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.executeUpdate();
@@ -632,6 +634,7 @@ public class Inventaris extends javax.swing.JDialog {
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         disableButton();
         clear();
+        kode_id_otomatis();
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked
