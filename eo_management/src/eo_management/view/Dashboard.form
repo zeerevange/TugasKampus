@@ -14,7 +14,7 @@
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="jMenu3">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Employee"/>
+                <Property name="text" type="java.lang.String" value="Data Karyawan"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="menuKaryawan">
@@ -37,7 +37,7 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="jMenu2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Games"/>
+                <Property name="text" type="java.lang.String" value="Data Game"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="menuSupplier1">
@@ -60,7 +60,7 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="jMenu4">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Customer"/>
+                <Property name="text" type="java.lang.String" value="Data Pelanggan"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="menuPelanggan">
@@ -83,7 +83,7 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="jMenu5">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Services"/>
+                <Property name="text" type="java.lang.String" value="Data Layanan"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="menuPaketLayanan">
@@ -98,7 +98,7 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="menuAddon">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Addon"/>
+                <Property name="text" type="java.lang.String" value="Data Addon"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuAddonActionPerformed"/>
@@ -130,9 +130,43 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
+            <Menu class="javax.swing.JMenu" name="menuAddon1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Data Acara"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuAddon1ActionPerformed"/>
+              </Events>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="menuRincianAcara">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Rincian Acara"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuRincianAcaraActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="menuCrewAcara">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Crew Acara"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuCrewAcaraActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="menuRincianGameAcara">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Rincian Game Acara"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuRincianGameAcaraActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="menuInventaris">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Inventaris"/>
+                <Property name="text" type="java.lang.String" value="Data Inventaris"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuInventarisActionPerformed"/>
@@ -142,7 +176,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuMaster1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Transaction"/>
+            <Property name="text" type="java.lang.String" value="Transaksi"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuPesananLayanan">
@@ -165,7 +199,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuMaster2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Reports"/>
+            <Property name="text" type="java.lang.String" value="Laporan"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuReportPaketLayanan">
@@ -212,7 +246,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuMaster3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="System Administrator"/>
+            <Property name="text" type="java.lang.String" value="Sistem Administrator"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuUsers">
