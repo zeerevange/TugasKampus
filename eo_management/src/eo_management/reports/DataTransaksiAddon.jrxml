@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0f14b88d-cee5-4e35-a5f7-5a49614af46d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="dataTransaksiAddon" uuid="9467ed79-52e1-44ff-957f-8acd106d6f7e">
+		<queryString language="SQL">
+			<![CDATA[SELECT 
+    `pesanan_addon_layanan`.`id` AS `inoice`,
+    `pesanan_layanan`.`id` AS `inoice_induk`,
+    `kategori_addon`.`nama` AS `nama_kategori`,
+    `sub_kategori_addon`.`nama` AS `nama_addon`,
+    `addon`.`harga`,
+    `pelanggan`.`nama` AS `nama_pic`,
+    `pelanggan`.`no_telp`,
+    `perusahaan_pelanggan`.`nama_perusahaan`,
+    `pesanan_addon_layanan`.`jumlah_pesanan`,
+    `pesanan_addon_layanan`.`status_lunas`,
+    
+    (`addon`.`harga` * `pesanan_addon_layanan`.`jumlah_pesanan`) AS `total_harga`
+FROM 
+    `pesanan_addon_layanan`
+LEFT JOIN 
+	`pesanan_layanan` ON `pesanan_layanan`.`id` = `pesanan_addon_layanan`.`pesanan_layanan_id`
+LEFT JOIN
+    `addon` ON `addon`.`id` = `pesanan_addon_layanan`.`addon_id`
+LEFT JOIN 
+    `sub_kategori_addon` ON `sub_kategori_addon`.`id` = `addon`.`sub_kategori_addon_id`
+LEFT JOIN 
+    `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kategori_addon_id`
+LEFT JOIN 
+    `pelanggan` ON `pelanggan`.`id` = `pesanan_layanan`.`pelanggan_id`
+LEFT JOIN 
+    `perusahaan_pelanggan` ON `perusahaan_pelanggan`.`pelanggan_id` = `pelanggan`.`id`;]]>
+		</queryString>
+		<field name="inoice" class="java.lang.String"/>
+		<field name="inoice_induk" class="java.lang.String"/>
+		<field name="nama_kategori" class="java.lang.String"/>
+		<field name="nama_addon" class="java.lang.String"/>
+		<field name="harga" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="nama_pic" class="java.lang.String"/>
+		<field name="no_telp" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="nama_perusahaan" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="jumlah_pesanan" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="status_lunas" class="java.lang.Boolean">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="total_harga" class="java.lang.Long"/>
+	</subDataset>
+	<queryString>
+		<![CDATA[SELECT 
+    `pesanan_addon_layanan`.`id` AS `inoice`,
+    `pesanan_layanan`.`id` AS `inoice_induk`,
+    `kategori_addon`.`nama` AS `nama_kategori`,
+    `sub_kategori_addon`.`nama` AS `nama_addon`,
+    `addon`.`harga`,
+    `pelanggan`.`nama` AS `nama_pic`,
+    `pelanggan`.`no_telp`,
+    `perusahaan_pelanggan`.`nama_perusahaan`,
+    `pesanan_addon_layanan`.`jumlah_pesanan`,
+    `pesanan_addon_layanan`.`status_lunas`,
+    
+    (`addon`.`harga` * `pesanan_addon_layanan`.`jumlah_pesanan`) AS `total_harga`
+FROM 
+    `pesanan_addon_layanan`
+LEFT JOIN 
+	`pesanan_layanan` ON `pesanan_layanan`.`id` = `pesanan_addon_layanan`.`pesanan_layanan_id`
+LEFT JOIN
+    `addon` ON `addon`.`id` = `pesanan_addon_layanan`.`addon_id`
+LEFT JOIN 
+    `sub_kategori_addon` ON `sub_kategori_addon`.`id` = `addon`.`sub_kategori_addon_id`
+LEFT JOIN 
+    `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kategori_addon_id`
+LEFT JOIN 
+    `pelanggan` ON `pelanggan`.`id` = `pesanan_layanan`.`pelanggan_id`
+LEFT JOIN 
+    `perusahaan_pelanggan` ON `perusahaan_pelanggan`.`pelanggan_id` = `pelanggan`.`id`;]]>
+	</queryString>
+	<field name="inoice" class="java.lang.String"/>
+	<field name="inoice_induk" class="java.lang.String"/>
+	<field name="nama_kategori" class="java.lang.String"/>
+	<field name="nama_addon" class="java.lang.String"/>
+	<field name="harga" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nama_pic" class="java.lang.String"/>
+	<field name="no_telp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nama_perusahaan" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="jumlah_pesanan" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="status_lunas" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_harga" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="99" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="204" height="87" uuid="aba5cd02-85bd-4fad-90f1-70efe9c1b999"/>
+				<imageExpression><![CDATA["/Users/muhamadfahmi/Devlab/Kuliah/TugasKampus/eo_management/src/eo_management/image/kop-kiri.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="555" y="0" width="247" height="87" uuid="c8123545-ff7b-44f1-9c72-0d8c9a5423c1"/>
+				<imageExpression><![CDATA["/Users/muhamadfahmi/Devlab/Kuliah/TugasKampus/eo_management/src/eo_management/image/kop-kanan.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="0" y="87" width="802" height="1" uuid="625afff1-d553-4056-b8c5-2a098bf79d14"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="35" uuid="20a4db0e-d942-4c9b-bc98-291d796b374b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Data Transaksi Addon]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="98" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table" style="table" x="0" y="0" width="802" height="98" uuid="10b40a0f-57e4-4edd-8e98-6b026e55321f"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataTransaksiAddon" uuid="8efce138-ef8f-46ff-95e9-4b4c7e40754c">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="90" uuid="b14fad30-a7ab-4c67-81be-cd9656433e67">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="af512980-16a6-46aa-a27f-f20506633f31"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[No. Invoice]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="a2f4be31-594d-4d72-857a-667ed4c836f1"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{inoice}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="d65cabd1-6fee-4606-902f-51f0a2ae8c08">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="b8eb2b95-330d-4831-81eb-669c58d3e95e"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[No. Invoice Induk]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="201baca7-7d6f-4a55-9152-bee7c955a275"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{inoice_induk}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="65" uuid="4fa8a415-6eb9-42ea-8ec6-a88de3533614">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="65" height="30" uuid="42233945-9d73-412b-a902-7240feb84dd9"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Kategori]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="65" height="20" uuid="75a2c0ee-ed20-44cd-aed7-717262f67324"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nama_kategori}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="4dcf7db3-0a25-4572-878c-3022d21c5be9">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="9b50e095-94ae-490d-8039-19352b4c987b"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Nama Addon]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="94bc7cf0-594e-4306-9363-b178d1120deb"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nama_addon}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="57" uuid="a19f9fcd-fb4b-42f2-8ce3-7c9395966433">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="57" height="30" uuid="53743cd3-579f-4302-a37d-c9351ac46d1d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Harga]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="57" height="20" uuid="a65d4c09-3669-4fcd-a366-a711b1f6d04b"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="2055d17d-8c9a-40e6-b0a4-e8162a963d5f">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" uuid="a12624ec-c61a-4a83-88e9-e273364c2753"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Nama PIC]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="70" height="20" uuid="d1cd8621-3d1d-4af3-951c-508bf57e2d1a"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nama_pic}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="78" uuid="788b8f4d-af2f-46cf-953d-833f04f12282">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="78" height="30" uuid="24604713-c676-47d1-8e87-71c0f8b8b86d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[No. Telp]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="78" height="20" uuid="ded5c054-dce3-481d-bad6-01a10c7d72c4"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{no_telp}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="9d3ea99d-460b-4011-ba5d-ab31131d3815">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="45dbb0f3-7c9e-4d95-bf93-252b7fd8a6d4"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Nama Perusahaan]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="885142d6-6dec-4536-8ce6-a46c3058f986"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nama_perusahaan}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="49" uuid="3d027b5e-1894-45d8-a6ca-a2b4bcb34b46">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="49" height="30" uuid="abd6c94d-5d40-40ce-8143-c55b52a43752"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Jumlah Peserta]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="49" height="20" uuid="1f4016ee-d380-4abc-99a7-479caf1b4fe0"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{jumlah_pesanan}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="45" uuid="7de65dca-a90f-48f3-88ed-2a089c5e1dea">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="44" height="30" uuid="7abc0f0b-cb4f-4982-ba53-91ca50797c00"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Status Lunas]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="44" height="20" uuid="f0a2e622-85aa-4221-874c-69ee672075de"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{status_lunas} ? "Lunas" : "Belum"]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="71" uuid="54601f26-0387-415d-831a-af3b2bc34e99">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="71" height="30" uuid="82a08c3c-b2ad-44f9-bc5a-d11508b8fa98"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Total Transaksi]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="71" height="20" uuid="40cd9bcb-b9ce-48ca-b85b-43e1a18a5fec"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{total_harga}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="113">
+			<staticText>
+				<reportElement x="669" y="93" width="108" height="20" uuid="6e4c379f-0503-484f-a5aa-c73c456b10ae">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Muhamad Syarifuddin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="669" y="28" width="108" height="20" uuid="54c33c1f-f2eb-47bb-b560-914f492bc437">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Manager]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="669" y="12" width="108" height="13" uuid="97bd411e-8048-408f-b5e3-5120df2cdadb">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Bogor, 14 Juni 2024]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
