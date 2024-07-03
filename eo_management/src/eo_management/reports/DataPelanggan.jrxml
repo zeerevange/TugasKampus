@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6e179388-f81b-4656-a8ae-fb1141e538ac">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="186"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -44,56 +44,59 @@
 		</box>
 	</style>
 	<subDataset name="Data Pelanggan" uuid="6ae3e4fa-382a-4350-adff-294e09eed1f0">
-		<queryString language="SQL">
-			<![CDATA[SELECT * FROM `pelanggan` LEFT JOIN `perusahaan_pelanggan` ON `pelanggan`.`id` = `perusahaan_pelanggan`.`pelanggan_id`;]]>
+		<queryString>
+			<![CDATA[SELECT * FROM `pelanggan` LEFT JOIN `perusahaan_pelanggan` ON `pelanggan`.`id_pelanggan` = `perusahaan_pelanggan`.`id_pelanggan`;]]>
 		</queryString>
-		<field name="id" class="java.lang.String">
+		<field name="id_pelanggan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="nama" class="java.lang.String">
+		<field name="nama_pelanggan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="no_telp" class="java.lang.String">
+		<field name="no_telp_pelanggan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="email" class="java.lang.String">
+		<field name="email_pelanggan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="nama_perusahaan" class="java.lang.String">
+		<field name="id_perusahaan_pelanggan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="jenis_perusahaan" class="java.lang.String">
+		<field name="nama_perusahaan_pelanggan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="alamat_perusahaan" class="java.lang.String">
+		<field name="jenis_perusahaan_pelanggan" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="alamat_perusahaan_pelanggan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
 	</subDataset>
 	<queryString>
-		<![CDATA[SELECT * FROM `pelanggan` LEFT JOIN `perusahaan_pelanggan` ON `pelanggan`.`id` = `perusahaan_pelanggan`.`pelanggan_id`;]]>
+		<![CDATA[SELECT * FROM `pelanggan` LEFT JOIN `perusahaan_pelanggan` ON `pelanggan`.`id_pelanggan` = `perusahaan_pelanggan`.`id_pelanggan`;]]>
 	</queryString>
-	<field name="id" class="java.lang.String">
+	<field name="id_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="nama" class="java.lang.String">
+	<field name="nama_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="no_telp" class="java.lang.String">
+	<field name="no_telp_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="email" class="java.lang.String">
+	<field name="email_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="nama_perusahaan" class="java.lang.String">
+	<field name="id_perusahaan_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="jenis_perusahaan" class="java.lang.String">
+	<field name="nama_perusahaan_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="alamat_perusahaan" class="java.lang.String">
+	<field name="jenis_perusahaan_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pelanggan_id" class="java.lang.String">
+	<field name="alamat_perusahaan_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
@@ -146,7 +149,7 @@
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{id_pelanggan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -168,7 +171,7 @@
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nama_pelanggan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -190,7 +193,7 @@
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{no_telp}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{no_telp_pelanggan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -212,7 +215,7 @@
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{nama_perusahaan}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nama_perusahaan_pelanggan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -234,7 +237,7 @@
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{jenis_perusahaan}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{jenis_perusahaan_pelanggan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -242,7 +245,7 @@
 						<jr:tableHeader style="table 1_TH" height="4" rowSpan="1"/>
 						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="129" height="30" uuid="063b5e21-5c36-4218-831b-5c81c4f8056d"/>
+								<reportElement x="0" y="0" width="140" height="30" uuid="063b5e21-5c36-4218-831b-5c81c4f8056d"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
@@ -251,12 +254,12 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table 1_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="129" height="20" uuid="67224122-62bf-4898-a87b-dea70b020506"/>
+								<reportElement x="0" y="0" width="140" height="20" uuid="67224122-62bf-4898-a87b-dea70b020506"/>
 								<textElement>
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="2"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{alamat_perusahaan}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{alamat_perusahaan_pelanggan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -265,7 +268,7 @@
 		</band>
 		<band height="109">
 			<staticText>
-				<reportElement x="404" y="88" width="108" height="20" uuid="68b33faa-4f4e-4c29-b144-81ffb82e3d49">
+				<reportElement x="383" y="88" width="151" height="20" uuid="68b33faa-4f4e-4c29-b144-81ffb82e3d49">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -274,18 +277,18 @@
 				<text><![CDATA[Muhamad Syarifuddin]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="404" y="23" width="108" height="20" uuid="a8719264-b810-4fb9-90ce-9792466b4420">
+				<reportElement x="383" y="23" width="151" height="20" uuid="a8719264-b810-4fb9-90ce-9792466b4420">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Manager]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="404" y="6" width="108" height="13" uuid="fe25eb2e-1278-40c7-a185-452152d9c2f8">
+				<reportElement x="383" y="4" width="151" height="13" uuid="b6cc1f09-8a9e-4dd3-8102-b7f9485c5970">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Bogor, 14 Juni 2024]]></text>
+				<text><![CDATA[Bogor, Kamis 04 Juli 2024]]></text>
 			</staticText>
 		</band>
 	</detail>

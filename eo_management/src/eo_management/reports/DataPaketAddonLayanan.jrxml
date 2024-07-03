@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cffd94e3-97f5-4b07-b108-03afd9d5c519">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="280"/>
-	<property name="ireport.y" value="555"/>
+	<property name="ireport.x" value="212"/>
+	<property name="ireport.y" value="221"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -93,55 +93,63 @@ LEFT JOIN `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kate
 	<subDataset name="dataAddon1" uuid="0877233b-d848-44ee-a8cd-0218b0f759d9">
 		<queryString>
 			<![CDATA[SELECT 
-    `addon`.`id`,
-    `kategori_addon`.`nama` AS `nama_kategori`,
-    `sub_kategori_addon`.`nama` AS `nama_paket`,
-    `addon`.`harga`,
-    `addon`.`include`,
-    `addon`.`deskripsi`
-FROM `addon`
-LEFT JOIN `sub_kategori_addon` ON `sub_kategori_addon`.`id` = `addon`.`sub_kategori_addon_id`
-LEFT JOIN `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kategori_addon_id`;]]>
+    `paket_addon`.`id_paket_addon`,
+    `kategori_addon`.`nama_kategori_addon`,
+    `sub_kategori_addon`.`nama_sub_kategori_addon`,
+    `paket_addon`.`harga_paket_addon`,
+    `paket_addon`.`include_paket_addon`,
+    `paket_addon`.`deskripsi_paket_addon`
+FROM `paket_addon`
+LEFT JOIN `sub_kategori_addon` ON `sub_kategori_addon`.`id_sub_kategori_addon` = `paket_addon`.`id_sub_kategori_addon`
+LEFT JOIN `kategori_addon` ON `kategori_addon`.`id_kategori_addon` = `sub_kategori_addon`.`id_kategori_addon`;]]>
 		</queryString>
-		<field name="id" class="java.lang.String">
+		<field name="id_paket_addon" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="nama_kategori" class="java.lang.String"/>
-		<field name="nama_paket" class="java.lang.String"/>
-		<field name="harga" class="java.lang.Integer">
+		<field name="nama_kategori_addon" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="include" class="java.lang.String">
+		<field name="nama_sub_kategori_addon" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="deskripsi" class="java.lang.String">
+		<field name="harga_paket_addon" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="include_paket_addon" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="deskripsi_paket_addon" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
 	</subDataset>
 	<queryString>
 		<![CDATA[SELECT 
-    `addon`.`id`,
-    `kategori_addon`.`nama` AS `nama_kategori`,
-    `sub_kategori_addon`.`nama` AS `nama_paket`,
-    `addon`.`harga`,
-    `addon`.`include`,
-    `addon`.`deskripsi`
-FROM `addon`
-LEFT JOIN `sub_kategori_addon` ON `sub_kategori_addon`.`id` = `addon`.`sub_kategori_addon_id`
-LEFT JOIN `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kategori_addon_id`;]]>
+    `paket_addon`.`id_paket_addon`,
+    `kategori_addon`.`nama_kategori_addon`,
+    `sub_kategori_addon`.`nama_sub_kategori_addon`,
+    `paket_addon`.`harga_paket_addon`,
+    `paket_addon`.`include_paket_addon`,
+    `paket_addon`.`deskripsi_paket_addon`
+FROM `paket_addon`
+LEFT JOIN `sub_kategori_addon` ON `sub_kategori_addon`.`id_sub_kategori_addon` = `paket_addon`.`id_sub_kategori_addon`
+LEFT JOIN `kategori_addon` ON `kategori_addon`.`id_kategori_addon` = `sub_kategori_addon`.`id_kategori_addon`;]]>
 	</queryString>
-	<field name="id" class="java.lang.String">
+	<field name="id_paket_addon" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="nama_kategori" class="java.lang.String"/>
-	<field name="nama_paket" class="java.lang.String"/>
-	<field name="harga" class="java.lang.Integer">
+	<field name="nama_kategori_addon" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="include" class="java.lang.String">
+	<field name="nama_sub_kategori_addon" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="deskripsi" class="java.lang.String">
+	<field name="harga_paket_addon" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="include_paket_addon" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deskripsi_paket_addon" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
@@ -200,14 +208,14 @@ LEFT JOIN `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kate
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{id_paket_addon}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="31a0d79b-ae25-4409-b77b-3865af7e3e6a">
 						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="72" height="30" uuid="a03532a6-650e-4e86-a249-02e88c69fd0f"/>
+								<reportElement x="0" y="0" width="90" height="30" uuid="a03532a6-650e-4e86-a249-02e88c69fd0f"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
@@ -216,12 +224,12 @@ LEFT JOIN `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kate
 						</jr:columnHeader>
 						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
 							<textField isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="72" height="20" uuid="5e747226-c28a-40c5-ad8e-14e203a6966e"/>
+								<reportElement x="0" y="0" width="90" height="20" uuid="5e747226-c28a-40c5-ad8e-14e203a6966e"/>
 								<textElement>
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{nama_kategori}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nama_kategori_addon}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -242,7 +250,7 @@ LEFT JOIN `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kate
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{nama_paket}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nama_sub_kategori_addon}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -263,7 +271,7 @@ LEFT JOIN `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kate
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{harga_paket_addon}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -284,7 +292,7 @@ LEFT JOIN `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kate
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{include}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{include_paket_addon}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -305,7 +313,7 @@ LEFT JOIN `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kate
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{deskripsi}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{deskripsi_paket_addon}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -314,27 +322,27 @@ LEFT JOIN `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kate
 		</band>
 		<band height="111">
 			<staticText>
-				<reportElement x="423" y="17" width="108" height="20" uuid="e9e9fc7e-8408-414e-ae6f-890097acaf37">
+				<reportElement x="383" y="21" width="151" height="20" uuid="e9e9fc7e-8408-414e-ae6f-890097acaf37">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Manager]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="423" y="0" width="108" height="13" uuid="1048cea0-02d8-45d1-be05-61e22ed4394e">
-					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Bogor, 14  Juni 2024]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="423" y="89" width="108" height="20" uuid="51704ada-5574-4a84-ba84-7e25cd4d283f">
+				<reportElement x="383" y="89" width="151" height="20" uuid="51704ada-5574-4a84-ba84-7e25cd4d283f">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Muhamad Syarifuddin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="383" y="4" width="151" height="13" uuid="a72c7438-d11d-407e-87d7-d9ee12714d24">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Bogor, Kamis 04 Juli 2024]]></text>
 			</staticText>
 		</band>
 	</detail>
