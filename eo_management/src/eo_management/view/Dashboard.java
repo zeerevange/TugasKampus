@@ -234,6 +234,7 @@ public class Dashboard extends javax.swing.JFrame {
         menuReportDataPelanggan = new javax.swing.JMenuItem();
         menuReportTransaksiPesananLayanan = new javax.swing.JMenuItem();
         menuReportTransaksiPesananAddon = new javax.swing.JMenuItem();
+        menuReportRincianAcara = new javax.swing.JMenuItem();
         menuMaster3 = new javax.swing.JMenu();
         menuUsers = new javax.swing.JMenuItem();
         menuRole = new javax.swing.JMenuItem();
@@ -940,6 +941,14 @@ public class Dashboard extends javax.swing.JFrame {
         });
         menuMaster2.add(menuReportTransaksiPesananAddon);
 
+        menuReportRincianAcara.setText("Rincian Acara");
+        menuReportRincianAcara.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuReportRincianAcaraActionPerformed(evt);
+            }
+        });
+        menuMaster2.add(menuReportRincianAcara);
+
         jMenuBar1.add(menuMaster2);
 
         menuMaster3.setText("Sistem Administrator");
@@ -1151,6 +1160,19 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuAddon1ActionPerformed
 
+    private void menuReportRincianAcaraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReportRincianAcaraActionPerformed
+        // TODO add your handling code here:
+        try {
+            
+            File namafile = new File("src/eo_management/reports/DataRincianAcara.jasper");
+            
+            JasperPrint jp = JasperFillManager.fillReport(namafile.getPath(), null, conn);
+            JasperViewer.viewReport(jp, false);
+        } catch (JRException e) {
+            JOptionPane.showMessageDialog(rootPane, "File tidak ditemukan "+e);
+        }
+    }//GEN-LAST:event_menuReportRincianAcaraActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1255,6 +1277,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuReportDataPelanggan;
     private javax.swing.JMenuItem menuReportPaketAddonLayanan;
     private javax.swing.JMenuItem menuReportPaketLayanan;
+    private javax.swing.JMenuItem menuReportRincianAcara;
     private javax.swing.JMenuItem menuReportTransaksiPesananAddon;
     private javax.swing.JMenuItem menuReportTransaksiPesananLayanan;
     private javax.swing.JMenuItem menuRincianAcara;
