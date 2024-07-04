@@ -909,7 +909,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         menuMaster2.add(menuReportPaketLayanan);
 
-        menuReportPaketAddonLayanan.setText("Paket Add-on Layanan");
+        menuReportPaketAddonLayanan.setText("Paket Addon");
         menuReportPaketAddonLayanan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuReportPaketAddonLayananActionPerformed(evt);
@@ -933,7 +933,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         menuMaster2.add(menuReportTransaksiPesananLayanan);
 
-        menuReportTransaksiPesananAddon.setText("Transaksi Pesanan Layanan Addon");
+        menuReportTransaksiPesananAddon.setText("Transaksi Pesanan Addon");
         menuReportTransaksiPesananAddon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuReportTransaksiPesananAddonActionPerformed(evt);

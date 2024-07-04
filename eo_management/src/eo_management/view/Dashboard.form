@@ -212,7 +212,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuReportPaketAddonLayanan">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Paket Add-on Layanan"/>
+                <Property name="text" type="java.lang.String" value="Paket Addon"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuReportPaketAddonLayananActionPerformed"/>
@@ -236,7 +236,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuReportTransaksiPesananAddon">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Transaksi Pesanan Layanan Addon"/>
+                <Property name="text" type="java.lang.String" value="Transaksi Pesanan Addon"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuReportTransaksiPesananAddonActionPerformed"/>
