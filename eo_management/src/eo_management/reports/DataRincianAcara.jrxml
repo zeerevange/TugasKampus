@@ -86,26 +86,44 @@
 	<subDataset name="New Data Transaksi1" uuid="9b65138f-bc1e-4a2b-b988-67a00100218b">
 		<queryString>
 			<![CDATA[SELECT 
-    `pesanan_layanan`.`id_pesanan_layanan`,
-    `pesanan_layanan`.`id_paket_layanan`,
-    `pesanan_layanan`.`jumlah_peserta_pesanan_layanan`,
-    `pesanan_layanan`.`status_lunas_pesanan_layanan`,
-    `paket_layanan`.`nama_paket_layanan`,
-    `paket_layanan`.`harga_paket_layanan`,
-    `pelanggan`.`nama_pelanggan`,
-    `pelanggan`.`no_telp_pelanggan`,
-    `perusahaan_pelanggan`.`nama_perusahaan_pelanggan`,
-    (`paket_layanan`.`harga_paket_layanan` * `pesanan_layanan`.`jumlah_peserta_pesanan_layanan`) AS `total_harga`
+    rincian_acara.*, 
+    pesanan_layanan.*, 
+    paket_layanan.*,
+    pelanggan.*,
+    GROUP_CONCAT(DISTINCT game.nama_game ORDER BY game.nama_game SEPARATOR ', ') AS game_acara,
+    GROUP_CONCAT(DISTINCT CONCAT(karyawan.nama_karyawan, ' (', karyawan.no_telp_karyawan, ')') ORDER BY karyawan.nama_karyawan SEPARATOR ', ') AS crew_acara
 FROM 
-    `pesanan_layanan`
+    rincian_acara
 LEFT JOIN 
-    `paket_layanan` ON `paket_layanan`.`id_paket_layanan` = `pesanan_layanan`.`id_paket_layanan`
+    pesanan_layanan ON pesanan_layanan.id_pesanan_layanan = rincian_acara.id_pesanan_layanan
 LEFT JOIN 
-    `pelanggan` ON `pelanggan`.`id_pelanggan` = `pesanan_layanan`.`id_pelanggan`
+    paket_layanan ON paket_layanan.id_paket_layanan = pesanan_layanan.id_paket_layanan
 LEFT JOIN 
-    `perusahaan_pelanggan` ON `perusahaan_pelanggan`.`id_pelanggan` = `pelanggan`.`id_pelanggan`;]]>
+    pelanggan ON pelanggan.id_pelanggan = pesanan_layanan.id_pelanggan
+LEFT JOIN 
+    crew_acara ON crew_acara.id_rincian_acara = rincian_acara.id_rincian_acara
+LEFT JOIN 
+    karyawan ON karyawan.id_karyawan = crew_acara.id_karyawan
+LEFT JOIN 
+    rincian_game_acara ON rincian_game_acara.id_rincian_acara = rincian_acara.id_rincian_acara
+LEFT JOIN 
+    game ON game.id_game = rincian_game_acara.id_game
+GROUP BY 
+    rincian_acara.id_rincian_acara;]]>
 		</queryString>
+		<field name="id_rincian_acara" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
 		<field name="id_pesanan_layanan" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="tanggal_rincian_acara" class="java.sql.Date">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="venue_rincian_acara" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="id_pelanggan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
 		<field name="id_paket_layanan" class="java.lang.String">
@@ -123,39 +141,67 @@ LEFT JOIN
 		<field name="harga_paket_layanan" class="java.lang.Integer">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
+		<field name="minimal_order_paket_layanan" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="include_paket_layanan" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="deskripsi_paket_layanan" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
 		<field name="nama_pelanggan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
 		<field name="no_telp_pelanggan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="nama_perusahaan_pelanggan" class="java.lang.String">
+		<field name="email_pelanggan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="total_harga" class="java.lang.Long"/>
+		<field name="game_acara" class="java.lang.String"/>
+		<field name="crew_acara" class="java.lang.String"/>
 	</subDataset>
 	<queryString>
 		<![CDATA[SELECT 
-    `pesanan_layanan`.`id_pesanan_layanan`,
-    `pesanan_layanan`.`id_paket_layanan`,
-    `pesanan_layanan`.`jumlah_peserta_pesanan_layanan`,
-    `pesanan_layanan`.`status_lunas_pesanan_layanan`,
-    `paket_layanan`.`nama_paket_layanan`,
-    `paket_layanan`.`harga_paket_layanan`,
-    `pelanggan`.`nama_pelanggan`,
-    `pelanggan`.`no_telp_pelanggan`,
-    `perusahaan_pelanggan`.`nama_perusahaan_pelanggan`,
-    (`paket_layanan`.`harga_paket_layanan` * `pesanan_layanan`.`jumlah_peserta_pesanan_layanan`) AS `total_harga`
+    rincian_acara.*, 
+    pesanan_layanan.*, 
+    paket_layanan.*,
+    pelanggan.*,
+    GROUP_CONCAT(DISTINCT game.nama_game ORDER BY game.nama_game SEPARATOR ', ') AS game_acara,
+    GROUP_CONCAT(DISTINCT CONCAT(karyawan.nama_karyawan, ' (', karyawan.no_telp_karyawan, ')') ORDER BY karyawan.nama_karyawan SEPARATOR ', ') AS crew_acara
 FROM 
-    `pesanan_layanan`
+    rincian_acara
 LEFT JOIN 
-    `paket_layanan` ON `paket_layanan`.`id_paket_layanan` = `pesanan_layanan`.`id_paket_layanan`
+    pesanan_layanan ON pesanan_layanan.id_pesanan_layanan = rincian_acara.id_pesanan_layanan
 LEFT JOIN 
-    `pelanggan` ON `pelanggan`.`id_pelanggan` = `pesanan_layanan`.`id_pelanggan`
+    paket_layanan ON paket_layanan.id_paket_layanan = pesanan_layanan.id_paket_layanan
 LEFT JOIN 
-    `perusahaan_pelanggan` ON `perusahaan_pelanggan`.`id_pelanggan` = `pelanggan`.`id_pelanggan`;]]>
+    pelanggan ON pelanggan.id_pelanggan = pesanan_layanan.id_pelanggan
+LEFT JOIN 
+    crew_acara ON crew_acara.id_rincian_acara = rincian_acara.id_rincian_acara
+LEFT JOIN 
+    karyawan ON karyawan.id_karyawan = crew_acara.id_karyawan
+LEFT JOIN 
+    rincian_game_acara ON rincian_game_acara.id_rincian_acara = rincian_acara.id_rincian_acara
+LEFT JOIN 
+    game ON game.id_game = rincian_game_acara.id_game
+GROUP BY 
+    rincian_acara.id_rincian_acara;]]>
 	</queryString>
+	<field name="id_rincian_acara" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="id_pesanan_layanan" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tanggal_rincian_acara" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="venue_rincian_acara" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="id_paket_layanan" class="java.lang.String">
@@ -173,16 +219,26 @@ LEFT JOIN
 	<field name="harga_paket_layanan" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="minimal_order_paket_layanan" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="include_paket_layanan" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deskripsi_paket_layanan" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="nama_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="no_telp_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="nama_perusahaan_pelanggan" class="java.lang.String">
+	<field name="email_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="total_harga" class="java.lang.Long"/>
+	<field name="game_acara" class="java.lang.String"/>
+	<field name="crew_acara" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -222,10 +278,31 @@ LEFT JOIN
 					<datasetRun subDataset="New Data Transaksi1" uuid="4a872c4c-2e82-4604-b2af-e3af2d59d4d1">
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column width="103" uuid="0af495be-5e65-48f0-a48f-fc16d0e0d93d">
+					<jr:column width="30" uuid="0af495be-5e65-48f0-a48f-fc16d0e0d93d">
 						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="103" height="30" uuid="84b6d498-a732-4dd9-aaac-6d8778a24823"/>
+								<reportElement x="0" y="0" width="30" height="30" uuid="84b6d498-a732-4dd9-aaac-6d8778a24823"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[No]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="30" height="20" uuid="3565d9ac-5c18-41e0-8d55-df9a20ce849c"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{id_rincian_acara}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="66" uuid="0a967635-b033-4eca-940c-6211e80ca488">
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="66" height="30" uuid="bf3d4898-13dd-4d2e-945b-8f62f4bd98d3"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
@@ -234,7 +311,7 @@ LEFT JOIN
 						</jr:columnHeader>
 						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="103" height="20" uuid="3565d9ac-5c18-41e0-8d55-df9a20ce849c"/>
+								<reportElement x="0" y="0" width="66" height="20" uuid="d1b78c30-17a0-4e4e-b4d0-21a7a9b2296e"/>
 								<textElement>
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
@@ -243,24 +320,45 @@ LEFT JOIN
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="52" uuid="0a967635-b033-4eca-940c-6211e80ca488">
+					<jr:column width="76" uuid="4fdf953c-0888-408b-8b19-6f7ce6fbde6b">
 						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="51" height="30" uuid="bf3d4898-13dd-4d2e-945b-8f62f4bd98d3"/>
+								<reportElement x="0" y="0" width="76" height="30" uuid="5b8803b4-0a41-4fe6-af63-1dadcced1b6c"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
-								<text><![CDATA[Id. Paket]]></text>
+								<text><![CDATA[PIC]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="51" height="20" uuid="d1b78c30-17a0-4e4e-b4d0-21a7a9b2296e"/>
+								<reportElement x="0" y="0" width="76" height="20" uuid="89a89b9f-feee-48fb-a4b4-28836fb91e72"/>
 								<textElement>
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{id_paket_layanan}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nama_pelanggan}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="72" uuid="08e3b56b-a38f-478a-9abc-f344cb26e595">
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="72" height="30" uuid="adf82100-4e4e-4376-9b2d-e0a8615b4ca5"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Kontak]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="72" height="20" uuid="cd470978-8ccf-4858-afbf-c3262fdf4cb2"/>
+								<textElement>
+									<font size="8"/>
+									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{no_telp_pelanggan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -313,7 +411,7 @@ LEFT JOIN
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
-								<text><![CDATA[Harga]]></text>
+								<text><![CDATA[Tanggal]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
@@ -323,7 +421,7 @@ LEFT JOIN
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{harga_paket_layanan}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{tanggal_rincian_acara}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -334,7 +432,7 @@ LEFT JOIN
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
-								<text><![CDATA[Nama PIC]]></text>
+								<text><![CDATA[Venue]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
@@ -344,91 +442,49 @@ LEFT JOIN
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{nama_pelanggan}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{venue_rincian_acara}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="79" uuid="3514229e-978c-442a-8173-2a88c6fb63c3">
+					<jr:column width="116" uuid="3514229e-978c-442a-8173-2a88c6fb63c3">
 						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="79" height="30" uuid="e6d1fda7-ca62-4a66-b000-0523a5aa90a1"/>
+								<reportElement x="0" y="0" width="116" height="30" uuid="e6d1fda7-ca62-4a66-b000-0523a5aa90a1"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
-								<text><![CDATA[No. Telp]]></text>
+								<text><![CDATA[Crew]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
-							<textField>
-								<reportElement x="0" y="0" width="79" height="20" uuid="47b98ff4-da19-4d95-8e66-809a33d154bd"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement mode="Opaque" x="0" y="0" width="116" height="20" uuid="47b98ff4-da19-4d95-8e66-809a33d154bd"/>
 								<textElement>
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{no_telp_pelanggan}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{crew_acara}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="101" uuid="83ca2d4c-0a18-4008-aa2a-9c53e5d28ac3">
+					<jr:column width="117" uuid="83ca2d4c-0a18-4008-aa2a-9c53e5d28ac3">
 						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="101" height="30" uuid="7a24b716-85aa-4e38-aad5-b3316733d0f6"/>
+								<reportElement x="0" y="0" width="117" height="30" uuid="7a24b716-85aa-4e38-aad5-b3316733d0f6"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
-								<text><![CDATA[Nama Perusahaan]]></text>
+								<text><![CDATA[Game]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="101" height="20" uuid="ac877670-40f3-4359-982b-bd292ebd5307"/>
+								<reportElement x="5" y="0" width="112" height="20" isPrintWhenDetailOverflows="true" uuid="ac877670-40f3-4359-982b-bd292ebd5307"/>
 								<textElement>
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{nama_perusahaan_pelanggan}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="76" uuid="4fdf953c-0888-408b-8b19-6f7ce6fbde6b">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="76" height="30" uuid="5b8803b4-0a41-4fe6-af63-1dadcced1b6c"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="8" isBold="true"/>
-								</textElement>
-								<text><![CDATA[Total Harga]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
-							<textField>
-								<reportElement x="0" y="0" width="76" height="20" uuid="89a89b9f-feee-48fb-a4b4-28836fb91e72"/>
-								<textElement>
-									<font size="8"/>
-									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{total_harga}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="60" uuid="08e3b56b-a38f-478a-9abc-f344cb26e595">
-						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="60" height="30" uuid="adf82100-4e4e-4376-9b2d-e0a8615b4ca5"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="8" isBold="true"/>
-								</textElement>
-								<text><![CDATA[Status Lunas]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
-							<textField>
-								<reportElement x="0" y="0" width="60" height="20" uuid="cd470978-8ccf-4858-afbf-c3262fdf4cb2"/>
-								<textElement>
-									<font size="8"/>
-									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{status_lunas_pesanan_layanan} == true ? "Sudah" : "Belum"]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{game_acara}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
