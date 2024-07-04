@@ -5,6 +5,7 @@
  */
 package eo_management.view;
 
+import eo_management.ThrowPesananLayananData;
 import eo_management.koneksi.koneksi;
 import java.awt.Color;
 import java.awt.Component;
@@ -51,6 +52,19 @@ public class RincianAcara extends javax.swing.JDialog {
         initUI();
         dataTable();
         disableButton();
+        
+        ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
+        
+        if (throwDataPesanan.getId_PesananLayanan() != null) {
+            this.getLastId ();
+            this.getDataIdPesananLayanan(throwDataPesanan.getId_PesananLayanan());
+            
+            btnSimpan.setEnabled(true);
+            tglRincianAcara.setEnabled(true);
+            txtVanue.setEnabled(true);
+        }
+        
+        
     }
     //colorchange
     public void changecolor(JPanel hover, Color rand) {
@@ -70,16 +84,17 @@ public class RincianAcara extends javax.swing.JDialog {
     
     private void enableButton() {
         btnSimpan.setEnabled(true);
-        txtIdAcara.setEnabled(true);
+        txtIdAcara.setEnabled(false);
         txtIdPesananLayanan.setEnabled(true);
-        jDateChooser1.setEnabled(true);
+        tglRincianAcara.setEnabled(true);
         txtVanue.setEnabled(true);
+        btnCariPesananLayanan.setEnabled(true);
     }
     
     private void editButton(){
         txtIdAcara.setEnabled(true);
         txtIdPesananLayanan.setEnabled(true);
-        jDateChooser1.setEnabled(true);
+        tglRincianAcara.setEnabled(true);
         txtVanue.setEnabled(true);
         
         btnSimpan.setEnabled(false);
@@ -90,56 +105,79 @@ public class RincianAcara extends javax.swing.JDialog {
     private void clear() {
         txtIdAcara.setText("");
         txtIdPesananLayanan.setText("");
-        jDateChooser1.setDate(null);
+        tglRincianAcara.setDate(null);
         txtVanue.setText("");
     }
     
     private void disableButton(){
         txtIdAcara.setEnabled(false);
         txtIdPesananLayanan.setEnabled(false);
-        jDateChooser1.setEnabled(false);
+        tglRincianAcara.setEnabled(false);
         txtVanue.setEnabled(false);
         btnTambah.setEnabled(true);
         btnSimpan.setEnabled(false);
         btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
+        btnCariPesananLayanan.setEnabled(false);
     }
     
+    private void getLastId () {
+        try {
+            String sql = "SELECT * FROM rincian_acara ORDER BY id_rincian_acara DESC LIMIT 1";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet hasil = ps.executeQuery();
+            
+            if (hasil.next()){
+                String lastId = hasil.getString("id_rincian_acara");
+                txtIdAcara.setText("" + (Integer.parseInt(lastId) + 1));
+            } else {
+                txtIdAcara.setText("1");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "data ID terakhir gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void getDataIdPesananLayanan(String data) {
+        txtIdPesananLayanan.setText(data);
+        txtIdPesananLayanan.setEnabled(false);
+    }
     
     public void dataTable() {
-    Object[] header = {"ID Acara", "ID Pesanan Layanan", "Tanggal", "Value Rincian Acara"};
-    tabmode = new DefaultTableModel (null, header);
-    try {
-        String sql = "SELECT * FROM rincian_acara";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet hasil = ps.executeQuery();
-             
-        while (hasil.next()) {
-             tabmode.addRow(new Object[] {
-                hasil.getString(1),
-                hasil.getString(2),
-                hasil.getString(3),
-                hasil.getString(4),
-             });
-        }
-        tabelRincianAcara.setModel(tabmode);
-        
-        // Set header renderer untuk header di tabel
-        JTableHeader headerTable = tabelRincianAcara.getTableHeader();
-        headerTable.setDefaultRenderer(new HeaderRenderer());
+        Object[] header = {"ID Acara", "ID Pesanan Layanan", "Tanggal", "Value Rincian Acara"};
+        tabmode = new DefaultTableModel (null, header);
+        try {
+            String sql = "SELECT * FROM rincian_acara";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet hasil = ps.executeQuery();
 
-        // Set cell renderer untuk kolom-kolom di tabel
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            while (hasil.next()) {
+                 tabmode.addRow(new Object[] {
+                    hasil.getString(1),
+                    hasil.getString(2),
+                    hasil.getString(3),
+                    hasil.getString(4),
+                 });
+            }
+            tabelRincianAcara.setModel(tabmode);
 
-        for (int i = 0; i < tabelRincianAcara.getColumnCount(); i++) {
-            tabelRincianAcara.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            // Set header renderer untuk header di tabel
+            JTableHeader headerTable = tabelRincianAcara.getTableHeader();
+            headerTable.setDefaultRenderer(new HeaderRenderer());
+
+            // Set cell renderer untuk kolom-kolom di tabel
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+            for (int i = 0; i < tabelRincianAcara.getColumnCount(); i++) {
+                tabelRincianAcara.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-}
 
 class HeaderRenderer implements TableCellRenderer {
     JLabel label;
@@ -186,9 +224,10 @@ class HeaderRenderer implements TableCellRenderer {
         jLabel5 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtVanue = new javax.swing.JTextField();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        tglRincianAcara = new com.toedter.calendar.JDateChooser();
         jLabel6 = new javax.swing.JLabel();
         txtIdPesananLayanan = new javax.swing.JTextField();
+        btnCariPesananLayanan = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Data Kategori Games");
@@ -233,9 +272,9 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(327, 327, 327)
+                .addContainerGap(401, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 348, Short.MAX_VALUE)
+                .addGap(372, 372, 372)
                 .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -255,7 +294,7 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1053, Short.MAX_VALUE)
+            .addGap(0, 1151, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -362,7 +401,7 @@ class HeaderRenderer implements TableCellRenderer {
         jScrollPane1.setViewportView(tabelRincianAcara);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Games", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Rincian Acara", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel4.setText("ID Rincian Acara :");
@@ -375,6 +414,13 @@ class HeaderRenderer implements TableCellRenderer {
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel6.setText("ID Pesanan Layanan :");
+
+        btnCariPesananLayanan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/Search.png"))); // NOI18N
+        btnCariPesananLayanan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariPesananLayananActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -393,14 +439,17 @@ class HeaderRenderer implements TableCellRenderer {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtIdAcara, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
-                            .addComponent(txtIdPesananLayanan)))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(txtIdPesananLayanan)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCariPesananLayanan, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(45, 45, 45)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+                            .addComponent(tglRincianAcara, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
                             .addComponent(txtVanue))))
                 .addContainerGap())
         );
@@ -412,14 +461,16 @@ class HeaderRenderer implements TableCellRenderer {
                     .addComponent(jLabel4)
                     .addComponent(txtIdAcara, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtIdPesananLayanan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(txtIdPesananLayanan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCariPesananLayanan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                    .addComponent(tglRincianAcara, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtVanue, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
@@ -436,8 +487,8 @@ class HeaderRenderer implements TableCellRenderer {
                     .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -462,6 +513,7 @@ class HeaderRenderer implements TableCellRenderer {
         clear();
         
         enableButton();
+        getLastId ();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
@@ -474,7 +526,7 @@ class HeaderRenderer implements TableCellRenderer {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     
                     stat.setString(1, txtIdPesananLayanan.getText());
-                    stat.setString(2, sdf.format(jDateChooser1.getDate()));
+                    stat.setString(2, sdf.format(tglRincianAcara.getDate()));
                     stat.setString(3, txtVanue.getText());
                     
                     int rowsAffected = stat.executeUpdate();
@@ -497,11 +549,11 @@ class HeaderRenderer implements TableCellRenderer {
                 txtIdAcara.requestFocus();
                 } else {
                     try {
-                        String sql = "UPDATE rincian_acara SET id_pesanan_layanan=?, tanggal_rincian_acara=?, vanue_rincian_acara=? WHERE id_rincian_acara = '"+ txtIdAcara.getText()+"'";
+                        String sql = "UPDATE rincian_acara SET id_pesanan_layanan=?, tanggal_rincian_acara=?, venue_rincian_acara=? WHERE id_rincian_acara = '"+ txtIdAcara.getText()+"'";
                         PreparedStatement stat = conn.prepareStatement(sql);
                         
                         stat.setString(1, txtIdPesananLayanan.getText());
-                        stat.setString(2, sdf.format(jDateChooser1.getDate()));
+                        stat.setString(2, sdf.format(tglRincianAcara.getDate()));
                         stat.setString(3, txtVanue.getText());
                         
                         int rowsAffected = stat.executeUpdate();
@@ -552,6 +604,7 @@ class HeaderRenderer implements TableCellRenderer {
 //        {"ID Rincian Acara", "ID Pesanan Layanan", "Tanggal", "Value Game"};
                 
         txtIdAcara.setText(tabelRincianAcara.getValueAt(bar,0).toString());
+        
         txtIdPesananLayanan.setText(tabelRincianAcara.getValueAt(bar,1).toString());
         java.util.Date tgl_x =null;
             try {
@@ -559,11 +612,13 @@ class HeaderRenderer implements TableCellRenderer {
             } catch (ParseException ex) {
                 Logger.getLogger(RincianAcara.class.getName()).log(Level.SEVERE, null,ex);
             }
-       jDateChooser1.setDate(tgl_x);;
+        tglRincianAcara.setDate(tgl_x);;
        
         txtVanue.setText(tabelRincianAcara.getValueAt(bar,3).toString());
         
         editButton();
+        txtIdAcara.setEnabled(false);
+        txtIdPesananLayanan.setEnabled(false);
     }//GEN-LAST:event_tabelRincianAcaraMouseClicked
 
     private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked
@@ -590,6 +645,13 @@ class HeaderRenderer implements TableCellRenderer {
     private void ButtonCloseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ButtonCloseMouseExited
 
     }//GEN-LAST:event_ButtonCloseMouseExited
+
+    private void btnCariPesananLayananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPesananLayananActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        PopUpPesananLayanan popUpPesananLayanan = new PopUpPesananLayanan(new javax.swing.JFrame(), true);
+        popUpPesananLayanan.setVisible(true);
+    }//GEN-LAST:event_btnCariPesananLayananActionPerformed
 
     /**
      * @param args the command line arguments
@@ -651,12 +713,12 @@ class HeaderRenderer implements TableCellRenderer {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ButtonClose;
     private javax.swing.JButton btnBatal;
+    private javax.swing.JButton btnCariPesananLayanan;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnUbah;
     private javax.swing.JLabel exit;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -669,6 +731,7 @@ class HeaderRenderer implements TableCellRenderer {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tabelRincianAcara;
+    private com.toedter.calendar.JDateChooser tglRincianAcara;
     private javax.swing.JTextField txtIdAcara;
     private javax.swing.JTextField txtIdPesananLayanan;
     private javax.swing.JTextField txtVanue;

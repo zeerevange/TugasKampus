@@ -1150,10 +1150,12 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void menuCrewAcaraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCrewAcaraActionPerformed
         // TODO add your handling code here:
+        new CrewAcara (this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_menuCrewAcaraActionPerformed
 
     private void menuRincianGameAcaraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRincianGameAcaraActionPerformed
         // TODO add your handling code here:
+         new RincianGameAcara (this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_menuRincianGameAcaraActionPerformed
 
     private void menuAddon1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAddon1ActionPerformed

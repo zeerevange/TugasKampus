@@ -10,7 +10,7 @@ package eo_management;
  * @author muham
  */
 public class ThrowPesananLayananData {
-    private static String id_pelanggan, id_paket_layanan, jumlah_peserta, mode_input, id_pesanan_layanan, id_sub_kategori_layanan;
+    private static String id_pelanggan, id_karyawan, id_paket_layanan, jumlah_peserta, mode_input, id_pesanan_layanan, id_sub_kategori_layanan, id_rincian_acara, id_game, nama_game;
     
     public static String getId_PesananLayanan() {
         return id_pesanan_layanan;
@@ -26,6 +26,14 @@ public class ThrowPesananLayananData {
     
     public void setId_Pelanggan(String id_pelanggan) {
         this.id_pelanggan = id_pelanggan;
+    }
+    
+    public String getId_Karyawan() {
+        return this.id_karyawan;
+    }
+    
+    public void setId_Karyawan(String id_karyawan) {
+        this.id_karyawan = id_karyawan;
     }
     
     public static String getId_PaketLayanan() {
@@ -63,7 +71,34 @@ public class ThrowPesananLayananData {
         ThrowPesananLayananData.id_sub_kategori_layanan = id_sub_kategori_layanan;
     }
     
+    //    RINCIAN ACARA 
     
+    public static String getId_RincianAcara() {
+        return id_rincian_acara;
+    }
+    
+    public static void setId_RincianAcara(String id_rincian_acara) {
+        ThrowPesananLayananData.id_rincian_acara = id_rincian_acara;
+    }
+    
+    
+    //    RINCIAN GAME
+    
+    public static String getId_Game() {
+        return id_game;
+    }
+    
+    public static void setId_Game(String id_game) {
+        ThrowPesananLayananData.id_game = id_game;
+    }
+    
+    public static String getNama_Game() {
+        return nama_game;
+    }
+    
+    public static void setNama_Game(String nama_game) {
+        ThrowPesananLayananData.nama_game = nama_game;
+    }
 
     
     
