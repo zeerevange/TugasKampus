@@ -610,7 +610,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
                 stat.setString(2, txtIdAddon.getText());
                 stat.setString(3, txtIdPesananUtama.getText());
                 stat.setString(4, txtJumlahPesanan.getText());
-                stat.setInt(4, 0);
+                stat.setInt(5, 0);
                 stat.executeUpdate();
                 JOptionPane.showMessageDialog(null,"Data Pesanan Addon Layanan Tersimpan");
             } catch (SQLException e) {

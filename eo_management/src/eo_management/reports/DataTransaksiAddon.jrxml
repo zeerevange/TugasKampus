@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0f14b88d-cee5-4e35-a5f7-5a49614af46d">
 	<property name="ireport.zoom" value="1.6105100000000008"/>
-	<property name="ireport.x" value="776"/>
+	<property name="ireport.x" value="360"/>
 	<property name="ireport.y" value="15"/>
 	<style name="table">
 		<box>
@@ -169,7 +169,9 @@ LEFT JOIN
 	<detail>
 		<band height="98" splitType="Stretch">
 			<componentElement>
-				<reportElement key="table" style="table" x="0" y="0" width="802" height="98" uuid="10b40a0f-57e4-4edd-8e98-6b026e55321f"/>
+				<reportElement key="table" style="table" x="0" y="0" width="802" height="98" uuid="10b40a0f-57e4-4edd-8e98-6b026e55321f">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
+				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="dataTransaksiAddon" uuid="8efce138-ef8f-46ff-95e9-4b4c7e40754c">
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>

@@ -478,8 +478,8 @@ GROUP BY
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
-							<textField>
-								<reportElement x="5" y="0" width="112" height="20" isPrintWhenDetailOverflows="true" uuid="ac877670-40f3-4359-982b-bd292ebd5307"/>
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="117" height="20" isPrintWhenDetailOverflows="true" uuid="ac877670-40f3-4359-982b-bd292ebd5307"/>
 								<textElement>
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
