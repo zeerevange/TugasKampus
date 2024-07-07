@@ -228,6 +228,7 @@ public class Dashboard extends javax.swing.JFrame {
         menuMaster1 = new javax.swing.JMenu();
         menuPesananLayanan = new javax.swing.JMenuItem();
         menuPesananAddonLayanan = new javax.swing.JMenuItem();
+        menuPembayaran = new javax.swing.JMenuItem();
         menuMaster2 = new javax.swing.JMenu();
         menuReportPaketLayanan = new javax.swing.JMenuItem();
         menuReportPaketAddonLayanan = new javax.swing.JMenuItem();
@@ -897,6 +898,14 @@ public class Dashboard extends javax.swing.JFrame {
         });
         menuMaster1.add(menuPesananAddonLayanan);
 
+        menuPembayaran.setText("Pembayaran");
+        menuPembayaran.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuPembayaranActionPerformed(evt);
+            }
+        });
+        menuMaster1.add(menuPembayaran);
+
         jMenuBar1.add(menuMaster1);
 
         menuMaster2.setText("Laporan");
@@ -1175,6 +1184,11 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_menuReportRincianAcaraActionPerformed
 
+    private void menuPembayaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPembayaranActionPerformed
+        // TODO add your handling code here:
+        new Pembayaran (this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_menuPembayaranActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1272,6 +1286,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuPaketAddon;
     private javax.swing.JMenuItem menuPaketLayanan;
     private javax.swing.JMenuItem menuPelanggan;
+    private javax.swing.JMenuItem menuPembayaran;
     private javax.swing.JMenuItem menuPermainan;
     private javax.swing.JMenuItem menuPerusahaanPelanggan;
     private javax.swing.JMenuItem menuPesananAddonLayanan;
