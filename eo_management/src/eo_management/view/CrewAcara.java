@@ -29,9 +29,6 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import sun.util.logging.PlatformLogger;
 
 /**
  *
