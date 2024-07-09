@@ -24,6 +24,7 @@ public class PopUpPesananLayanan extends javax.swing.JDialog {
          private Connection conn = new koneksi().connect();
          private DefaultTableModel tabmode;
          public PerusahaanPelanggan plgn = null;
+         private static String screen_type;
     /**
      * Creates new form PopUpPelanggan
      */
@@ -31,6 +32,10 @@ public class PopUpPesananLayanan extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         dataTable();
+    }
+    
+    public static void setScreenType (String screen_type) {
+        PopUpPesananLayanan.screen_type = screen_type;
     }
 
     PopUpPesananLayanan() {
@@ -195,13 +200,22 @@ public class PopUpPesananLayanan extends javax.swing.JDialog {
         int bar = tabelPaketLayanan.getSelectedRow();
         String id = tabelPaketLayanan.getValueAt(bar, 0).toString();
         String ObjButton[] = {"Batal","Pilih"};
-        int pilihan = JOptionPane.showOptionDialog(null, "Pilih " + tabelPaketLayanan.getValueAt(bar,1).toString() + " Untuk Form Rincian Acara ?","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+        int pilihan = JOptionPane.showOptionDialog(null, "Pilih " + tabelPaketLayanan.getValueAt(bar,1).toString() + " Untuk Form " + this.screen_type + " ?","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
         null,ObjButton,ObjButton[1]);
         if(pilihan == 1){
             this.dispose();
             throwDataPesanan.setId_PesananLayanan(id);
-            RincianAcara rincianAcara = new RincianAcara(new javax.swing.JFrame(), true);
-            rincianAcara.setVisible(true);
+          
+            if (this.screen_type == "Rincian Acara") {
+                RincianAcara rincianAcara = new RincianAcara(new javax.swing.JFrame(), true);
+                rincianAcara.setVisible(true);
+            } else if (this.screen_type == "Pembayaran") {
+                Pembayaran pembayaran = new Pembayaran(new javax.swing.JFrame(), true);
+                pembayaran.setVisible(true);
+            }
+            
+            
+            
         } else {
             this.dispose();
         }

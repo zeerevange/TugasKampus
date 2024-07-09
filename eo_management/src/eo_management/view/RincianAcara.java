@@ -649,6 +649,7 @@ class HeaderRenderer implements TableCellRenderer {
         // TODO add your handling code here:
         this.dispose();
         PopUpPesananLayanan popUpPesananLayanan = new PopUpPesananLayanan(new javax.swing.JFrame(), true);
+        popUpPesananLayanan.setScreenType("Rincian Acara");
         popUpPesananLayanan.setVisible(true);
     }//GEN-LAST:event_btnCariPesananLayananActionPerformed
 

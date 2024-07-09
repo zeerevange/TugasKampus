@@ -21,6 +21,7 @@ import java.text.ParseException;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -31,6 +32,8 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -51,16 +54,58 @@ public class Pembayaran extends javax.swing.JDialog {
         initUI();
         dataTable();
         disableButton();
+        combobox_tipe_pembayaran();
+        combobox_bank();
+        
+        //fungsi pencarian
+        txtCari.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+                public void insertUpdate(DocumentEvent e) {
+                dataTable();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+               dataTable();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                dataTable();
+            }
+        });
         
         ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
         
         if (throwDataPesanan.getId_PesananLayanan() != null) {
-            this.getLastId ();
+            this.getIdTrx ();
             this.getDataIdPesananLayanan(throwDataPesanan.getId_PesananLayanan());
             
             btnSimpan.setEnabled(true);
             tglPembayaran.setEnabled(true);
             txtJumlahPembayaran.setEnabled(true);
+            enableButton();
+            
+            try {
+                String sql = "SELECT \n" +
+                            "GROUP_CONCAT(pesanan_addon.id_pesanan_addon SEPARATOR ', ') AS id_pesanan_addon\n" +
+                            "FROM pesanan_addon\n" +
+                            "WHERE pesanan_addon.id_pesanan_layanan='"+ throwDataPesanan.getId_PesananLayanan() +"';";
+                Statement stat = conn.createStatement();
+                ResultSet rs = stat.executeQuery(sql);
+
+                if (rs.next()){
+                    String id_pesanan_addon = rs.getString("id_pesanan_addon");
+                    txtIdPesananAddon.setText(id_pesanan_addon);
+                } else {
+                    txtIdPesananAddon.setText("");
+                }
+            }catch (SQLException e){ 
+                JOptionPane.showMessageDialog(null, "Id otomatis tidak berjalan. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            Integer total_tagihan = this.getTotalTagihan (throwDataPesanan.getId_PesananLayanan(), 3);
+            txtJumlahTagihan.setText(new java.text.DecimalFormat("Rp#,##0").format(total_tagihan));
         }
         
         
@@ -85,22 +130,11 @@ public class Pembayaran extends javax.swing.JDialog {
         btnSimpan.setEnabled(true);
         txtIdPembayaran.setEnabled(false);
         txtIdPesananLayanan.setEnabled(true);
-        txtIdPesananAddon.setEnabled(true);
         tglPembayaran.setEnabled(true);
         txtJumlahPembayaran.setEnabled(true);
         btnCariPesananLayanan.setEnabled(true);
-    }
-    
-    private void editButton(){
-        txtIdPembayaran.setEnabled(true);
-        txtIdPesananLayanan.setEnabled(true);
-        txtIdPesananAddon.setEnabled(true);
-        tglPembayaran.setEnabled(true);
-        txtJumlahPembayaran.setEnabled(true);
-        
-        btnSimpan.setEnabled(false);
-        btnUbah.setEnabled(true);
-        btnHapus.setEnabled(true);
+        cbxTipePembayaran.setEnabled(true);
+        cbxBankTujuan.setEnabled(true);
     }
     
     private void clear() {
@@ -109,6 +143,22 @@ public class Pembayaran extends javax.swing.JDialog {
         txtIdPesananAddon.setText("");
         tglPembayaran.setDate(null);
         txtJumlahPembayaran.setText("");
+        txtJumlahTagihan.setText("");
+        cbxTipePembayaran.setSelectedIndex(0);
+        cbxBankTujuan.setSelectedIndex(0);
+    }
+    
+    private void combobox_tipe_pembayaran(){
+        cbxTipePembayaran.addItem("Transfer Bank");
+        cbxTipePembayaran.addItem("QRIS");
+        cbxTipePembayaran.addItem("Kartu Kredit");
+    }
+    
+    private void combobox_bank(){
+        cbxBankTujuan.addItem("BCA");
+        cbxBankTujuan.addItem("BRI");
+        cbxBankTujuan.addItem("Mandiri");
+        cbxBankTujuan.addItem("CIMB Niaga");
     }
     
     private void disableButton(){
@@ -117,28 +167,43 @@ public class Pembayaran extends javax.swing.JDialog {
         txtIdPesananAddon.setEnabled(false);
         tglPembayaran.setEnabled(false);
         txtJumlahPembayaran.setEnabled(false);
+        txtJumlahTagihan.setEnabled(false);
         btnTambah.setEnabled(true);
         btnSimpan.setEnabled(false);
-        btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
         btnCariPesananLayanan.setEnabled(false);
+        cbxTipePembayaran.setEnabled(false);
+        cbxBankTujuan.setEnabled(false);
     }
     
-    private void getLastId () {
+    private void getIdTrx(){
         try {
-            String sql = "SELECT * FROM rincian_acara ORDER BY id_rincian_acara DESC LIMIT 1";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet hasil = ps.executeQuery();
+            String sql = "SELECT * FROM pembayaran ORDER BY id_pembayaran DESC";
+            Statement stat = conn.createStatement();
+            ResultSet rs = stat.executeQuery(sql);
             
-            if (hasil.next()){
-                String lastId = hasil.getString("id_rincian_acara");
-                txtIdPembayaran.setText("" + (Integer.parseInt(lastId) + 1));
+            if (rs.next()){
+                String kode = rs.getString("id_pesanan_layanan").substring(5);
+                String AN = "" + (Integer.parseInt(kode) + 1);
+                String Nol = "";
+                
+                if (AN.length() == 1)
+                {Nol = "0000";}
+                else if (AN.length() == 2)
+                {Nol = "000";}
+                else if (AN.length() == 3)
+                {Nol = "00";}
+                else if (AN.length() == 4)
+                {Nol = "0";}
+                else if (AN.length() == 5)
+                {Nol = "";}
+                
+                txtIdPembayaran.setText("TRX" + Nol + AN);
             } else {
-                txtIdPembayaran.setText("1");
+                txtIdPembayaran.setText("TRX" + "00001");
             }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "data ID terakhir gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }catch (SQLException e){ 
+            JOptionPane.showMessageDialog(null, "Id otomatis tidak berjalan. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -148,21 +213,32 @@ public class Pembayaran extends javax.swing.JDialog {
     }
     
     public void dataTable() {
-        Object[] header = {"ID Acara", "ID Pesanan Layanan", "Tanggal", "Value Rincian Acara"};
+        Object[] header = {"ID Transaksi", "Tanggal", "ID Pesanan", "Jumlah Pembayaran", "Sisa", "Tipe", "Tujuan"};
         tabmode = new DefaultTableModel (null, header);
         try {
-            String sql = "SELECT * FROM rincian_acara";
+            String cariitem = txtCari.getText();
+            
+            String sql = "SELECT * FROM pembayaran  WHERE id_pembayaran LIKE '%"
+                    + cariitem+ "%' or id_pesanan_layanan LIKE '%" 
+                    + cariitem+ "%' or tipe_pembayaran LIKE '%"
+                    + cariitem+ "%' or tujuan_rekening_bank_pembayan LIKE '%"
+                    + cariitem+ "%' ORDER BY id_pembayaran asc";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet hasil = ps.executeQuery();
 
+            
             while (hasil.next()) {
                  tabmode.addRow(new Object[] {
                     hasil.getString(1),
-                    hasil.getString(2),
                     hasil.getString(3),
-                    hasil.getString(4),
+                    hasil.getString(2),
+                    new java.text.DecimalFormat("Rp#,##0").format(hasil.getInt(4)),
+                    new java.text.DecimalFormat("Rp#,##0").format(hasil.getInt(5)),
+                    hasil.getString(6),
+                    hasil.getString(7),
                  });
             }
+            
             tabelPembayaran.setModel(tabmode);
 
             // Set header renderer untuk header di tabel
@@ -180,7 +256,124 @@ public class Pembayaran extends javax.swing.JDialog {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "data gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+}
+    
+private Integer getTotalTagihan (String id_pesanan_layanan, Integer type) {
+    Integer total_tagihan = 0;
+    Integer ppn_11_persen = 0;
+    Integer grand_total = 0;
+    Integer jumlah_pembayaran = 0;
+    Integer sisa_tagihan = 0;
+        
+    try {
+        //  CHECK TOTAL TAGIHAN PADA PESANAN LAYANAN & ADDON 
+        String sql = "SELECT \n" +
+                            "pesanan_layanan.id_pesanan_layanan,\n" +
+                            "((paket_layanan.harga_paket_layanan * pesanan_layanan.jumlah_peserta_pesanan_layanan) + SUM(paket_addon.harga_paket_addon * pesanan_addon.jumlah_pesanan_addon)) AS subtotal,\n" +
+                            "ROUND(((paket_layanan.harga_paket_layanan * pesanan_layanan.jumlah_peserta_pesanan_layanan) + SUM(paket_addon.harga_paket_addon * pesanan_addon.jumlah_pesanan_addon)) * 0.11) AS ppn_11_persen,\n" +
+                            "ROUND(((paket_layanan.harga_paket_layanan * pesanan_layanan.jumlah_peserta_pesanan_layanan) + SUM(paket_addon.harga_paket_addon * pesanan_addon.jumlah_pesanan_addon)) + ((paket_layanan.harga_paket_layanan * pesanan_layanan.jumlah_peserta_pesanan_layanan) + SUM(paket_addon.harga_paket_addon * pesanan_addon.jumlah_pesanan_addon)) * 0.11) AS grand_total\n" +
+                            "FROM pesanan_layanan\n" +
+                            "LEFT JOIN paket_layanan ON pesanan_layanan.id_paket_layanan = paket_layanan.id_paket_layanan\n" +
+                            "LEFT JOIN pesanan_addon ON pesanan_addon.id_pesanan_layanan = pesanan_layanan.id_pesanan_layanan\n" +
+                            "LEFT JOIN paket_addon ON paket_addon.id_paket_addon = pesanan_addon.id_paket_addon\n" +
+                            "WHERE pesanan_layanan.id_pesanan_layanan = '"+id_pesanan_layanan+"';";
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet hasil_pesanan_layanan = ps.executeQuery();
+
+        if (hasil_pesanan_layanan.next()){
+            total_tagihan = hasil_pesanan_layanan.getInt("subtotal");
+            ppn_11_persen = hasil_pesanan_layanan.getInt("ppn_11_persen");
+            grand_total = hasil_pesanan_layanan.getInt("grand_total");
+        } else {
+            total_tagihan = 0;
+            ppn_11_persen = 0;
+            grand_total = 0;
+        }
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat menghitung total tagihan : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
+    
+    
+    
+    try {
+        //  CHECK TOTAL TAGIHAN PADA PESANAN LAYANAN & ADDON 
+        String sql = "SELECT SUM(jumlah_pembayaran) AS jumlah_pembayaran FROM pembayaran WHERE id_pesanan_layanan = '"+id_pesanan_layanan+"';";
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet hasil_pembayaran = ps.executeQuery();
+
+        if (hasil_pembayaran.next()){
+            sisa_tagihan =  grand_total - hasil_pembayaran.getInt("jumlah_pembayaran");
+            jumlah_pembayaran = hasil_pembayaran.getInt("jumlah_pembayaran");
+        } else {
+            sisa_tagihan = 0;
+            jumlah_pembayaran = 0;
+        }
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat menghitung sisa tagihan : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    if (type == 1) {
+        return total_tagihan;
+    } else if (type == 2) {
+        return ppn_11_persen;
+    } else if (type == 3) {
+        return grand_total;
+    } else if (type == 4) {
+        return jumlah_pembayaran;
+    }  else if (type == 5) {
+        return sisa_tagihan;
+    } else {
+        return 0;
+    }
+    
+}
+
+private void updatePembayaran(String id_pesanan_layanan, Integer jumlah_pembayaran, String type) {
+    if (id_pesanan_layanan != null) {
+        
+        Integer total_tagihan = this.getTotalTagihan(id_pesanan_layanan, 3);
+        Integer sum_jumlah_pembayaran = this.getTotalTagihan(id_pesanan_layanan, 4);
+        
+        try {
+//          UPDATE TAGIHAN PADA PESANAN LAYANAN & ADDON 
+            Boolean status_lunas = false;
+            
+            if (type == "plus") {
+                if ((jumlah_pembayaran + sum_jumlah_pembayaran) >= total_tagihan) {
+                    status_lunas = true;
+                } else {
+                    status_lunas = false;
+                }
+            } else if (type == "min") {
+                if (sum_jumlah_pembayaran >= total_tagihan) {
+                    status_lunas = true;
+                } else {
+                    status_lunas = false;
+                }
+            }
+            
+            
+            String sql = "UPDATE pesanan_layanan SET status_lunas_pesanan_layanan=? WHERE id_pesanan_layanan = '"+ txtIdPesananLayanan.getText()+"'";
+            PreparedStatement stat = conn.prepareStatement(sql);
+                        
+            stat.setBoolean(1, status_lunas);
+                        
+            int rowsAffected = stat.executeUpdate();
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Data status tagihan berhasil diubah", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Data status tagihan gagal diubah", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat menghitung total tagihan : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
 
 class HeaderRenderer implements TableCellRenderer {
     JLabel label;
@@ -216,7 +409,6 @@ class HeaderRenderer implements TableCellRenderer {
         jToolBar1 = new javax.swing.JToolBar();
         btnTambah = new javax.swing.JButton();
         btnSimpan = new javax.swing.JButton();
-        btnUbah = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
         btnBatal = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -233,7 +425,14 @@ class HeaderRenderer implements TableCellRenderer {
         btnCariPesananLayanan = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         txtIdPesananAddon = new javax.swing.JTextField();
-        btnCariPesananAddon = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        txtJumlahTagihan = new javax.swing.JTextField();
+        cbxTipePembayaran = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+        cbxBankTujuan = new javax.swing.JComboBox<>();
+        jLabel11 = new javax.swing.JLabel();
+        txtCari = new javax.swing.JTextField();
+        btnCari = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Data Kategori Games");
@@ -278,7 +477,7 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(439, Short.MAX_VALUE)
+                .addContainerGap(641, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(372, 372, 372)
                 .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -300,7 +499,7 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1153, Short.MAX_VALUE)
+            .addGap(0, 1355, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -343,20 +542,6 @@ class HeaderRenderer implements TableCellRenderer {
             }
         });
         jToolBar1.add(btnSimpan);
-
-        btnUbah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/edit.png"))); // NOI18N
-        btnUbah.setText("Ubah");
-        btnUbah.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
-        btnUbah.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnUbah.setFocusable(false);
-        btnUbah.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnUbah.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnUbah.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUbahActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btnUbah);
 
         btnHapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/delete.png"))); // NOI18N
         btnHapus.setText("Hapus");
@@ -413,7 +598,7 @@ class HeaderRenderer implements TableCellRenderer {
         jLabel4.setText("ID Pembayaran :");
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel5.setText("Tanggal Rincian Acara :");
+        jLabel5.setText("Tanggal Pembayaran :");
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel8.setText("Jumlah Pembayaran :");
@@ -431,12 +616,30 @@ class HeaderRenderer implements TableCellRenderer {
         jLabel7.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel7.setText("ID Pesanan Addon :");
 
-        btnCariPesananAddon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/Search.png"))); // NOI18N
-        btnCariPesananAddon.addActionListener(new java.awt.event.ActionListener() {
+        jLabel9.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel9.setText("Jumlah Tagihan + PPn 11% :");
+
+        cbxTipePembayaran.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cbxTipePembayaran.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilihan" }));
+        cbxTipePembayaran.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCariPesananAddonActionPerformed(evt);
+                cbxTipePembayaranActionPerformed(evt);
             }
         });
+
+        jLabel10.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel10.setText("Tipe Pembayaran :");
+
+        cbxBankTujuan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cbxBankTujuan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilihan" }));
+        cbxBankTujuan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxBankTujuanActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel11.setText("Bank Tujuan :");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -444,25 +647,34 @@ class HeaderRenderer implements TableCellRenderer {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtIdPembayaran)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(txtIdPesananLayanan)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCariPesananLayanan, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(txtIdPesananAddon)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCariPesananAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(17, 17, 17))
+                        .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbxBankTujuan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbxTipePembayaran, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tglPembayaran, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtJumlahPembayaran)
-                    .addComponent(tglPembayaran, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtIdPembayaran)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addComponent(txtIdPesananLayanan, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCariPesananLayanan, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtIdPesananAddon)))
+                    .addComponent(txtJumlahTagihan, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -479,11 +691,13 @@ class HeaderRenderer implements TableCellRenderer {
                         .addComponent(txtIdPesananLayanan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnCariPesananLayanan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel7)
-                        .addComponent(txtIdPesananAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnCariPesananAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtIdPesananAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(txtJumlahTagihan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
@@ -492,8 +706,32 @@ class HeaderRenderer implements TableCellRenderer {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtJumlahPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbxTipePembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbxBankTujuan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        txtCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCariKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCariKeyPressed(evt);
+            }
+        });
+
+        btnCari.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/Search.png"))); // NOI18N
+        btnCari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -501,23 +739,34 @@ class HeaderRenderer implements TableCellRenderer {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtCari)
+                    .addComponent(btnCari))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -531,7 +780,7 @@ class HeaderRenderer implements TableCellRenderer {
         clear();
         
         enableButton();
-        getLastId ();
+        getIdTrx();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
@@ -540,65 +789,58 @@ class HeaderRenderer implements TableCellRenderer {
                 txtIdPembayaran.requestFocus();
             } else {
                 try {
-                    String sql = "INSERT INTO rincian_acara (id_pesanan_layanan, tanggal_rincian_acara, venue_rincian_acara) VALUES (?, ?, ?)";
+                    String sql = "INSERT INTO pembayaran (id_pembayaran, id_pesanan_layanan, tanggal_pembayaran, jumlah_pembayaran, sisa_pembayaran, tipe_pembayaran, tujuan_rekening_bank_pembayan) VALUES (?, ?, ?, ?, ?, ?, ?)";
                     PreparedStatement stat = conn.prepareStatement(sql);
                     
-                    stat.setString(1, txtIdPesananLayanan.getText());
-                    stat.setString(2, sdf.format(tglPembayaran.getDate()));
-                    stat.setString(3, txtJumlahPembayaran.getText());
+                    stat.setString(1, txtIdPembayaran.getText());
+                    stat.setString(2, txtIdPesananLayanan.getText());
+                    stat.setString(3, sdf.format(tglPembayaran.getDate()));
+                    stat.setString(4, txtJumlahPembayaran.getText());
+                    
+                    Integer sum_jumlah_pembayaran = this.getTotalTagihan(txtIdPesananLayanan.getText(), 4);
+                    Integer sisa_pembayaran = Integer.parseInt(txtJumlahTagihan.getText().replace("Rp", "").replace(",", "").trim()) - (Integer.parseInt(txtJumlahPembayaran.getText()) + sum_jumlah_pembayaran);
+                    stat.setInt(5, sisa_pembayaran);
+                    
+                    String selectedItemPembayaran = cbxTipePembayaran.getSelectedItem().toString();
+                    
+                    stat.setString(6, selectedItemPembayaran);
+                    
+                    String selectedItemBankTujuan = cbxBankTujuan.getSelectedItem().toString();
+                    
+                    stat.setString(7, selectedItemBankTujuan);
                     
                     int rowsAffected = stat.executeUpdate();
                     if (rowsAffected > 0) {
-                        JOptionPane.showMessageDialog(null, "Data berhasil disimpan", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Data pembayaran berhasil disimpan", "Informasi", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Data gagal disimpan", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Data pembayaran gagal disimpan", "Error", JOptionPane.ERROR_MESSAGE);
                     }
+                    
+//                  UPDATE STATUS LUNAS TAGIHAN
+                    this.updatePembayaran(txtIdPesananLayanan.getText(), Integer.parseInt(txtJumlahPembayaran.getText()), "plus");
+                    
                 } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat menyimpan data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat menyimpan data pembayaran: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
             clear();
             dataTable();
     }//GEN-LAST:event_btnSimpanActionPerformed
 
-    private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-        if (txtIdPesananLayanan.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Isi ID Pesanan Layanan terlebih dahulu");
-                txtIdPembayaran.requestFocus();
-                } else {
-                    try {
-                        String sql = "UPDATE rincian_acara SET id_pesanan_layanan=?, tanggal_rincian_acara=?, venue_rincian_acara=? WHERE id_rincian_acara = '"+ txtIdPembayaran.getText()+"'";
-                        PreparedStatement stat = conn.prepareStatement(sql);
-                        
-                        stat.setString(1, txtIdPesananLayanan.getText());
-                        stat.setString(2, sdf.format(tglPembayaran.getDate()));
-                        stat.setString(3, txtJumlahPembayaran.getText());
-                        
-                        int rowsAffected = stat.executeUpdate();
-                        if (rowsAffected > 0) {
-                            JOptionPane.showMessageDialog(null, "Data berhasil diubah", "Informasi", JOptionPane.INFORMATION_MESSAGE);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Data gagal diubah", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } catch (SQLException e) {
-                        JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat mengubah data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-            }
-            clear();
-            disableButton();
-            dataTable();
-    }//GEN-LAST:event_btnUbahActionPerformed
-
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null, "Hapus data ini?", "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION);
         if (ok == JOptionPane.YES_OPTION) {
             try {
-                String sql = "DELETE FROM rincian_acara WHERE id_rincian_acara=?";
+                String sql = "DELETE FROM pembayaran WHERE id_pembayaran=?";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtIdPembayaran.getText());
                 int rowsAffected = stat.executeUpdate();
                 if (rowsAffected > 0) {
                     JOptionPane.showMessageDialog(null, "Data berhasil terhapus", "Hapus Data", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    
+//                  UPDATE STATUS LUNAS TAGIHAN
+                    this.updatePembayaran(txtIdPesananLayanan.getText(), Integer.parseInt(txtJumlahPembayaran.getText()), "min");
 
                 } else {
                     JOptionPane.showMessageDialog(null, "Data gagal terhapus", "Hapus Data", JOptionPane.ERROR_MESSAGE);
@@ -619,24 +861,26 @@ class HeaderRenderer implements TableCellRenderer {
 
     private void tabelPembayaranMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPembayaranMouseClicked
         int bar = tabelPembayaran.getSelectedRow();
-//        {"ID Rincian Acara", "ID Pesanan Layanan", "Tanggal", "Value Game"};
+//         {"ID Transaksi", "Tanggal", "ID Pesanan", "Jumlah Pembayaran", "Sisa", "Tipe", "Tujuan"};
                 
         txtIdPembayaran.setText(tabelPembayaran.getValueAt(bar,0).toString());
         
-        txtIdPesananLayanan.setText(tabelPembayaran.getValueAt(bar,1).toString());
+        txtIdPesananLayanan.setText(tabelPembayaran.getValueAt(bar,2).toString());
         java.util.Date tgl_x =null;
             try {
-                tgl_x = sdf.parse(tabelPembayaran.getValueAt(bar,2).toString());
+                tgl_x = sdf.parse(tabelPembayaran.getValueAt(bar,1).toString());
             } catch (ParseException ex) {
                 Logger.getLogger(Pembayaran.class.getName()).log(Level.SEVERE, null,ex);
             }
+            
+        txtJumlahTagihan.setText("");
         tglPembayaran.setDate(tgl_x);;
        
-        txtJumlahPembayaran.setText(tabelPembayaran.getValueAt(bar,3).toString());
+        txtJumlahPembayaran.setText(tabelPembayaran.getValueAt(bar,3).toString().replace("Rp", "").replace(",", "").trim());
         
-        editButton();
-        txtIdPembayaran.setEnabled(false);
-        txtIdPesananLayanan.setEnabled(false);
+        btnSimpan.setEnabled(false);
+        btnTambah.setEnabled(false);
+        btnHapus.setEnabled(true);
     }//GEN-LAST:event_tabelPembayaranMouseClicked
 
     private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked
@@ -667,13 +911,38 @@ class HeaderRenderer implements TableCellRenderer {
     private void btnCariPesananLayananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPesananLayananActionPerformed
         // TODO add your handling code here:
         this.dispose();
+        
         PopUpPesananLayanan popUpPesananLayanan = new PopUpPesananLayanan(new javax.swing.JFrame(), true);
+        popUpPesananLayanan.setScreenType("Pembayaran");
         popUpPesananLayanan.setVisible(true);
     }//GEN-LAST:event_btnCariPesananLayananActionPerformed
 
-    private void btnCariPesananAddonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPesananAddonActionPerformed
+    private void cbxTipePembayaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTipePembayaranActionPerformed
+        //        int idx = cbxJabatan.getSelectedIndex();
+        //
+        //        if (arrJabatan.size() > 0) {
+            //            id_jab = arrJabatan.get(idx).getId();
+            //            gaji = arrJabatan.get(idx).getGaji();
+            //        }
+    }//GEN-LAST:event_cbxTipePembayaranActionPerformed
+
+    private void cbxBankTujuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxBankTujuanActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnCariPesananAddonActionPerformed
+    }//GEN-LAST:event_cbxBankTujuanActionPerformed
+
+    private void txtCariKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCariKeyTyped
+
+    private void txtCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            dataTable();
+        }
+    }//GEN-LAST:event_txtCariKeyPressed
+
+    private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
+        dataTable();
+    }//GEN-LAST:event_btnCariActionPerformed
 
     /**
      * @param args the command line arguments
@@ -751,19 +1020,23 @@ class HeaderRenderer implements TableCellRenderer {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ButtonClose;
     private javax.swing.JButton btnBatal;
-    private javax.swing.JButton btnCariPesananAddon;
+    private javax.swing.JButton btnCari;
     private javax.swing.JButton btnCariPesananLayanan;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambah;
-    private javax.swing.JButton btnUbah;
+    private javax.swing.JComboBox<String> cbxBankTujuan;
+    private javax.swing.JComboBox<String> cbxTipePembayaran;
     private javax.swing.JLabel exit;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -772,9 +1045,11 @@ class HeaderRenderer implements TableCellRenderer {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tabelPembayaran;
     private com.toedter.calendar.JDateChooser tglPembayaran;
+    private javax.swing.JTextField txtCari;
     private javax.swing.JTextField txtIdPembayaran;
     private javax.swing.JTextField txtIdPesananAddon;
     private javax.swing.JTextField txtIdPesananLayanan;
     private javax.swing.JTextField txtJumlahPembayaran;
+    private javax.swing.JTextField txtJumlahTagihan;
     // End of variables declaration//GEN-END:variables
 }

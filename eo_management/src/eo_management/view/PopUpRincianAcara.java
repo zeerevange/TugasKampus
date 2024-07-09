@@ -199,7 +199,7 @@ public class PopUpRincianAcara extends javax.swing.JDialog {
         int bar = tabelPelanggan.getSelectedRow();
         String id = tabelPelanggan.getValueAt(bar, 0).toString();
         String ObjButton[] = {"Batal","Pilih"};
-        int pilihan = JOptionPane.showOptionDialog(null, "Pilih " + tabelPelanggan.getValueAt(bar,1).toString() + " Untuk Form Crew Acara ?","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+        int pilihan = JOptionPane.showOptionDialog(null, "Pilih " + tabelPelanggan.getValueAt(bar,1).toString() + " Untuk Form  " + this.screen_type + " ?","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
         null,ObjButton,ObjButton[1]);
         if(pilihan == 1){
             this.dispose();
