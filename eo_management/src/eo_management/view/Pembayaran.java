@@ -183,7 +183,7 @@ public class Pembayaran extends javax.swing.JDialog {
             ResultSet rs = stat.executeQuery(sql);
             
             if (rs.next()){
-                String kode = rs.getString("id_pesanan_layanan").substring(5);
+                String kode = rs.getString("id_pembayaran").substring(5);
                 String AN = "" + (Integer.parseInt(kode) + 1);
                 String Nol = "";
                 
