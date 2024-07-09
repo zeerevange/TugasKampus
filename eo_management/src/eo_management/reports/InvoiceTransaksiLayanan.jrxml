@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1d440b7a-6c9f-4479-92ad-30074db39bc4">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="450"/>
+	<property name="ireport.y" value="419"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -410,7 +410,7 @@ WHERE pesanan_layanan.id_pesanan_layanan = $P{NO_INVOICE}]]>
 					<font size="9"/>
 					<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0").format($F{total_harga} + $F{total_harga} * 0.11 + ($V{TOTAL_HARGA_ADDON} == null ? 0 : $V{TOTAL_HARGA_ADDON}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0").format($F{total_harga} + $F{total_harga} * 0.11 + ($V{TOTAL_HARGA_ADDON} == null ? 0 : $V{TOTAL_HARGA_ADDON}) + ($V{TOTAL_HARGA_ADDON} == null ? 0 : $V{TOTAL_HARGA_ADDON}) * 0.11)]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="370" y="130" width="151" height="20" uuid="bd50f527-5b1b-47e2-a524-4d35853bccfb">
