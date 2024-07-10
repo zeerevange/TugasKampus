@@ -39,6 +39,7 @@ import java.util.logging.Logger;
 public class RincianGameAcara extends javax.swing.JDialog {
         private Connection conn = new koneksi().connect();
         private DefaultTableModel tabmode;
+        private static String mode, id_rincian_game_acara;
     /**
      * Creates new form Role
      */
@@ -47,24 +48,36 @@ public class RincianGameAcara extends javax.swing.JDialog {
         initComponents();
         initUI();
         dataTable();
-        disableButton();
+        
+        if (this.getMode() == "edit") {
+            editButton();
+            txtIdRincianGameAcara.setText(this.getIdRincianGameAcara());
+        } else {
+            disableButton();
+        }
+        
         
         ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
         
         if (throwDataPesanan.getId_Game() != null) {
-            this.getLastId ();
             this.getDataIdGame(throwDataPesanan.getId_Game(), throwDataPesanan.getNama_Game());
             
-            btnSimpan.setEnabled(true);
-            enableButton();
+            if (this.getMode() != "edit") {
+                this.getLastId ();
+                btnSimpan.setEnabled(true);
+                enableButton();
+            }
+           
         }
         
         if (throwDataPesanan.getId_RincianAcara() != null) {
-            this.getLastId ();
             this.getDataIdRincianAcara(throwDataPesanan.getId_RincianAcara());
             
-            btnSimpan.setEnabled(true);
-            enableButton();
+            if (this.getMode() != "edit") {
+                this.getLastId ();
+                btnSimpan.setEnabled(true);
+                enableButton();
+            }
         }
         
         
@@ -95,13 +108,16 @@ public class RincianGameAcara extends javax.swing.JDialog {
     }
     
     private void editButton(){
-        txtIdRincianGameAcara.setEnabled(true);
+        txtIdRincianGameAcara.setEnabled(false);
         txtIdRincianAcara.setEnabled(true);
         txtIdGame.setEnabled(true);
         
         btnSimpan.setEnabled(false);
         btnUbah.setEnabled(true);
         btnHapus.setEnabled(true);
+        btnCariRincianAcara.setEnabled(true);
+        btnCariGame.setEnabled(true);
+        txtNamaGame.setEnabled(false);
     }
     
     private void clear() {
@@ -121,6 +137,23 @@ public class RincianGameAcara extends javax.swing.JDialog {
         btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
         btnCariRincianAcara.setEnabled(false);
+        txtNamaGame.setEnabled(false);
+    }
+    
+    public static void setMode(String mode) {
+        RincianGameAcara.mode = mode;
+    }
+    
+    public String getMode() {
+        return this.mode;
+    }
+    
+    public static void setIdRincianGameAcara(String id_rincian_game_acara) {
+        RincianGameAcara.id_rincian_game_acara = id_rincian_game_acara;
+    }
+    
+    public String getIdRincianGameAcara() {
+        return this.id_rincian_game_acara;
     }
     
     private void getLastId () {
@@ -448,7 +481,7 @@ class HeaderRenderer implements TableCellRenderer {
         });
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel7.setText("Name Game :");
+        jLabel7.setText("Nama Game :");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -458,29 +491,30 @@ class HeaderRenderer implements TableCellRenderer {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(txtIdGame)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCariGame, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtIdRincianGameAcara)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(txtIdRincianAcara, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCariRincianAcara, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(214, 214, 214)
-                        .addComponent(txtNamaGame))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(279, 279, 279)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(62, 62, 62)))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtNamaGame)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                    .addComponent(txtIdGame)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnCariGame, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtIdRincianGameAcara)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                    .addComponent(txtIdRincianAcara, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnCariRincianAcara, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -642,11 +676,11 @@ class HeaderRenderer implements TableCellRenderer {
         
         txtIdRincianAcara.setText(tabelRincianAcara.getValueAt(bar,1).toString());
         txtIdGame.setText(tabelRincianAcara.getValueAt(bar,2).toString());
+        txtNamaGame.setText(tabelRincianAcara.getValueAt(bar,3).toString());
+        this.setMode("edit");
+        this.setIdRincianGameAcara(tabelRincianAcara.getValueAt(bar,0).toString());
         
-                
         editButton();
-        txtIdRincianGameAcara.setEnabled(false);
-        txtIdRincianAcara.setEnabled(false);
     }//GEN-LAST:event_tabelRincianAcaraMouseClicked
 
     private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked
