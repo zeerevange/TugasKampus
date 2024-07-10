@@ -166,7 +166,7 @@ LEFT JOIN `kategori_addon` ON `kategori_addon`.`id_kategori_addon` = `sub_katego
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="555" height="115" uuid="8fd1c7fe-feef-4451-81fc-35d340ae2a3c"/>
-				<imageExpression><![CDATA["/Users/muhamadfahmi/Devlab/Kuliah/TugasKampus/eo_management/src/eo_management/image/kop-surat.png"]]></imageExpression>
+				<imageExpression><![CDATA["kop-surat-outoria/kop-surat.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
