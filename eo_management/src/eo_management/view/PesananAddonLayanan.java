@@ -31,6 +31,7 @@ import java.time.LocalDateTime;
 public class PesananAddonLayanan extends javax.swing.JDialog {
         private Connection conn = new koneksi().connect();
         private DefaultTableModel tabmode;
+        private static String mode, id_pesanan_addon_layanan, id_pesanan_layanan, id_paket_addon, jumlah_pesanan;
         
     /**
      * Creates new form PaketLayanan
@@ -64,20 +65,20 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         
         ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
         
-        if (throwDataPesanan.getModeInput() == "tambah") {
+        if (this.getMode() == "add") {
             txtId.setEnabled(false);
-            this.getDataIdPesananLayanan(throwDataPesanan.getId_PesananLayanan());
+            
+            enableButton();
+            kode_id_otomatis();
+            this.getDataIdPesananLayanan(throwDataPesanan.getId_PesananLayanan() == null ? this.getIdPesananLayanan() : throwDataPesanan.getId_PesananLayanan());
             this.getDataIdSubKategoriAddonLayanan(throwDataPesanan.getId_SubKategoriLayanan());
-        } else if (throwDataPesanan.getModeInput() == "tambah_item") {
-            txtId.setEnabled(false);
-            btnCariPaketAddonLayanan.setEnabled(true);
-            btnTambahItem.setEnabled(true);
-            btnUbah.setEnabled(false);
-            btnHapus.setEnabled(false);
-            btnSimpan.setEnabled(false);
-            txtJumlahPesanan.setEnabled(true);
-            this.getDataIdPesananLayanan(throwDataPesanan.getId_PesananLayanan());
-            this.getDataIdSubKategoriAddonLayanan(throwDataPesanan.getId_SubKategoriLayanan());
+        } else if (this.getMode() == "edit") {
+            this.getDataIdPesananLayanan(throwDataPesanan.getId_PesananLayanan() == null ? this.getIdPesananLayanan(): throwDataPesanan.getId_PesananLayanan());
+            this.getDataIdSubKategoriAddonLayanan(throwDataPesanan.getId_SubKategoriLayanan() == null ? this.getIdPaketAddon() : throwDataPesanan.getId_SubKategoriLayanan());
+            txtId.setText(this.getIdPesananAddonLayanan());
+            txtJumlahPesanan.setText(this.getJumlahPeserta());
+            System.out.println(throwDataPesanan.getId_SubKategoriLayanan());
+            editButton();
         } else {
             disableButton();
             txtId.setEnabled(false);
@@ -96,18 +97,64 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         setLocation(dx, dy);
     }
     
+    public static void setMode(String mode) {
+        PesananAddonLayanan.mode = mode;
+    }
+    
+    public String getMode() {
+        return this.mode;
+    }
+    
+    public static void setIdPesananAddonLayanan(String id_pesanan_addon_layanan) {
+        PesananAddonLayanan.id_pesanan_addon_layanan = id_pesanan_addon_layanan;
+    }
+    
+    public String getIdPesananAddonLayanan() {
+        return this.id_pesanan_addon_layanan;
+    }
+    
+    public static void setIdPesananLayanan(String id_pesanan_layanan) {
+        PesananAddonLayanan.id_pesanan_layanan = id_pesanan_layanan;
+    }
+    
+    public String getIdPesananLayanan() {
+        return this.id_pesanan_layanan;
+    }
+    
+    public static void setIdPaketAddon(String id_paket_addon) {
+        PesananAddonLayanan.id_paket_addon = id_paket_addon;
+    }
+    
+    public String getIdPaketAddon() {
+        return this.id_paket_addon;
+    }
+    
+    public static void setJumlahPesanan(String jumlah_pesanan) {
+        PesananAddonLayanan.jumlah_pesanan = jumlah_pesanan;
+    }
+    
+    public String getJumlahPeserta() {
+        return this.jumlah_pesanan;
+    }
+    
     private void enableButton() {
+        btnTambahItem.setEnabled(true);
         txtIdPesananUtama.setEnabled(true);
         btnSimpan.setEnabled(true);
         txtIdAddon.setEnabled(true);
+        btnUbah.setEnabled(false);
+        btnHapus.setEnabled(false);
         txtJumlahPesanan.setEnabled(true);
         btnCariPaketAddonLayanan.setEnabled(true);
+        btnCariPesananLayanan.setEnabled(true);
     }
     
     private void editButton(){
+        txtId.setEnabled(false);
         txtJumlahPesanan.setEnabled(true);
 //        txtIdPelanggan.setText("0");
 //        txtIdPaketLayanan.setText("0");
+        btnTambahItem.setEnabled(false);
         btnSimpan.setEnabled(false);
         btnCariPaketAddonLayanan.setEnabled(true);
         btnUbah.setEnabled(true);
@@ -126,11 +173,12 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         txtIdPesananUtama.setEnabled(false);
         txtIdAddon.setEnabled(false);
         txtJumlahPesanan.setEnabled(false);
-        btnTambahItem.setEnabled(false);
+        btnTambahItem.setEnabled(true);
         btnSimpan.setEnabled(false);
         btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
         btnCariPaketAddonLayanan.setEnabled(false);
+        btnCariPesananLayanan.setEnabled(false);
     }
     
     
@@ -187,7 +235,12 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
                     "LEFT JOIN pesanan_layanan ON pesanan_addon.id_pesanan_layanan = pesanan_layanan.id_pesanan_layanan\n" +
                     "LEFT JOIN pelanggan ON pesanan_layanan.id_pelanggan = pelanggan.id_pelanggan\n" +
                     "LEFT JOIN paket_addon ON pesanan_addon.id_paket_addon = paket_addon.id_paket_addon\n" +
-                    "LEFT JOIN sub_kategori_addon ON paket_addon.id_sub_kategori_addon = sub_kategori_addon.id_sub_kategori_addon;";
+                    "LEFT JOIN sub_kategori_addon ON paket_addon.id_sub_kategori_addon = sub_kategori_addon.id_sub_kategori_addon " +
+                    "WHERE pesanan_addon.id_pesanan_addon LIKE '%"
+                    + cariitem+ "%' or pelanggan.nama_pelanggan LIKE '%" 
+                    + cariitem+ "%' or pesanan_layanan.id_pesanan_layanan LIKE '%"
+                    + cariitem+ "%' or sub_kategori_addon.nama_sub_kategori_addon LIKE '%"
+                    + cariitem+ "%'ORDER BY pesanan_addon.id_pesanan_addon ASC;";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
@@ -237,6 +290,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         btnHapus = new javax.swing.JButton();
         btnCariPaketAddonLayanan = new javax.swing.JButton();
         btnTambahItem = new javax.swing.JButton();
+        btnCariPesananLayanan = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tabelPesananAddonLayanan = new javax.swing.JTable();
         txtCari = new javax.swing.JTextField();
@@ -287,16 +341,15 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(365, 365, 365)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 254, Short.MAX_VALUE)
-                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 344, Short.MAX_VALUE)
+                .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 63, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -308,7 +361,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1312, Short.MAX_VALUE)
+            .addGap(0, 1351, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -329,7 +382,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         jLabel5.setText("ID Pesanan Utama :");
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel2.setText("ID Pesanan      :");
+        jLabel2.setText("ID Pesanan          :");
 
         txtId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -339,7 +392,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         txtJumlahPesanan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel9.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel9.setText("Jenis Addon     :");
+        jLabel9.setText("Jenis Addon         :");
 
         txtIdAddon.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -410,34 +463,42 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
             }
         });
 
+        btnCariPesananLayanan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eo_management/icon/Search.png"))); // NOI18N
+        btnCariPesananLayanan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariPesananLayananActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(13, 13, 13))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtIdAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCariPaketAddonLayanan, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(txtJumlahPesanan)
-                    .addComponent(txtIdPesananUtama, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtJumlahPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(txtIdPesananUtama, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCariPesananLayanan, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnTambahItem)
                 .addGap(9, 9, 9)
                 .addComponent(btnSimpan)
@@ -447,36 +508,35 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
                 .addComponent(btnHapus)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBatal)
-                .addGap(138, 138, 138))
+                .addGap(96, 96, 96))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtIdAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnCariPaketAddonLayanan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(btnTambahItem)
                     .addComponent(btnSimpan)
                     .addComponent(btnUbah)
                     .addComponent(btnHapus)
                     .addComponent(btnBatal)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtIdPesananUtama, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtJumlahPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(29, Short.MAX_VALUE))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtIdPesananUtama, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnCariPesananLayanan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtIdAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtJumlahPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnCariPaketAddonLayanan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         tabelPesananAddonLayanan.setAutoCreateRowSorter(true);
@@ -501,11 +561,11 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         jScrollPane3.setViewportView(tabelPesananAddonLayanan);
 
         txtCari.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCariKeyPressed(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCariKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCariKeyPressed(evt);
             }
         });
 
@@ -523,16 +583,14 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 1339, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 1300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -544,7 +602,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
                     .addComponent(txtCari)
                     .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -557,6 +615,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         disableButton();
         clear();
         kode_id_otomatis();
+        this.setMode(null);
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
@@ -599,6 +658,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         clear();
         kode_id_otomatis();
         dataTable();
+        disableButton();
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
@@ -616,14 +676,28 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
                 stat.setString(2, txtIdAddon.getText());
                 stat.setString(3, txtIdPesananUtama.getText());
                 stat.setString(4, txtJumlahPesanan.getText());
-                stat.setInt(4, 0);
+                stat.setInt(5, 0);
                 stat.executeUpdate();
                 JOptionPane.showMessageDialog(null,"Data Pesanan Addon Layanan Tersimpan");
+                
+                String ObjButton[] = {"Ya, Tambahkan","Tidak"};
+                int pilihan = JOptionPane.showOptionDialog(null,"Ingin menambahkan item addon lainnya ?","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null,ObjButton,ObjButton[1]);
+                if(pilihan == 0){
+                    this.setMode("add");
+                    txtIdAddon.setText("");
+                    txtJumlahPesanan.setText("");
+                    
+                    btnCariPesananLayanan.setEnabled(false);
+                } else {
+                    disableButton();
+                    clear();
+                }
+                
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null,"Gagal tersimpan. Pesan error : " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-        clear();
         kode_id_otomatis();
         dataTable();
     }//GEN-LAST:event_btnSimpanActionPerformed
@@ -645,39 +719,20 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
     private void tabelPesananAddonLayananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPesananAddonLayananMouseClicked
         int bar = tabelPesananAddonLayanan.getSelectedRow();
 //        Object[] header = {"No. Faktur", "No. Faktur Induk", "ID Addon", "Nama Addon", "ID Pelanggan", "Nama Pelanggan", "Jumlah Pesanan"};
+        this.setMode("edit");
+         
+        txtId.setText(tabelPesananAddonLayanan.getValueAt(bar,0).toString());
+        txtIdPesananUtama.setText(tabelPesananAddonLayanan.getValueAt(bar,1).toString());
+        txtIdAddon.setText(tabelPesananAddonLayanan.getValueAt(bar,2).toString());
+        txtJumlahPesanan.setText(tabelPesananAddonLayanan.getValueAt(bar,6).toString());
         
-        String ObjButton[] = {"Tambah Item", "Update"};
-        int pilihan = JOptionPane.showOptionDialog(null,"Pilih opsi dibawah untuk melanjutkan","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-            null,ObjButton,ObjButton[1]);
+        this.setIdPesananAddonLayanan(tabelPesananAddonLayanan.getValueAt(bar,0).toString());
+        this.setIdPesananLayanan(tabelPesananAddonLayanan.getValueAt(bar,1).toString());
+        this.setIdPaketAddon(tabelPesananAddonLayanan.getValueAt(bar,2).toString());
+        this.setJumlahPesanan(tabelPesananAddonLayanan.getValueAt(bar,6).toString());
         
-        if(pilihan == 1){
-            txtId.setText(tabelPesananAddonLayanan.getValueAt(bar,0).toString());
-            txtIdPesananUtama.setText(tabelPesananAddonLayanan.getValueAt(bar,1).toString());
-            txtIdAddon.setText(tabelPesananAddonLayanan.getValueAt(bar,2).toString());
-            txtJumlahPesanan.setText(tabelPesananAddonLayanan.getValueAt(bar,6).toString());
-            
-            btnTambahItem.setEnabled(false);
-            editButton();
-        } else {
-            kode_id_otomatis();
-            btnCariPaketAddonLayanan.setEnabled(true);
-            btnTambahItem.setEnabled(true);
-            btnUbah.setEnabled(false);
-            btnHapus.setEnabled(false);
-            btnSimpan.setEnabled(false);
-            txtJumlahPesanan.setEnabled(true);
-            
-            ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
-            throwDataPesanan.setModeInput("tambah_item");
-            
-            throwDataPesanan.setId_PesananLayanan(tabelPesananAddonLayanan.getValueAt(bar,1).toString());
-            
-            txtIdPesananUtama.setText(tabelPesananAddonLayanan.getValueAt(bar,1).toString());
-            txtIdAddon.setText("");
-            txtJumlahPesanan.setText("");
-        }
-        
-        
+        btnTambahItem.setEnabled(false);
+        editButton();
     }//GEN-LAST:event_tabelPesananAddonLayananMouseClicked
 
     private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked
@@ -707,53 +762,35 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
 
     private void btnCariPaketAddonLayananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPaketAddonLayananActionPerformed
         // TODO add your handling code here:
+        this.dispose();
         PopUpAddonPaketLayanan popUpAddonPaketLayanan = new PopUpAddonPaketLayanan(new javax.swing.JFrame(), true);
         popUpAddonPaketLayanan.setVisible(true);
     }//GEN-LAST:event_btnCariPaketAddonLayananActionPerformed
 
     private void btnTambahItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahItemActionPerformed
         // TODO add your handling code here:
-        
-        String minimal = txtJumlahPesanan.getText().trim();
-        String id_paket_addon = txtIdAddon.getText();
-
-        
-        if (minimal.isEmpty() || !minimal.matches("\\d+")) {
-            JOptionPane.showMessageDialog(null, "Isi minimal order dengan format angka saja!");
-            txtJumlahPesanan.requestFocus();
-            
-            ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
-            this.getDataIdPesananLayanan(throwDataPesanan.getId_PesananLayanan());
-            this.getDataIdSubKategoriAddonLayanan(throwDataPesanan.getId_SubKategoriLayanan());
-            
-        } else if (id_paket_addon.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Setidaknya anda harus memilih satu paket!");
-            txtJumlahPesanan.requestFocus();
-            
-            ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
-            this.getDataIdPesananLayanan(throwDataPesanan.getId_PesananLayanan());
-            this.getDataIdSubKategoriAddonLayanan(throwDataPesanan.getId_SubKategoriLayanan());
-            
-        } else {
-            String sql = "INSERT INTO pesanan_addon VALUES (?,?,?,?,?)";
-            try {
-                PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setString(1, txtId.getText());
-                stat.setString(2, txtIdAddon.getText());
-                stat.setString(3, txtIdPesananUtama.getText());
-                stat.setString(4, txtJumlahPesanan.getText());
-                stat.setInt(5, 0);
-                stat.executeUpdate();
-                JOptionPane.showMessageDialog(null,"Data Pesanan Addon Layanan Tersimpan");
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null,"Gagal tersimpan. Pesan error : " +e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        disableButton();
         clear();
+        enableButton();
         kode_id_otomatis();
-        dataTable();
+        this.setMode("add");
+        this.setIdPaketAddon("");
+        this.setIdPesananLayanan("");
+        this.setIdPesananAddonLayanan("");
+        this.setJumlahPesanan("");
+        ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
         
+        throwDataPesanan.setId_SubKategoriLayanan("");
+        throwDataPesanan.setId_PesananLayanan("");
     }//GEN-LAST:event_btnTambahItemActionPerformed
+
+    private void btnCariPesananLayananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPesananLayananActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        PopUpPesananLayanan popUpPesananLayanan = new PopUpPesananLayanan(new javax.swing.JFrame(), true);
+        popUpPesananLayanan.setScreenType("Pesanan Addon");
+        popUpPesananLayanan.setVisible(true);
+    }//GEN-LAST:event_btnCariPesananLayananActionPerformed
 
     /**
      * @param args the command line arguments
@@ -805,6 +842,7 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnCari;
     private javax.swing.JButton btnCariPaketAddonLayanan;
+    private javax.swing.JButton btnCariPesananLayanan;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambahItem;

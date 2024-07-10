@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0f14b88d-cee5-4e35-a5f7-5a49614af46d">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="360"/>
+	<property name="ireport.y" value="15"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -24,104 +24,116 @@
 		</box>
 	</style>
 	<subDataset name="dataTransaksiAddon" uuid="9467ed79-52e1-44ff-957f-8acd106d6f7e">
-		<queryString language="SQL">
+		<queryString>
 			<![CDATA[SELECT 
-    `pesanan_addon_layanan`.`id` AS `inoice`,
-    `pesanan_layanan`.`id` AS `inoice_induk`,
-    `kategori_addon`.`nama` AS `nama_kategori`,
-    `sub_kategori_addon`.`nama` AS `nama_addon`,
-    `addon`.`harga`,
-    `pelanggan`.`nama` AS `nama_pic`,
-    `pelanggan`.`no_telp`,
-    `perusahaan_pelanggan`.`nama_perusahaan`,
-    `pesanan_addon_layanan`.`jumlah_pesanan`,
-    `pesanan_addon_layanan`.`status_lunas`,
+    `pesanan_addon`.`id_pesanan_addon` AS `inoice`,
+    `pesanan_layanan`.`id_pesanan_layanan` AS `inoice_induk`,
+    `kategori_addon`.`nama_kategori_addon`,
+    `sub_kategori_addon`.`nama_sub_kategori_addon`,
+    `paket_addon`.`harga_paket_addon`,
+    `pelanggan`.`nama_pelanggan`,
+    `pelanggan`.`no_telp_pelanggan`,
+    `perusahaan_pelanggan`.`nama_perusahaan_pelanggan`,
+    `pesanan_addon`.`jumlah_pesanan_addon`,
+    `pesanan_addon`.`status_lunas_pesanan_addon`,
     
-    (`addon`.`harga` * `pesanan_addon_layanan`.`jumlah_pesanan`) AS `total_harga`
+    (`paket_addon`.`harga_paket_addon` * `pesanan_addon`.`jumlah_pesanan_addon`) AS `total_harga`
 FROM 
-    `pesanan_addon_layanan`
+    `pesanan_addon`
 LEFT JOIN 
-	`pesanan_layanan` ON `pesanan_layanan`.`id` = `pesanan_addon_layanan`.`pesanan_layanan_id`
+	`pesanan_layanan` ON `pesanan_layanan`.`id_pesanan_layanan` = `pesanan_addon`.`id_pesanan_layanan`
 LEFT JOIN
-    `addon` ON `addon`.`id` = `pesanan_addon_layanan`.`addon_id`
+    `paket_addon` ON `paket_addon`.`id_paket_addon` = `pesanan_addon`.`id_paket_addon`
 LEFT JOIN 
-    `sub_kategori_addon` ON `sub_kategori_addon`.`id` = `addon`.`sub_kategori_addon_id`
+    `sub_kategori_addon` ON `sub_kategori_addon`.`id_sub_kategori_addon` = `paket_addon`.`id_sub_kategori_addon`
 LEFT JOIN 
-    `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kategori_addon_id`
+    `kategori_addon` ON `kategori_addon`.`id_kategori_addon` = `sub_kategori_addon`.`id_kategori_addon`
 LEFT JOIN 
-    `pelanggan` ON `pelanggan`.`id` = `pesanan_layanan`.`pelanggan_id`
+    `pelanggan` ON `pelanggan`.`id_pelanggan` = `pesanan_layanan`.`id_pelanggan`
 LEFT JOIN 
-    `perusahaan_pelanggan` ON `perusahaan_pelanggan`.`pelanggan_id` = `pelanggan`.`id`;]]>
+    `perusahaan_pelanggan` ON `perusahaan_pelanggan`.`id_pelanggan` = `pelanggan`.`id_pelanggan`;]]>
 		</queryString>
 		<field name="inoice" class="java.lang.String"/>
 		<field name="inoice_induk" class="java.lang.String"/>
-		<field name="nama_kategori" class="java.lang.String"/>
-		<field name="nama_addon" class="java.lang.String"/>
-		<field name="harga" class="java.lang.Integer">
+		<field name="nama_kategori_addon" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="nama_pic" class="java.lang.String"/>
-		<field name="no_telp" class="java.lang.String">
+		<field name="nama_sub_kategori_addon" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="nama_perusahaan" class="java.lang.String">
+		<field name="harga_paket_addon" class="java.lang.Integer">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="jumlah_pesanan" class="java.lang.Integer">
+		<field name="nama_pelanggan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="status_lunas" class="java.lang.Boolean">
+		<field name="no_telp_pelanggan" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="nama_perusahaan_pelanggan" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="jumlah_pesanan_addon" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="status_lunas_pesanan_addon" class="java.lang.Boolean">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
 		<field name="total_harga" class="java.lang.Long"/>
 	</subDataset>
 	<queryString>
 		<![CDATA[SELECT 
-    `pesanan_addon_layanan`.`id` AS `inoice`,
-    `pesanan_layanan`.`id` AS `inoice_induk`,
-    `kategori_addon`.`nama` AS `nama_kategori`,
-    `sub_kategori_addon`.`nama` AS `nama_addon`,
-    `addon`.`harga`,
-    `pelanggan`.`nama` AS `nama_pic`,
-    `pelanggan`.`no_telp`,
-    `perusahaan_pelanggan`.`nama_perusahaan`,
-    `pesanan_addon_layanan`.`jumlah_pesanan`,
-    `pesanan_addon_layanan`.`status_lunas`,
+    `pesanan_addon`.`id_pesanan_addon` AS `inoice`,
+    `pesanan_layanan`.`id_pesanan_layanan` AS `inoice_induk`,
+    `kategori_addon`.`nama_kategori_addon`,
+    `sub_kategori_addon`.`nama_sub_kategori_addon`,
+    `paket_addon`.`harga_paket_addon`,
+    `pelanggan`.`nama_pelanggan`,
+    `pelanggan`.`no_telp_pelanggan`,
+    `perusahaan_pelanggan`.`nama_perusahaan_pelanggan`,
+    `pesanan_addon`.`jumlah_pesanan_addon`,
+    `pesanan_addon`.`status_lunas_pesanan_addon`,
     
-    (`addon`.`harga` * `pesanan_addon_layanan`.`jumlah_pesanan`) AS `total_harga`
+    (`paket_addon`.`harga_paket_addon` * `pesanan_addon`.`jumlah_pesanan_addon`) AS `total_harga`
 FROM 
-    `pesanan_addon_layanan`
+    `pesanan_addon`
 LEFT JOIN 
-	`pesanan_layanan` ON `pesanan_layanan`.`id` = `pesanan_addon_layanan`.`pesanan_layanan_id`
+	`pesanan_layanan` ON `pesanan_layanan`.`id_pesanan_layanan` = `pesanan_addon`.`id_pesanan_layanan`
 LEFT JOIN
-    `addon` ON `addon`.`id` = `pesanan_addon_layanan`.`addon_id`
+    `paket_addon` ON `paket_addon`.`id_paket_addon` = `pesanan_addon`.`id_paket_addon`
 LEFT JOIN 
-    `sub_kategori_addon` ON `sub_kategori_addon`.`id` = `addon`.`sub_kategori_addon_id`
+    `sub_kategori_addon` ON `sub_kategori_addon`.`id_sub_kategori_addon` = `paket_addon`.`id_sub_kategori_addon`
 LEFT JOIN 
-    `kategori_addon` ON `kategori_addon`.`id` = `sub_kategori_addon`.`kategori_addon_id`
+    `kategori_addon` ON `kategori_addon`.`id_kategori_addon` = `sub_kategori_addon`.`id_kategori_addon`
 LEFT JOIN 
-    `pelanggan` ON `pelanggan`.`id` = `pesanan_layanan`.`pelanggan_id`
+    `pelanggan` ON `pelanggan`.`id_pelanggan` = `pesanan_layanan`.`id_pelanggan`
 LEFT JOIN 
-    `perusahaan_pelanggan` ON `perusahaan_pelanggan`.`pelanggan_id` = `pelanggan`.`id`;]]>
+    `perusahaan_pelanggan` ON `perusahaan_pelanggan`.`id_pelanggan` = `pelanggan`.`id_pelanggan`;]]>
 	</queryString>
 	<field name="inoice" class="java.lang.String"/>
 	<field name="inoice_induk" class="java.lang.String"/>
-	<field name="nama_kategori" class="java.lang.String"/>
-	<field name="nama_addon" class="java.lang.String"/>
-	<field name="harga" class="java.lang.Integer">
+	<field name="nama_kategori_addon" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="nama_pic" class="java.lang.String"/>
-	<field name="no_telp" class="java.lang.String">
+	<field name="nama_sub_kategori_addon" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="nama_perusahaan" class="java.lang.String">
+	<field name="harga_paket_addon" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="jumlah_pesanan" class="java.lang.Integer">
+	<field name="nama_pelanggan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="status_lunas" class="java.lang.Boolean">
+	<field name="no_telp_pelanggan" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nama_perusahaan_pelanggan" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="jumlah_pesanan_addon" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="status_lunas_pesanan_addon" class="java.lang.Boolean">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="total_harga" class="java.lang.Long"/>
@@ -132,11 +144,11 @@ LEFT JOIN
 		<band height="99" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="204" height="87" uuid="aba5cd02-85bd-4fad-90f1-70efe9c1b999"/>
-				<imageExpression><![CDATA["/Users/muhamadfahmi/Devlab/Kuliah/TugasKampus/eo_management/src/eo_management/image/kop-kiri.png"]]></imageExpression>
+				<imageExpression><![CDATA["kop-surat-outoria/kop-kiri.png"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="555" y="0" width="247" height="87" uuid="c8123545-ff7b-44f1-9c72-0d8c9a5423c1"/>
-				<imageExpression><![CDATA["/Users/muhamadfahmi/Devlab/Kuliah/TugasKampus/eo_management/src/eo_management/image/kop-kanan.png"]]></imageExpression>
+				<imageExpression><![CDATA["kop-surat-outoria/kop-kanan.png"]]></imageExpression>
 			</image>
 			<line>
 				<reportElement x="0" y="87" width="802" height="1" uuid="625afff1-d553-4056-b8c5-2a098bf79d14"/>
@@ -157,7 +169,9 @@ LEFT JOIN
 	<detail>
 		<band height="98" splitType="Stretch">
 			<componentElement>
-				<reportElement key="table" style="table" x="0" y="0" width="802" height="98" uuid="10b40a0f-57e4-4edd-8e98-6b026e55321f"/>
+				<reportElement key="table" style="table" x="0" y="0" width="802" height="98" uuid="10b40a0f-57e4-4edd-8e98-6b026e55321f">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
+				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="dataTransaksiAddon" uuid="8efce138-ef8f-46ff-95e9-4b4c7e40754c">
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
@@ -221,7 +235,7 @@ LEFT JOIN
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{nama_kategori}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nama_kategori_addon}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -242,7 +256,7 @@ LEFT JOIN
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{nama_addon}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nama_sub_kategori_addon}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -263,7 +277,7 @@ LEFT JOIN
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{harga_paket_addon}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -284,7 +298,7 @@ LEFT JOIN
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{nama_pic}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nama_pelanggan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -305,7 +319,7 @@ LEFT JOIN
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{no_telp}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{no_telp_pelanggan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -326,7 +340,7 @@ LEFT JOIN
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{nama_perusahaan}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nama_perusahaan_pelanggan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -347,7 +361,7 @@ LEFT JOIN
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{jumlah_pesanan}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{jumlah_pesanan_addon}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -368,7 +382,7 @@ LEFT JOIN
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{status_lunas} ? "Lunas" : "Belum"]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{status_lunas_pesanan_addon} ? "Lunas" : "Belum"]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -398,7 +412,7 @@ LEFT JOIN
 		</band>
 		<band height="113">
 			<staticText>
-				<reportElement x="669" y="93" width="108" height="20" uuid="6e4c379f-0503-484f-a5aa-c73c456b10ae">
+				<reportElement x="641" y="93" width="136" height="20" uuid="6e4c379f-0503-484f-a5aa-c73c456b10ae">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -407,18 +421,18 @@ LEFT JOIN
 				<text><![CDATA[Muhamad Syarifuddin]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="669" y="28" width="108" height="20" uuid="54c33c1f-f2eb-47bb-b560-914f492bc437">
+				<reportElement x="641" y="28" width="136" height="20" uuid="54c33c1f-f2eb-47bb-b560-914f492bc437">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Manager]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="669" y="12" width="108" height="13" uuid="97bd411e-8048-408f-b5e3-5120df2cdadb">
+				<reportElement x="641" y="11" width="136" height="13" uuid="89ff38a8-5464-4db3-a646-efb97ff1f2a1">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Bogor, 14 Juni 2024]]></text>
+				<text><![CDATA[Bogor, Kamis 04  Juli 2024]]></text>
 			</staticText>
 		</band>
 	</detail>

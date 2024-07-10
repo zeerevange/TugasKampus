@@ -180,7 +180,6 @@ public class PopUpPelanggan extends javax.swing.JDialog {
         if(pilihan == 1){
             this.dispose();
             throwDataPesanan.setId_Pelanggan(id);
-            System.out.println(throwDataPesanan.getModeInput() + "AHHAHAHA PAS SETTER POPUP " + id);
             PesananLayanan pesananLayanan = new PesananLayanan(new javax.swing.JFrame(), true);
             pesananLayanan.setVisible(true);
             

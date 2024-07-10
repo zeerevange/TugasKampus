@@ -44,19 +44,19 @@ public class Inventaris extends javax.swing.JDialog {
         //fungsi pencarian
         txtCari.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) {
-        dataTable();
-        }
+                public void insertUpdate(DocumentEvent e) {
+                dataTable();
+            }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                dataTable();
-        }
+               dataTable();
+            }
 
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            dataTable();
-        }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                dataTable();
+            }
         });
     }
      
@@ -365,11 +365,11 @@ public class Inventaris extends javax.swing.JDialog {
         jScrollPane1.setViewportView(tabelInventaris);
 
         txtCari.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCariKeyPressed(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCariKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCariKeyPressed(evt);
             }
         });
 

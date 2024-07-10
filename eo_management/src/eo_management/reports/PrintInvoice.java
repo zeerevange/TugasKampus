@@ -17,6 +17,11 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.IOException;
+
 /**
  *
  * @author muhamadfahmi
@@ -28,8 +33,25 @@ public class PrintInvoice {
     public void print(String invoiceId) {
         try {
 
-             // Path untuk menyimpan file PDF
-            String outputFile = "/Users/muhamadfahmi/Devlab/Kuliah/Report/invoice_" + invoiceId + ".pdf"; // Nama file disesuaikan dengan nomor invoice atau lainnya
+            // Mengambil home directory dari sistem
+            String userHome = System.getProperty("user.home");
+            
+            String folderName = "Invoices_Reports";
+            String outputFile = userHome + "/" + folderName + "/invoice_" + invoiceId + ".pdf"; // Nama file disesuaikan dengan nomor invoice atau lainnya
+
+            Path folderPath = Paths.get(userHome, folderName);
+
+            // Check if the folder exists, if not, create it
+            if (!Files.exists(folderPath)) {
+                try {
+                    Files.createDirectories(folderPath);
+                    System.out.println("Directory created: " + folderPath.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Directory already exists: " + folderPath.toString());
+            }
             
             // Path ke file template Jasper
             String reportPath = "src/eo_management/reports/InvoiceTransaksiLayanan.jasper"; // Ubah sesuai dengan lokasi file template Anda

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InvoiceTransaksiLayanan_Addon" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e8767461-862b-4e19-847c-a6f299049c9f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="NO_INVOICE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+pesanan_addon.id_pesanan_addon,
+pesanan_layanan.id_pesanan_layanan AS inoice_induk,
+kategori_addon.nama_kategori_addon,
+sub_kategori_addon.nama_sub_kategori_addon,
+paket_addon.harga_paket_addon,
+pesanan_addon.jumlah_pesanan_addon,
+
+(paket_addon.harga_paket_addon * pesanan_addon.jumlah_pesanan_addon) AS total_harga
+FROM
+pesanan_addon
+LEFT JOIN
+pesanan_layanan ON pesanan_layanan.id_pesanan_layanan = pesanan_addon.id_pesanan_layanan
+LEFT JOIN
+paket_addon ON paket_addon.id_paket_addon = pesanan_addon.id_paket_addon
+LEFT JOIN
+sub_kategori_addon ON sub_kategori_addon.id_sub_kategori_addon = paket_addon.id_sub_kategori_addon
+LEFT JOIN
+kategori_addon ON kategori_addon.id_kategori_addon = sub_kategori_addon.id_kategori_addon
+LEFT JOIN
+pelanggan ON pelanggan.id_pelanggan = pesanan_layanan.id_pelanggan
+LEFT JOIN
+perusahaan_pelanggan ON perusahaan_pelanggan.id_pelanggan = pelanggan.id_pelanggan
+WHERE pesanan_layanan.id_pesanan_layanan = $P{NO_INVOICE};]]>
+	</queryString>
+	<field name="id_pesanan_addon" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="inoice_induk" class="java.lang.String"/>
+	<field name="nama_kategori_addon" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nama_sub_kategori_addon" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="harga_paket_addon" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="jumlah_pesanan_addon" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_harga" class="java.lang.Long"/>
+	<variable name="SUM_TOTAL_ADDON" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_harga}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="455" y="0" width="100" height="20" uuid="0b75899a-f98f-4b04-b7eb-141492c547e9"/>
+				<textElement>
+					<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0").format($F{total_harga})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="355" y="0" width="100" height="20" uuid="5016767e-84c4-4cd9-82e4-c5b912b47650"/>
+				<textElement>
+					<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("Rp#,##0").format($F{harga_paket_addon})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="255" y="0" width="100" height="20" uuid="63843c0e-f6bc-4f4b-9426-58578754e0cf"/>
+				<textElement>
+					<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jumlah_pesanan_addon}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="255" height="20" uuid="3b8bbb6d-2141-43fb-b02b-58e3668e3401"/>
+				<textElement>
+					<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_sub_kategori_addon}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

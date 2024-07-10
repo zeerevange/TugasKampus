@@ -44,25 +44,25 @@
 		</box>
 	</style>
 	<subDataset name="DataPaketLayanan" uuid="29c4a20d-129e-4304-be59-9e2ea0f4fe45">
-		<queryString language="SQL">
+		<queryString>
 			<![CDATA[SELECT * FROM `paket_layanan`]]>
 		</queryString>
 		<field name="id_paket_layanan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="nama" class="java.lang.String">
+		<field name="nama_paket_layanan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="harga" class="java.lang.Integer">
+		<field name="harga_paket_layanan" class="java.lang.Integer">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="minimal_order" class="java.lang.Integer">
+		<field name="minimal_order_paket_layanan" class="java.lang.Integer">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="include" class="java.lang.String">
+		<field name="include_paket_layanan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="deskripsi" class="java.lang.String">
+		<field name="deskripsi_paket_layanan" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
 	</subDataset>
@@ -72,19 +72,19 @@
 	<field name="id_paket_layanan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="nama" class="java.lang.String">
+	<field name="nama_paket_layanan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="harga" class="java.lang.Integer">
+	<field name="harga_paket_layanan" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="minimal_order" class="java.lang.Integer">
+	<field name="minimal_order_paket_layanan" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="include" class="java.lang.String">
+	<field name="include_paket_layanan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="deskripsi" class="java.lang.String">
+	<field name="deskripsi_paket_layanan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
@@ -94,7 +94,7 @@
 		<band height="117" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="555" height="115" uuid="2b194745-75e7-46e7-bd83-a0f00a87e951"/>
-				<imageExpression><![CDATA["/Users/muhamadfahmi/Devlab/Kuliah/TugasKampus/eo_management/src/eo_management/image/kop-surat.png"]]></imageExpression>
+				<imageExpression><![CDATA["kop-surat-outoria/kop-surat.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -136,7 +136,7 @@
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{id_paket_layanan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -157,7 +157,7 @@
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nama_paket_layanan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -178,7 +178,7 @@
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{harga_paket_layanan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -199,7 +199,7 @@
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{minimal_order}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{minimal_order_paket_layanan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -220,7 +220,7 @@
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{include}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{include_paket_layanan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -241,22 +241,16 @@
 									<font size="8"/>
 									<paragraph leftIndent="1" rightIndent="1" spacingBefore="1" spacingAfter="1"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{deskripsi}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{deskripsi_paket_layanan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
 				</jr:table>
 			</componentElement>
-			<staticText>
-				<reportElement x="433" y="10" width="38" height="13" uuid="d17ad599-ae45-4cbe-926a-37f695d601b6">
-					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
-				</reportElement>
-				<text><![CDATA[Bogor,]]></text>
-			</staticText>
 		</band>
 		<band height="100">
 			<staticText>
-				<reportElement x="394" y="78" width="108" height="20" uuid="c6b2e1a1-bc79-46d3-b212-792b11edf931">
+				<reportElement x="370" y="80" width="151" height="20" uuid="c6b2e1a1-bc79-46d3-b212-792b11edf931">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -265,18 +259,18 @@
 				<text><![CDATA[Muhamad Syarifuddin]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="394" y="15" width="108" height="20" uuid="0c9a2619-53ce-4802-9050-a1f4cc120958">
+				<reportElement x="370" y="15" width="151" height="20" uuid="0c9a2619-53ce-4802-9050-a1f4cc120958">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Manager]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="394" y="0" width="108" height="13" uuid="e8b75964-e8b8-4f50-8d31-e009b8e4f6f6">
+				<reportElement x="370" y="2" width="151" height="13" uuid="28bd167b-d276-4d05-b2c1-59236e7b93a3">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Bogor, 14 Juni 2024]]></text>
+				<text><![CDATA[Bogor, Kamis 04 Juli 2024]]></text>
 			</staticText>
 		</band>
 	</detail>
