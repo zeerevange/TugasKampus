@@ -212,6 +212,9 @@ public class PopUpPesananLayanan extends javax.swing.JDialog {
             } else if (this.screen_type == "Pembayaran") {
                 Pembayaran pembayaran = new Pembayaran(new javax.swing.JFrame(), true);
                 pembayaran.setVisible(true);
+            } else if (this.screen_type == "Pesanan Addon") {
+                PesananAddonLayanan pesananAddonLayanan = new PesananAddonLayanan(new javax.swing.JFrame(), true);
+                pesananAddonLayanan.setVisible(true);
             }
             
             

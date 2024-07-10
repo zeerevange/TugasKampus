@@ -28,8 +28,11 @@ public class PrintInvoice {
     public void print(String invoiceId) {
         try {
 
+            // Mengambil home directory dari sistem
+            String userHome = System.getProperty("user.home");
+            
              // Path untuk menyimpan file PDF
-            String outputFile = "/Users/muhamadfahmi/Devlab/Kuliah/Report/invoice_" + invoiceId + ".pdf"; // Nama file disesuaikan dengan nomor invoice atau lainnya
+            String outputFile = userHome + "/KKP_Reports/invoice_" + invoiceId + ".pdf"; // Nama file disesuaikan dengan nomor invoice atau lainnya
             
             // Path ke file template Jasper
             String reportPath = "src/eo_management/reports/InvoiceTransaksiLayanan.jasper"; // Ubah sesuai dengan lokasi file template Anda

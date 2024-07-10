@@ -98,7 +98,7 @@ public class SubKategoriAddon extends javax.swing.JDialog {
     private void clear() {
         txtId.setText("");
         txtNama.setText("");
-        cbxKategori.setSelectedItem("");
+        cbxKategori.setSelectedIndex(0);
     }
     
     private void disableButton(){
@@ -111,31 +111,25 @@ public class SubKategoriAddon extends javax.swing.JDialog {
         cbxKategori.setEnabled(false);
     }
     
-//    private void autoIncrement(){
-//        try {
-//                // Membuat pernyataan SQL untuk mengambil nilai auto increment selanjutnya
-//                Statement stmt = conn.createStatement();
-//                String sql = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'eo_management' AND TABLE_NAME = 'sub_kategori_addon'";
-//                ResultSet rs = stmt.executeQuery(sql);
-//
-//                // Mengekstrak nilai auto increment selanjutnya
-//                int nextAutoIncrementValue = 1;
-//                if (rs.next()) {
-//                    nextAutoIncrementValue = rs.getInt("AUTO_INCREMENT");
-//                }
-//
-//                // Menetapkan nilai auto increment selanjutnya ke JTextField
-//                txtId.setText(String.valueOf(nextAutoIncrementValue));
-//
-//                // Menutup koneksi
-////                rs.close();
-////                stmt.close();
-////                conn.close();
-//            } catch (SQLException ex) {
-//                // Tangani kesalahan koneksi atau eksekusi query
-//                ex.printStackTrace();
-//}
-//    }
+    private void getLastId () {
+        try {
+            String sql = "SELECT * FROM sub_kategori_addon ORDER BY id_sub_kategori_addon DESC LIMIT 1";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet hasil = ps.executeQuery();
+            
+            if (hasil.next()){
+                String lastId = hasil.getString("id_sub_kategori_addon");
+                txtId.setText("" + (Integer.parseInt(lastId) + 1));
+            } else {
+                txtId.setText("1");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "data ID terakhir gagal dipanggil. Pesan error : " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
     private void combobox(){
         try {
             String sql = "SELECT id_kategori_addon, nama_kategori_addon FROM kategori_addon";
@@ -523,6 +517,7 @@ class HeaderRenderer implements TableCellRenderer {
         disableButton();
         clear();
         enableButton();
+        getLastId();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
@@ -568,7 +563,7 @@ class HeaderRenderer implements TableCellRenderer {
             cbxKategori.requestFocus();
         } else {
             try {
-                String sql = "UPDATE sub_kategori_addon SET nama_sub_kategori_addon=? ,id_kategori_addon=? WHERE id_kategori_addon = '"
+                String sql = "UPDATE sub_kategori_addon SET nama_sub_kategori_addon=?, id_kategori_addon=? WHERE id_sub_kategori_addon = '"
                                 + txtId.getText()+"'";
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtNama.getText());

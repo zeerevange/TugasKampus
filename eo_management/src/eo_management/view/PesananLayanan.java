@@ -34,7 +34,8 @@ public class PesananLayanan extends javax.swing.JDialog {
         private Connection conn = new koneksi().connect();
         private DefaultTableModel tabmode;
         private String[] data_pesanan_layanan;
-        private String pelanggan_id, paket_layanan_id, jumlah_peserta;
+        private static String mode, id_pesanan_layanan, id_paket_layanan, id_pelanggan, jumlah_peserta;
+//        private String pelanggan_id, paket_layanan_id, jumlah_peserta;
         
     /**
      * Creates new form PaketLayanan
@@ -46,7 +47,6 @@ public class PesananLayanan extends javax.swing.JDialog {
         //set ketengah layar
         initUI();
         dataTable();
-        kode_id_otomatis();
         disableButton();
         
          //fungsi pencarian
@@ -69,25 +69,71 @@ public class PesananLayanan extends javax.swing.JDialog {
                    
         ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
         
-        if (throwDataPesanan.getModeInput() == "edit") {
+        if (this.getMode() == "edit") {
             txtId.setEnabled(false);
             clear();
-            this.getDataIdPesananLayanan(throwDataPesanan.getId_PesananLayanan());
-            this.getDataIdPaketLayanan(throwDataPesanan.getId_PaketLayanan());
-            this.getDataIdPelanggan(throwDataPesanan.getId_Pelanggan());
-            this.getDataJumlahPeserta(throwDataPesanan.getJumlahPeserta());
+            this.getDataIdPesananLayanan(this.getIdPesananLayanan());
+            
             System.out.println(throwDataPesanan.getId_PaketLayanan());
-            System.out.println(throwDataPesanan.getId_Pelanggan());
-            System.out.println(throwDataPesanan.getJumlahPeserta());
+            System.out.println(this.getIdPaketLayanan());
+            
+            this.getDataIdPaketLayanan(throwDataPesanan.getId_PaketLayanan() == null ? this.getIdPaketLayanan() : throwDataPesanan.getId_PaketLayanan());
+            this.getDataIdPelanggan(throwDataPesanan.getId_Pelanggan() == null ? this.getIdPelanggan() : throwDataPesanan.getId_Pelanggan());
+            this.getDataJumlahPeserta(this.getJumlahPeserta());
+            
             editButton();
-        } else {
+        } else if (this.getMode() == "add") {
+            kode_id_otomatis();
             this.getDataIdPaketLayanan(throwDataPesanan.getId_PaketLayanan());
             this.getDataIdPelanggan(throwDataPesanan.getId_Pelanggan());
             txtId.setEnabled(false);
             txtIdPaketLayanan.setEnabled(false);
             txtIdPelanggan.setEnabled(false);
+            enableButton();
+            txtJumlahPeserta.setText(this.getJumlahPeserta());
+            
         }
        
+    }
+    
+    public static void setMode(String mode) {
+        PesananLayanan.mode = mode;
+    }
+    
+    public String getMode() {
+        return this.mode;
+    }
+    
+    public static void setIdPesananLayanan(String id_pesanan_layanan) {
+        PesananLayanan.id_pesanan_layanan = id_pesanan_layanan;
+    }
+    
+    public String getIdPesananLayanan() {
+        return this.id_pesanan_layanan;
+    }
+    
+    public static void setIdPelanggan(String id_pelanggan) {
+        PesananLayanan.id_pelanggan = id_pelanggan;
+    }
+    
+    public String getIdPelanggan() {
+        return this.id_pelanggan;
+    }
+    
+    public static void setIdPaketlayanan(String id_paket_layanan) {
+        PesananLayanan.id_paket_layanan = id_paket_layanan;
+    }
+    
+    public String getIdPaketLayanan() {
+        return this.id_paket_layanan;
+    }
+    
+    public static void setJumlahPeserta(String jumlah_peserta) {
+        PesananLayanan.jumlah_peserta = jumlah_peserta;
+    }
+    
+    public String getJumlahPeserta() {
+        return this.jumlah_peserta;
     }
     
     private void initUI(){ 
@@ -202,16 +248,20 @@ public class PesananLayanan extends javax.swing.JDialog {
                         "LEFT JOIN paket_layanan ON pesanan_layanan.id_paket_layanan = paket_layanan.id_paket_layanan\n" +
                         "LEFT JOIN pesanan_addon ON pesanan_addon.id_pesanan_layanan = pesanan_layanan.id_pesanan_layanan\n" +
                         "LEFT JOIN paket_addon ON pesanan_addon.id_paket_addon = paket_addon.id_paket_addon\n" +
-                        "LEFT JOIN sub_kategori_addon ON paket_addon.id_sub_kategori_addon = sub_kategori_addon.id_sub_kategori_addon;";
+                        "LEFT JOIN sub_kategori_addon ON paket_addon.id_sub_kategori_addon = sub_kategori_addon.id_sub_kategori_addon\n" +
+                        "WHERE pesanan_layanan.id_pesanan_layanan LIKE '%"
+                        + cariitem+ "%' or pelanggan.nama_pelanggan LIKE '%" 
+                        + cariitem+ "%' or paket_layanan.nama_paket_layanan LIKE '%"
+                        + cariitem+ "%'ORDER BY pesanan_layanan.id_pesanan_layanan ASC;";
             Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
                 tabmode.addRow(new Object[] {
                     hasil.getString(1),
                     hasil.getString(2),
-                    hasil.getString(6),
+                    hasil.getString(7),
                     hasil.getString(3),
-                    hasil.getString(10),
+                    hasil.getString(11),
                     hasil.getInt(4),
                     hasil.getString(25),
                     hasil.getString(18),
@@ -342,20 +392,20 @@ public class PesananLayanan extends javax.swing.JDialog {
         txtIdPelanggan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel5.setText("ID Pelanggan       :");
+        jLabel5.setText("ID Pelanggan     :");
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel2.setText("ID Pesanan             :");
+        jLabel2.setText("ID Pesanan          :");
 
         txtId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel8.setText("Jumlah Peserta    :");
+        jLabel8.setText("Jumlah Peserta  :");
 
         txtJumlahPeserta.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel9.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel9.setText("ID Paket Layanan   :");
+        jLabel9.setText("ID Paket Layanan :");
 
         txtIdPaketLayanan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -598,6 +648,7 @@ public class PesananLayanan extends javax.swing.JDialog {
         disableButton();
         clear();
         kode_id_otomatis();
+        this.setMode(null);
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
@@ -674,6 +725,18 @@ public class PesananLayanan extends javax.swing.JDialog {
         clear();
         enableButton();
         kode_id_otomatis();
+        this.setMode("add");
+        
+        this.setIdPesananLayanan("");
+        this.setIdPaketlayanan("");
+        this.setIdPelanggan("");
+        this.setJumlahPeserta("");
+        ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
+        
+        throwDataPesanan.setId_PaketLayanan("");
+        throwDataPesanan.setId_Pelanggan("");
+        
+        
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void txtCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyPressed
@@ -693,10 +756,7 @@ public class PesananLayanan extends javax.swing.JDialog {
     private void tabelPaketLayananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPaketLayananMouseClicked
         int bar = tabelPaketLayanan.getSelectedRow();
 //        Object[] header = {"No. Faktur", "ID Pelanggan", "Nama Pelanggan", "ID Paket Layanan", "Nama Paket Layanan", "Jumlah Peserta", "Addon Layanan", "Jumlah Addon"};
-        txtId.setText(tabelPaketLayanan.getValueAt(bar,0).toString());
-        txtIdPelanggan.setText(tabelPaketLayanan.getValueAt(bar,1).toString());
-        txtIdPaketLayanan.setText(tabelPaketLayanan.getValueAt(bar,3).toString());
-        txtJumlahPeserta.setText(tabelPaketLayanan.getValueAt(bar,5).toString());
+        
         
         if (tabelPaketLayanan.getValueAt(bar,0).toString() != null) {
             btnCetak.setEnabled(true);
@@ -706,36 +766,31 @@ public class PesananLayanan extends javax.swing.JDialog {
         
         editButton();
         
-        try {
-            
-            ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
-            throwDataPesanan.setModeInput("edit");
-            throwDataPesanan.setId_PesananLayanan(tabelPaketLayanan.getValueAt(bar,0).toString());
-            throwDataPesanan.setId_Pelanggan(tabelPaketLayanan.getValueAt(bar,1).toString());
-            throwDataPesanan.setId_PaketLayanan(tabelPaketLayanan.getValueAt(bar,3).toString());
-            throwDataPesanan.setJumlahPeserta(tabelPaketLayanan.getValueAt(bar,5).toString());
-            
-            System.out.println(tabelPaketLayanan.getValueAt(bar,6).toString());
-            
-        } catch (Exception e) {
-            String id = tabelPaketLayanan.getValueAt(bar, 0).toString();
-            String ObjButton[] = {"Batal","Iya"};
-            int pilihan = JOptionPane.showOptionDialog(null, 
+        String id = tabelPaketLayanan.getValueAt(bar, 0).toString();
+        String ObjButton[] = {"Edit Pesanan","Tambahkan Addon"};
+        int pilihan = JOptionPane.showOptionDialog(null, 
                     "Pilih " + tabelPaketLayanan.getValueAt(bar,0).toString() + " Belum Memiliki Paket Addon. Ingin Menambahkan Addon ?",
                     "Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
                     null,
                     ObjButton,
                     ObjButton[1]);
-            if(pilihan == 1){
+        
+        if(pilihan == 1){
                 this.dispose();
-                ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
-                throwDataPesanan.setId_PesananLayanan(id);
-                throwDataPesanan.setModeInput("tambah");
                 PesananAddonLayanan pesananAddonLayanan = new PesananAddonLayanan(new javax.swing.JFrame(), true);
+                pesananAddonLayanan.setMode("add");
                 pesananAddonLayanan.setVisible(true);
-            } else {
-//                this.dispose();
-            }
+        } else {
+            txtId.setText(tabelPaketLayanan.getValueAt(bar,0).toString());
+            txtIdPelanggan.setText(tabelPaketLayanan.getValueAt(bar,1).toString());
+            txtIdPaketLayanan.setText(tabelPaketLayanan.getValueAt(bar,3).toString());
+            txtJumlahPeserta.setText(tabelPaketLayanan.getValueAt(bar,5).toString());
+        
+            this.setMode("edit");
+            this.setIdPesananLayanan(tabelPaketLayanan.getValueAt(bar,0).toString());
+            this.setIdPelanggan(tabelPaketLayanan.getValueAt(bar,1).toString());
+            this.setIdPaketlayanan(tabelPaketLayanan.getValueAt(bar,3).toString());
+            this.setJumlahPeserta(tabelPaketLayanan.getValueAt(bar,5).toString());
         }
         
     }//GEN-LAST:event_tabelPaketLayananMouseClicked
@@ -767,16 +822,19 @@ public class PesananLayanan extends javax.swing.JDialog {
 
     private void btnCariPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPelangganActionPerformed
         // TODO add your handling code here:
+        this.dispose();
         PopUpPelanggan popUpPelanggan = new PopUpPelanggan(new javax.swing.JFrame(), true);
         popUpPelanggan.setVisible(true);
-        
+        this.setJumlahPeserta(txtJumlahPeserta.getText());
         
     }//GEN-LAST:event_btnCariPelangganActionPerformed
 
     private void btnCariPaketLayananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPaketLayananActionPerformed
         // TODO add your handling code here:
+        this.dispose();
         PopUpPaketLayanan popUpPaketLayanan = new PopUpPaketLayanan(new javax.swing.JFrame(), true);
         popUpPaketLayanan.setVisible(true);
+        this.setJumlahPeserta(txtJumlahPeserta.getText());
     }//GEN-LAST:event_btnCariPaketLayananActionPerformed
 
     private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed

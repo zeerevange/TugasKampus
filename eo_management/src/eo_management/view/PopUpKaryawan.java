@@ -23,6 +23,7 @@ public class PopUpKaryawan extends javax.swing.JDialog {
          private Connection conn = new koneksi().connect();
          private DefaultTableModel tabmode;
          public PerusahaanPelanggan plgn = null;
+         private static String screen_type;
     /**
      * Creates new form PopUpPelanggan
      */
@@ -30,6 +31,10 @@ public class PopUpKaryawan extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         dataTable();
+    }
+    
+    public static void setScreenType (String screen_type) {
+        PopUpKaryawan.screen_type = screen_type;
     }
 
     PopUpKaryawan() {
@@ -186,14 +191,22 @@ public class PopUpKaryawan extends javax.swing.JDialog {
         int bar = tabelPelanggan.getSelectedRow();
         String id = tabelPelanggan.getValueAt(bar, 0).toString();
         String ObjButton[] = {"Batal","Pilih"};
-        int pilihan = JOptionPane.showOptionDialog(null, "Pilih " + tabelPelanggan.getValueAt(bar,1).toString() + " Untuk Form Crew Acara ?","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+        int pilihan = JOptionPane.showOptionDialog(null, "Pilih " + tabelPelanggan.getValueAt(bar,1).toString() + " Untuk Form " + this.screen_type + " ?","Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
         null,ObjButton,ObjButton[1]);
         if(pilihan == 1){
             this.dispose();
             throwDataPesanan.setId_Karyawan(id);
-            System.out.println(throwDataPesanan.getModeInput() + "AHHAHAHA PAS SETTER POPUP " + id);
-            CrewAcara crewAcara = new CrewAcara(new javax.swing.JFrame(), true);
-            crewAcara.setVisible(true);
+            throwDataPesanan.setNama_Karyawan(tabelPelanggan.getValueAt(bar, 1).toString());
+            
+            if (this.screen_type == "Crew Acara") {
+                CrewAcara crewAcara = new CrewAcara(new javax.swing.JFrame(), true);
+                crewAcara.setVisible(true);
+            } else if (this.screen_type == "Manage User") {
+                Users users = new Users(new javax.swing.JFrame(), true);
+                users.setVisible(true);
+            } 
+            
+            
             
             
         } else {

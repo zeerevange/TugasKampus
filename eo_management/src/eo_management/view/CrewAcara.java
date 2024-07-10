@@ -716,6 +716,7 @@ class HeaderRenderer implements TableCellRenderer {
         throwDataPesanan.setId_RincianAcara(txtIdRincianAcara.getText());
         this.dispose();
         PopUpKaryawan popUpKaryawan = new PopUpKaryawan(new javax.swing.JFrame(), true);
+        popUpKaryawan.setScreenType("Crew Acara");
         popUpKaryawan.setVisible(true);
     }//GEN-LAST:event_btnCariKaryawanActionPerformed
 

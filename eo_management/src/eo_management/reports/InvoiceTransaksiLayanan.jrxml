@@ -159,7 +159,7 @@ WHERE pesanan_layanan.id_pesanan_layanan = $P{NO_INVOICE}]]>
 		<band height="91" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="191" height="77" uuid="600b8818-8c3f-4c69-863e-b4f40da6d153"/>
-				<imageExpression><![CDATA["/Users/muhamadfahmi/Devlab/Kuliah/TugasKampus/eo_management/src/eo_management/image/kop-kiri.png"]]></imageExpression>
+				<imageExpression><![CDATA["kop-surat-outoria/kop-kiri.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="191" y="0" width="364" height="45" uuid="6d4bcdf5-fa2d-4778-8305-27cb8518e767"/>

@@ -10,7 +10,7 @@ package eo_management;
  * @author muham
  */
 public class ThrowPesananLayananData {
-    private static String id_pelanggan, id_karyawan, id_paket_layanan, jumlah_peserta, mode_input, id_pesanan_layanan, id_sub_kategori_layanan, id_rincian_acara, id_game, nama_game;
+    private static String id_pelanggan, id_karyawan, nama_karyawan, id_paket_layanan, jumlah_peserta, mode_input, id_pesanan_layanan, id_sub_kategori_layanan, id_rincian_acara, id_game, nama_game;
     
     public static String getId_PesananLayanan() {
         return id_pesanan_layanan;
@@ -34,6 +34,14 @@ public class ThrowPesananLayananData {
     
     public void setId_Karyawan(String id_karyawan) {
         this.id_karyawan = id_karyawan;
+    }
+    
+    public String getNama_Karyawan() {
+        return this.nama_karyawan;
+    }
+    
+    public void setNama_Karyawan(String nama_karyawan) {
+        this.nama_karyawan = nama_karyawan;
     }
     
     public static String getId_PaketLayanan() {

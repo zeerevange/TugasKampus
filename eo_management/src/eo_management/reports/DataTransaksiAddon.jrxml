@@ -144,11 +144,11 @@ LEFT JOIN
 		<band height="99" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="204" height="87" uuid="aba5cd02-85bd-4fad-90f1-70efe9c1b999"/>
-				<imageExpression><![CDATA["/Users/muhamadfahmi/Devlab/Kuliah/TugasKampus/eo_management/src/eo_management/image/kop-kiri.png"]]></imageExpression>
+				<imageExpression><![CDATA["kop-surat-outoria/kop-kiri.png"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="555" y="0" width="247" height="87" uuid="c8123545-ff7b-44f1-9c72-0d8c9a5423c1"/>
-				<imageExpression><![CDATA["/Users/muhamadfahmi/Devlab/Kuliah/TugasKampus/eo_management/src/eo_management/image/kop-kanan.png"]]></imageExpression>
+				<imageExpression><![CDATA["kop-surat-outoria/kop-kanan.png"]]></imageExpression>
 			</image>
 			<line>
 				<reportElement x="0" y="87" width="802" height="1" uuid="625afff1-d553-4056-b8c5-2a098bf79d14"/>

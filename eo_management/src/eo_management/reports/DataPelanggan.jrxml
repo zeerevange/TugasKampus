@@ -106,7 +106,7 @@
 		<band height="115" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="555" height="115" uuid="8b73927b-6fa8-4265-862f-55bac97b7cde"/>
-				<imageExpression><![CDATA["/Users/muhamadfahmi/Devlab/Kuliah/TugasKampus/eo_management/src/eo_management/image/kop-surat.png"]]></imageExpression>
+				<imageExpression><![CDATA["kop-surat-outoria/kop-surat.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
