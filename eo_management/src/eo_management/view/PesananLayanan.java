@@ -767,9 +767,9 @@ public class PesananLayanan extends javax.swing.JDialog {
         editButton();
         
         String id = tabelPaketLayanan.getValueAt(bar, 0).toString();
-        String ObjButton[] = {"Edit Pesanan","Tambahkan Addon"};
+        String ObjButton[] = {"Edit Pesanan","Tambahkan Addon", "Print Invoice"};
         int pilihan = JOptionPane.showOptionDialog(null, 
-                    "Pilih " + tabelPaketLayanan.getValueAt(bar,0).toString() + " Belum Memiliki Paket Addon. Ingin Menambahkan Addon ?",
+                    "Dipilih " + tabelPaketLayanan.getValueAt(bar,0).toString() + " \nPilih opsi pesanan layanan dibawah !",
                     "Message", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
                     null,
                     ObjButton,
@@ -780,6 +780,21 @@ public class PesananLayanan extends javax.swing.JDialog {
                 PesananAddonLayanan pesananAddonLayanan = new PesananAddonLayanan(new javax.swing.JFrame(), true);
                 pesananAddonLayanan.setMode("add");
                 pesananAddonLayanan.setVisible(true);
+        } else if(pilihan == 2){
+            // TODO add your handling code here:
+            String no_inv = tabelPaketLayanan.getValueAt(bar,0).toString();
+
+
+            PrintInvoice print_invoice = new PrintInvoice();
+            print_invoice.print(no_inv);
+            
+            // Mengambil home directory dari sistem
+            String userHome = System.getProperty("user.home");
+            String folderName = "Invoices_Reports";
+            String outputFile = userHome + "/" + folderName + "/invoice_" + no_inv + ".pdf"; 
+            
+            JOptionPane.showMessageDialog(null, "Invoice berhasil di simpan pada " + outputFile);
+            
         } else {
             txtId.setText(tabelPaketLayanan.getValueAt(bar,0).toString());
             txtIdPelanggan.setText(tabelPaketLayanan.getValueAt(bar,1).toString());
