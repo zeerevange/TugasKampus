@@ -201,7 +201,7 @@ public class Inventaris extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Data Inventaris");
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1330, 650));
+        setPreferredSize(new java.awt.Dimension(1200, 600));
 
         header.setBackground(new java.awt.Color(1, 86, 153));
         header.setPreferredSize(new java.awt.Dimension(1100, 100));
@@ -242,7 +242,7 @@ public class Inventaris extends javax.swing.JDialog {
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
-                .addContainerGap(554, Short.MAX_VALUE)
+                .addContainerGap(473, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(506, 506, 506)
                 .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -264,7 +264,7 @@ public class Inventaris extends javax.swing.JDialog {
         footer.setLayout(footerLayout);
         footerLayout.setHorizontalGroup(
             footerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1327, Short.MAX_VALUE)
+            .addGap(0, 1267, Short.MAX_VALUE)
         );
         footerLayout.setVerticalGroup(
             footerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,13 +315,12 @@ public class Inventaris extends javax.swing.JDialog {
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtNama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                        .addComponent(txtJumlah, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtId))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(300, 300, 300))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtNama, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtJumlah, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+                    .addComponent(txtId))
+                .addGap(309, 309, 309))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -455,49 +454,48 @@ public class Inventaris extends javax.swing.JDialog {
         midLayout.setHorizontalGroup(
             midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(midLayout.createSequentialGroup()
+                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(midLayout.createSequentialGroup()
+                        .addGap(438, 438, 438)
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(midLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(btnTambah)
+                        .addGap(0, 0, 0)
+                        .addComponent(btnSimpan)
+                        .addGap(0, 0, 0)
+                        .addComponent(btnUbah)
+                        .addGap(0, 0, 0)
+                        .addComponent(btnHapus)
+                        .addGap(0, 0, 0)
+                        .addComponent(btnBatal))
+                    .addGroup(midLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(midLayout.createSequentialGroup()
                         .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(midLayout.createSequentialGroup()
-                        .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(midLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(midLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(midLayout.createSequentialGroup()
-                                        .addComponent(btnTambah)
-                                        .addGap(0, 0, 0)
-                                        .addComponent(btnSimpan)
-                                        .addGap(0, 0, 0)
-                                        .addComponent(btnUbah)
-                                        .addGap(0, 0, 0)
-                                        .addComponent(btnHapus)
-                                        .addGap(0, 0, 0)
-                                        .addComponent(btnBatal))
-                                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 835, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(81, 81, 81))
         );
         midLayout.setVerticalGroup(
             midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(midLayout.createSequentialGroup()
                 .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(midLayout.createSequentialGroup()
-                        .addGap(43, 43, 43)
+                        .addGap(15, 15, 15)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(27, 27, 27)
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnTambah)
                             .addComponent(btnSimpan)
                             .addComponent(btnUbah)
                             .addComponent(btnHapus)
                             .addComponent(btnBatal))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(25, 25, 25)
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(midLayout.createSequentialGroup()
                         .addContainerGap()
@@ -505,8 +503,8 @@ public class Inventaris extends javax.swing.JDialog {
                             .addComponent(txtCari)
                             .addComponent(btnCari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, 0))
         );
 
         getContentPane().add(mid, java.awt.BorderLayout.CENTER);
