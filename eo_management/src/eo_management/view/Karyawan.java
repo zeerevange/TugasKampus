@@ -278,7 +278,7 @@ public class Karyawan extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Data Karyawan");
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1310, 700));
+        setPreferredSize(new java.awt.Dimension(1200, 650));
         setResizable(false);
 
         header.setBackground(new java.awt.Color(1, 86, 153));
@@ -325,7 +325,7 @@ public class Karyawan extends javax.swing.JDialog {
             .addGroup(headerLayout.createSequentialGroup()
                 .addGap(563, 563, 563)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 523, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 530, Short.MAX_VALUE)
                 .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         headerLayout.setVerticalGroup(
@@ -345,7 +345,7 @@ public class Karyawan extends javax.swing.JDialog {
         footer.setLayout(footerLayout);
         footerLayout.setHorizontalGroup(
             footerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1367, Short.MAX_VALUE)
+            .addGap(0, 1374, Short.MAX_VALUE)
         );
         footerLayout.setVerticalGroup(
             footerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -377,11 +377,11 @@ public class Karyawan extends javax.swing.JDialog {
         jScrollPane1.setViewportView(tabelKaryawan);
 
         txtCari.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCariKeyPressed(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCariKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCariKeyPressed(evt);
             }
         });
 
@@ -396,20 +396,20 @@ public class Karyawan extends javax.swing.JDialog {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Karyawan", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel3.setText("Nomor Telpon        :");
+        jLabel3.setText("Nomor Telpon      :");
 
         txtNoTelpon.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         txtEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel4.setText("Jenis Kelamin         :");
+        jLabel4.setText("Jenis Kelamin       :");
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel5.setText("Email                      :");
+        jLabel5.setText("Email                   :");
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel2.setText("ID Karyawan           :");
+        jLabel2.setText("ID Karyawan        :");
 
         txtId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -427,7 +427,7 @@ public class Karyawan extends javax.swing.JDialog {
         });
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel7.setText("Nama Karyawan     :");
+        jLabel7.setText("Nama Karyawan   :");
 
         radioLaki.setBackground(new java.awt.Color(255, 255, 255));
         pilihKelamin.add(radioLaki);
@@ -463,9 +463,10 @@ public class Karyawan extends javax.swing.JDialog {
                         .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(txtNoTelpon, javax.swing.GroupLayout.Alignment.LEADING))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(radioLaki, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(radioPerempuan, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(radioLaki)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(radioPerempuan, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -564,53 +565,54 @@ public class Karyawan extends javax.swing.JDialog {
         mid.setLayout(midLayout);
         midLayout.setHorizontalGroup(
             midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, midLayout.createSequentialGroup()
-                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(midLayout.createSequentialGroup()
+                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(midLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(midLayout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(btnTambah)
+                        .addGap(0, 0, 0)
+                        .addComponent(btnSimpan)
+                        .addGap(0, 0, 0)
+                        .addComponent(btnUbah)
+                        .addGap(0, 0, 0)
+                        .addComponent(btnHapus)
+                        .addGap(0, 0, 0)
+                        .addComponent(btnBatal)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 904, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, midLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(midLayout.createSequentialGroup()
-                        .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(midLayout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addComponent(btnTambah)
-                                .addGap(0, 0, 0)
-                                .addComponent(btnSimpan)
-                                .addGap(0, 0, 0)
-                                .addComponent(btnUbah)
-                                .addGap(0, 0, 0)
-                                .addComponent(btnHapus)
-                                .addGap(0, 0, 0)
-                                .addComponent(btnBatal))
-                            .addGroup(midLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 830, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(50, 50, 50))
+                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(11, 11, 11))
         );
         midLayout.setVerticalGroup(
             midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(midLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtCari)
-                    .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addContainerGap()
+                .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(midLayout.createSequentialGroup()
+                        .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtCari)
+                            .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(midLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(15, 15, 15)
+                        .addGap(18, 18, 18)
                         .addGroup(midLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnSimpan)
                             .addComponent(btnUbah)
                             .addComponent(btnHapus)
                             .addComponent(btnBatal)
-                            .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1))
-                .addGap(106, 106, 106))
+                            .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(20, 20, 20))
         );
 
         getContentPane().add(mid, java.awt.BorderLayout.CENTER);
