@@ -95,7 +95,7 @@ WHERE pesanan_layanan.id_pesanan_layanan = $P{NO_INVOICE};]]>
 	</subDataset>
 	<parameter name="NO_INVOICE" class="java.lang.String"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/Users/muhamadfahmi/Devlab/Kuliah/TugasKampus/eo_management/src/eo_management/reports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["sub_reports/"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
