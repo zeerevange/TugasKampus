@@ -711,8 +711,12 @@ public class PesananLayanan extends javax.swing.JDialog {
 
         if(pilihan == 1){
             this.dispose();
+            ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
+            
+            throwDataPesanan.setId_PesananLayanan(id);
+            throwDataPesanan.setModeInput("add");
+            
             PesananAddonLayanan pesananAddonLayanan = new PesananAddonLayanan(new javax.swing.JFrame(), true);
-            pesananAddonLayanan.setMode("add");
             pesananAddonLayanan.setVisible(true);
         } else if(pilihan == 2){
             // TODO add your handling code here:

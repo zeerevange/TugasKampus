@@ -64,8 +64,8 @@ public class PesananAddonLayanan extends javax.swing.JDialog {
         });
         
         ThrowPesananLayananData throwDataPesanan = new ThrowPesananLayananData();
-        
-        if (this.getMode() == "add") {
+        System.out.println(throwDataPesanan.getModeInput());
+        if (this.getMode() == "add" || throwDataPesanan.getModeInput() == "add") {
             txtId.setEnabled(false);
             
             enableButton();

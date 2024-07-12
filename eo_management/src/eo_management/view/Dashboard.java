@@ -754,7 +754,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         jMenu2.setText("Data Game");
 
-        menuSupplier1.setText("Kategori Games");
+        menuSupplier1.setText("Kategori Game");
         menuSupplier1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuSupplier1ActionPerformed(evt);
@@ -762,7 +762,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jMenu2.add(menuSupplier1);
 
-        menuPermainan.setText("Permainan");
+        menuPermainan.setText("Game");
         menuPermainan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuPermainanActionPerformed(evt);
