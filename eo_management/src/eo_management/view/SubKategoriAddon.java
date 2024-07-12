@@ -148,7 +148,7 @@ public class SubKategoriAddon extends javax.swing.JDialog {
     }
     
     public void dataTable() {
-    Object[] header = {"ID Katagori", "Nama Sub Katagori Addon", "Katagori Addon"};
+    Object[] header = {"ID Kategori", "Nama Sub Kategori Addon", "Kategori Addon"};
     tabmode = new DefaultTableModel (null, header);
     try {
         String sql = "SELECT * FROM sub_kategori_addon LEFT JOIN kategori_addon ON sub_kategori_addon.id_kategori_addon = kategori_addon.id_kategori_addon;";
@@ -233,7 +233,7 @@ class HeaderRenderer implements TableCellRenderer {
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Sub Katagori Addon");
+        jLabel1.setText("Sub Kategori Addon");
 
         ButtonClose.setBackground(new java.awt.Color(1, 86, 153));
         ButtonClose.setPreferredSize(new java.awt.Dimension(60, 0));
@@ -267,7 +267,7 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(290, Short.MAX_VALUE)
+                .addContainerGap(273, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(231, 231, 231)
                 .addComponent(ButtonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -289,7 +289,7 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1021, Short.MAX_VALUE)
+            .addGap(0, 1039, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -482,7 +482,7 @@ class HeaderRenderer implements TableCellRenderer {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );

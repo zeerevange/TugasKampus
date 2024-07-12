@@ -105,7 +105,7 @@ public class KategoriAddon extends javax.swing.JDialog {
     }
     
     public void dataTable() {
-    Object[] header = {"ID Katagori", "Nama Katagori Addon"};
+    Object[] header = {"ID Kategori", "Nama Kategori Addon"};
     tabmode = new DefaultTableModel (null, header);
     try {
         String sql = "SELECT * FROM kategori_addon ORDER BY id_kategori_addon ASC";
@@ -196,7 +196,7 @@ class HeaderRenderer implements TableCellRenderer {
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Katagori Addon");
+        jLabel1.setText("Kategori Addon");
 
         ButtonClose.setBackground(new java.awt.Color(1, 86, 153));
         ButtonClose.setPreferredSize(new java.awt.Dimension(60, 0));
@@ -264,7 +264,7 @@ class HeaderRenderer implements TableCellRenderer {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Katagori Addon", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data Kategori Addon", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel2.setText("ID Kategori Addon :");
@@ -428,8 +428,8 @@ class HeaderRenderer implements TableCellRenderer {
                                 .addGap(0, 0, 0)
                                 .addComponent(btnBatal)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(13, 13, 13))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(33, 33, 33))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
