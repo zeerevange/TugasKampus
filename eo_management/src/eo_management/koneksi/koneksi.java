@@ -8,6 +8,8 @@ package eo_management.koneksi;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,9 +18,9 @@ import java.sql.SQLException;
 public class koneksi {
            private Connection koneksi;
            public Connection connect() {
+               
            try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    System.out.println("Berhasil Terkoneksi");
                 }
                     catch (ClassNotFoundException e) {
                     System.out.println("Gagal Terkoneksi" + e.getMessage());    
