@@ -339,35 +339,35 @@ public class Login extends javax.swing.JFrame {
                             
         } else {
             // Memeriksa apakah versi Java adalah 8
-        if (!javaVersion.startsWith("1.8")) {
-            String message = "<html>Versi Java yang anda gunakan adalah " + javaVersion + ". Harap gunakan java versi 1.8.xx untuk menjalankan program ini.<br>" +
-                             "Anda dapat mengunduh Java 8 dari link berikut: <a href='https://www.java.com/download/ie_manual.jsp'>https://www.java.com/download/ie_manual.jsp</a></html>";
+            if (!javaVersion.startsWith("1.8")) {
+                String message = "<html>Versi Java yang anda gunakan adalah " + javaVersion + ". Harap gunakan java versi 1.8.xx untuk menjalankan program ini.<br>" +
+                                 "Anda dapat mengunduh Java 8 dari link berikut: <a href='https://www.java.com/download/ie_manual.jsp'>https://www.java.com/download/ie_manual.jsp</a></html>";
 
-            // Membuat label dengan pesan
-            JLabel label = new JLabel(message);
-            label.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-            label.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent e) {
-                    try {
-                        java.awt.Desktop.getDesktop().browse(new java.net.URI("https://www.java.com/download/ie_manual.jsp"));
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                // Membuat label dengan pesan
+                JLabel label = new JLabel(message);
+                label.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                label.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseClicked(java.awt.event.MouseEvent e) {
+                        try {
+                            java.awt.Desktop.getDesktop().browse(new java.net.URI("https://www.java.com/download/ie_manual.jsp"));
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
                     }
-                }
-            });
+                });
 
-            // Menampilkan dialog error dengan label
-            JOptionPane.showMessageDialog(null, label, "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            // Jika versi Java 8, jalankan aplikasi seperti biasa
-            /* Create and display the form */
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    new Login().setVisible(true);
-                    new Login().setLocationRelativeTo(null);
-                }
-            });
-        }
+                // Menampilkan dialog error dengan label
+                JOptionPane.showMessageDialog(null, label, "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                // Jika versi Java 8, jalankan aplikasi seperti biasa
+                /* Create and display the form */
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        new Login().setVisible(true);
+                        new Login().setLocationRelativeTo(null);
+                    }
+                });
+            }
         }
         
     }
