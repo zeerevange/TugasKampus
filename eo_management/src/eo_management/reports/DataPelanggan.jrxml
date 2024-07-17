@@ -283,13 +283,13 @@
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Manager]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="383" y="4" width="151" height="13" uuid="b6cc1f09-8a9e-4dd3-8102-b7f9485c5970">
+			<textField>
+				<reportElement x="383" y="4" width="151" height="13" uuid="21005376-4bea-47c1-a6f3-811fc061488d">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Bogor, Kamis 04 Juli 2024]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["Bogor, " + new SimpleDateFormat("EEEE dd MMMM yyyy", new Locale("id", "ID")).format(new java.util.Date())]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>
