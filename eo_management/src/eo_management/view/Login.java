@@ -272,11 +272,7 @@ public class Login extends javax.swing.JFrame {
                                        }
                                     } else {
                                         JOptionPane.showMessageDialog(null, "Email Tidak Terdaftar!");
-                                    }
-//                                   
-                                   
-//                                    
-                                    
+                                    }              
                             } catch (SQLException e) {
                                 JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat melakukan koneksi ke database: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                           }
@@ -316,30 +312,13 @@ public class Login extends javax.swing.JFrame {
         } catch (Exception e) {
             System.err.println("Failed to initialize FlatLaf");
         }
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-        //</editor-fold>
+        
         
         // Mendapatkan versi Java
         String javaVersion = System.getProperty("java.version");
 
         // Memeriksa apakah versi Java adalah 8
         if (!javaVersion.startsWith("1.8")) {
-            // Membuat pesan dengan link yang dapat diklik
             String message = "<html>Versi Java yang anda gunakan adalah " + javaVersion + ". Harap gunakan java versi 1.8.xx untuk menjalankan program ini.<br>" +
                              "Anda dapat mengunduh Java 8 dari link berikut: <a href='https://www.java.com/download/ie_manual.jsp'>https://www.java.com/download/ie_manual.jsp</a></html>";
 

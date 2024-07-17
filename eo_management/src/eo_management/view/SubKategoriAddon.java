@@ -150,8 +150,15 @@ public class SubKategoriAddon extends javax.swing.JDialog {
     public void dataTable() {
     Object[] header = {"ID Kategori", "Nama Sub Kategori Addon", "Kategori Addon"};
     tabmode = new DefaultTableModel (null, header);
+    String cariitem = txtCari.getText();
+    
+    
     try {
-        String sql = "SELECT * FROM sub_kategori_addon LEFT JOIN kategori_addon ON sub_kategori_addon.id_kategori_addon = kategori_addon.id_kategori_addon;";
+        String sql = "SELECT * FROM sub_kategori_addon "
+                + "LEFT JOIN kategori_addon ON sub_kategori_addon.id_kategori_addon = kategori_addon.id_kategori_addon "
+                + " WHERE sub_kategori_addon.nama_sub_kategori_addon LIKE '%"
+                    + cariitem+ "%' or kategori_addon.nama_kategori_addon LIKE '%" 
+                    + cariitem+ "%' ORDER BY sub_kategori_addon.id_sub_kategori_addon asc";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet hasil = ps.executeQuery();
              while (hasil.next()) {

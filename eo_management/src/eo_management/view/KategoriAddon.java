@@ -48,18 +48,18 @@ public class KategoriAddon extends javax.swing.JDialog {
         txtCari.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-        dataTable();
-        }
+                dataTable();
+            }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 dataTable();
-        }
+            }
 
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            dataTable();
-        }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                dataTable();
+            }
         });
     }
     //colorchange
@@ -107,8 +107,11 @@ public class KategoriAddon extends javax.swing.JDialog {
     public void dataTable() {
     Object[] header = {"ID Kategori", "Nama Kategori Addon"};
     tabmode = new DefaultTableModel (null, header);
+    String cariitem = txtCari.getText();
+    
     try {
-        String sql = "SELECT * FROM kategori_addon ORDER BY id_kategori_addon ASC";
+        String sql = "SELECT * FROM kategori_addon WHERE kategori_addon.nama_kategori_addon LIKE '%"
+                    + cariitem+ "%' ORDER BY id_kategori_addon ASC";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet hasil = ps.executeQuery();
              while (hasil.next()) {
