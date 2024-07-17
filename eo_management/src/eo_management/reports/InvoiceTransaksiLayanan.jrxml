@@ -420,13 +420,6 @@ WHERE pesanan_layanan.id_pesanan_layanan = $P{NO_INVOICE}]]>
 				<text><![CDATA[Manager]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="109" width="151" height="13" uuid="7a9ad268-f972-4270-92e9-ad40247a2648">
-					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Bogor, Kamis 04 Juli 2024]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="370" y="205" width="151" height="20" uuid="1d8c02af-5902-49a9-b608-c22d49567f5a">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
@@ -435,6 +428,14 @@ WHERE pesanan_layanan.id_pesanan_layanan = $P{NO_INVOICE}]]>
 				</textElement>
 				<text><![CDATA[Muhamad Syarifuddin]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="370" y="109" width="151" height="13" uuid="a0932ff1-dfad-443c-b466-dc8072d942d9">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Bogor, " + new SimpleDateFormat("EEEE dd MMMM yyyy", new Locale("id", "ID")).format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<elementGroup/>
 		</band>
 	</detail>
 	<summary>

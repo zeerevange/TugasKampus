@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1b8c150-cfe2-405d-af24-be9e19d8b0b4">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="666"/>
+	<property name="ireport.x" value="398"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -437,7 +437,7 @@ LEFT JOIN
 		</band>
 		<band height="117">
 			<staticText>
-				<reportElement x="621" y="93" width="136" height="20" uuid="625150a3-0887-4aee-8bea-07acb90df17e">
+				<reportElement x="621" y="93" width="151" height="20" uuid="625150a3-0887-4aee-8bea-07acb90df17e">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -446,19 +446,19 @@ LEFT JOIN
 				<text><![CDATA[Muhamad Syarifuddin]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="621" y="28" width="136" height="20" uuid="448356ab-f2f2-4efd-a407-8a9c0e0e865e">
+				<reportElement x="621" y="28" width="151" height="20" uuid="448356ab-f2f2-4efd-a407-8a9c0e0e865e">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Manager]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="621" y="9" width="136" height="13" uuid="07f84b77-947f-43f8-bcf3-50e9bdd1ee4a">
+			<textField>
+				<reportElement x="621" y="9" width="151" height="13" uuid="743efb47-30c4-4242-9e8b-4a983f623bbd">
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 1]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Bogor, Kamis 04  Juli 2024]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["Bogor, " + new SimpleDateFormat("EEEE dd MMMM yyyy", new Locale("id", "ID")).format(new java.util.Date())]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>
